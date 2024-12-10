@@ -23,11 +23,12 @@
             position: absolute; 
             top: 40px; 
             left: 55px;
-            width: 100px;
+            width: 10vw;
+            max-width: 100px;
             height: auto;
         }
         nav {
-            background: #ffffff;
+            background: #111111;
             padding: 0.5rem;
             text-align: center;
         }
@@ -35,6 +36,17 @@
             color: #ffffff;
             text-decoration: none;
             margin: 0 1rem;
+        }
+        nav a.login-button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border: 1px solid #007bff;
+            transition: background-color 0.3s ease;
+        }
+        nav a.login-button:hover {
+            background-color: #0056b3;
+            color: white;
         }
         section {
             margin: 2rem auto;
@@ -44,7 +56,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         h1, h2 {
-            color: #eeee;
+            color: #111111;
         }
         table {
             width: 100%;
@@ -81,7 +93,17 @@
         <a href="#section1">Section 1</a>
         <a href="#section2">Section 2</a>
         <a href="#form">Formulaire</a>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="login-button">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="login-button">Login</a>
+        {% endif %}
     </nav>
+    
+    
     <section id="section1">
         <h2>Section 1 : Titres et Paragraphes</h2>
         <p>Ceci est un amoncellement de cramptes. Il peut contenir plusieurs skibidis pour tester l'affichage du apagnan.</p>
@@ -91,7 +113,7 @@
             <li>Point 3</li>
         </ul>
         <p>
-            Voici un prout vers <a href="http://localhost:8080/about" target="_blank">tic tac toe</a>.
+            Voici un prout vers <a href="http://localhost:8080/about" >tic tac toe</a>.
         </p>
     </section>
     <section id="section2">
