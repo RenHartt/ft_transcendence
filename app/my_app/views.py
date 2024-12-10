@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout as auth_logout
+
 from django.contrib import messages
 
 def home(request):
@@ -22,6 +24,7 @@ def login(request):
     return render(request, 'my_app/login.html')
 
 def logout(request):
+    auth_logout(request)
     return render(request, 'my_app/logout.html')  # Charger logout.html
 
 def register(request):
