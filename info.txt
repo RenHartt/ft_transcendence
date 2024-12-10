@@ -6,3 +6,10 @@ from django.contrib.sites.models import Site
 Site.objects.create(domain='localhost:8080', name='Localhost')
 
 sudo docker-compose exec web python manage.py createsuperuser
+
+
+
+
+
+
+sudo docker-compose exec b0f13e712a04 python manage.py migrate

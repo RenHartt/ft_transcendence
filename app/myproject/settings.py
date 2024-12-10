@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Nécessaire pour allauth
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'my_app',
 
     # django-allauth
     'allauth',
@@ -92,11 +93,16 @@ DATABASES = {
         'NAME': config('DB_NAME', default='django'),
         'USER': config('DB_USER', default='django'),
         'PASSWORD': config('DB_PASSWORD', default='django'),
-        'HOST': config('DB_HOST', default='db'),
+        'HOST': config('DB_HOST', default='ft_transcendence-db-1'),
         'PORT': config('DB_PORT', default='5432'),
     }
 }
-
+print("Database configuration:")
+print(f"DB_NAME: {config('DB_NAME', default='django')}")
+print(f"DB_USER: {config('DB_USER', default='django')}")
+print(f"DB_PASSWORD: {config('DB_PASSWORD', default='django')}")
+print(f"DB_HOST: {config('DB_HOST', default='ft_transcendence-db-1')}")
+print(f"DB_PORT: {config('DB_PORT', default='5432')}")
 
 
 # Password validation
@@ -134,6 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'django/static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

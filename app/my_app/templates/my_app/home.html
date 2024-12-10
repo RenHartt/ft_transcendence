@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>__attribute__((ft_transcendence))</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #45433a;
+            color: #ffffff;
+            padding: 1rem;
+            text-align: center;
+        }
+        header img.header-logo {
+            position: absolute; 
+            top: 40px; 
+            left: 55px;
+            width: 100px;
+            height: auto;
+        }
+        nav {
+            background: #ffffff;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        section {
+            margin: 2rem auto;
+            padding: 1rem;
+            max-width: 800px;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #eeee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #35424a;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{% static 'dragon.png' %}" alt="Logo" class="header-logo">
+        <h1>__attribute__((ft_transcendence))</h1>
+        <p>Bienvenue sur __attribute__((ft_transcendence)).</p>
+    </header>
+    
+    <nav>
+        <a href="#section1">Section 1</a>
+        <a href="#section2">Section 2</a>
+        <a href="#form">Formulaire</a>
+    </nav>
+    <section id="section1">
+        <h2>Section 1 : Titres et Paragraphes</h2>
+        <p>Ceci est un amoncellement de cramptes. Il peut contenir plusieurs skibidis pour tester l'affichage du apagnan.</p>
+        <ul>
+            <li>Point 1</li>
+            <li>Point 2</li>
+            <li>Point 3</li>
+        </ul>
+        <p>
+            Voici un prout vers <a href="http://localhost:8080/about" target="_blank">tic tac toe</a>.
+        </p>
+    </section>
+    <section id="section2">
+        <h2>Section 2 : Scoreboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Âge</th>
+                    <th>Profession</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>bgoron</td>
+                    <td>28</td>
+                    <td>Développeur</td>
+                </tr>
+                <tr>
+                    <td>babonnet</td>
+                    <td>32</td>
+                    <td>Designer</td>
+                </tr>
+                <tr>
+                    <td>ltouzali</td>
+                    <td>45</td>
+                    <td>grosse merde</td>
+                </tr>
+                <tr>
+                    <td>thomas..</td>
+                    <td>45</td>
+                    <td>Son projet</td>
+                </tr>
+                <tr>
+                    <td>bedarenn..</td>
+                    <td>45</td>
+                    <td>son wati crampte</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section id="form">
+        <h2>Section 3 : Formulaire</h2>
+        <form action="/submit" method="post">
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required><br><br>
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" placeholder="Votre email" required><br><br>
+            <label for="message">Message :</label><br>
+            <textarea id="message" name="message" rows="4" cols="50" placeholder="Votre message"></textarea><br><br>
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
+    </footer>
+</body>
+</html>

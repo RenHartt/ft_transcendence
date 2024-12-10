@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    color: #35424a;
+}
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin: 20px auto;
+    width: max-content;
+}
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: #f4f4f9;
+    border: 2px solid #35424a;
+    cursor: pointer;
+}
+.cell.taken {
+    cursor: not-allowed;
+    background-color: #dcdcdc;
+}
+.winner {
+    color: #11111d;
+    font-size: 1.5rem;
+    margin-top: 20px;
+}

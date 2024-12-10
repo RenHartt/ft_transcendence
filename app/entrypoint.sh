@@ -1,8 +1,8 @@
-#!/bin/bash
-
+#!/bin/sh
+echo "Waiting for postgres..."
 echo "Applying database migrations..."
 python manage.py migrate --noinput
-
+echo "Collecting static files..."
 echo "Creating superuser..."
 python manage.py shell << END
 from django.contrib.auth.models import User
