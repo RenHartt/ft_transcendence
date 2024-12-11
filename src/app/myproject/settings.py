@@ -90,19 +90,19 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='django'),
-        'USER': config('DB_USER', default='django'),
-        'PASSWORD': config('DB_PASSWORD', default='django'),
-        'HOST': config('DB_HOST', default='ft_transcendence-db-1'),
-        'PORT': config('DB_PORT', default='5432'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 print("Database configuration:")
-print(f"DB_NAME: {config('DB_NAME', default='django')}")
-print(f"DB_USER: {config('DB_USER', default='django')}")
-print(f"DB_PASSWORD: {config('DB_PASSWORD', default='django')}")
-print(f"DB_HOST: {config('DB_HOST', default='ft_transcendence-db-1')}")
-print(f"DB_PORT: {config('DB_PORT', default='5432')}")
+print(f"DB_NAME: {config('DB_NAME')}")
+print(f"DB_USER: {config('DB_USER')}")
+print(f"DB_PASSWORD: {config('DB_PASSWORD')}")
+print(f"DB_HOST: {config('DB_HOST')}")
+print(f"DB_PORT: {config('DB_PORT')}")
 
 
 # Password validation

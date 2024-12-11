@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        /* Overlay pour l'effet de superposition */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        /* Fenêtre modale pour le jeu */
+        #tic-tac-toe-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        #tic-tac-toe-modal h1 {
+            margin-top: 0;
+        }
+
+        #close-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #35424a;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #close-btn:hover {
+            background: #1d1d3a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{% static 'dragon.png' %}" alt="Logo" class="header-logo">
+        <h1>__attribute__</h1>
+    </header>
+    {% if user.is_authenticated %}
+
+    <nav>
+        <a href="#section1">Section 1</a>
+        <a href="#section2">Section 2</a>
+        <a href="#form">Formulaire</a>
+        <a href="javascript:void(0)" onclick="showTicTacToe()">Tic Tac Toe</a>
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="login-button">Logout</button>
+        </form>
+    </nav>
+
+    <section id="section1">
+        <h2>Section 1 : Titres et Paragraphes</h2>
+        <p>Bienvenue dans la section 1.</p>
+    </section>
+
+    <section id="section2">
+        <h2>Section 2 : Scoreboard</h2>
+        <p>Bienvenue dans la section 2.</p>
+    </section>
+    
+    <section id="form">
+        <h2>Section 3 : Formulaire</h2>
+        <form action="/submit" method="post">
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name" required>
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
+    </footer>
+
+    <div id="overlay" onclick="hideTicTacToe()"></div>
+    <div id="tic-tac-toe-modal">
+        <h1>Tic-Tac-Toe</h1>
+        <div class="board" id="board"></div>
+        <div class="winner" id="winner"></div>
+        <button id="close-btn" onclick="hideTicTacToe()">Fermer</button>
+        <button id="replay-btn" onclick="replayGame()">Rejouer</button>
+    </div>
+
+    <script src="{% static 'script.js' %}"></script>
+    <script>
+        const staticurl = "{% static '' %}";
+    
+        const staticUrls = {
+            x: staticurl + "llvm.png",  
+            o: staticurl + "gnu.png"  
+        };
+    
+        function showTicTacToe() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('tic-tac-toe-modal').style.display = 'block';
+            createBoard(staticUrls); 
+        }
+    
+        function hideTicTacToe() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('tic-tac-toe-modal').style.display = 'none';
+        }
+    </script>
+    
+    {% else %}
+    <nav>
+        <a href="{% url 'login' %}" class="login-button">Login</a>
+    </nav>
+    {% endif %}
+</body>
+</html>
