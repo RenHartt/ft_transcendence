@@ -79,8 +79,9 @@ img {
     height: auto;
 }
 footer {
+    margin-top: auto;
+    background-color: #35424a; 
+    color: white;
     text-align: center;
-    padding: 1rem;
-    background: #35424a;
-    color: #141414;
+    padding: 10px 0;
 }

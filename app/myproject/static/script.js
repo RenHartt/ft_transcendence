@@ -1,12 +1,15 @@
 const board = document.getElementById('board');
 const winnerDisplay = document.getElementById('winner');
-let currentPlayer = 'X';
+let currentPlayer = 'LLVM';
 let gameActive = true;
 
 const cells = Array(9).fill(null);
 
 function createBoard() {
     board.innerHTML = '';
+    cells.fill(null); 
+    gameActive = true; 
+    winnerDisplay.textContent = ''; 
     cells.forEach((cell, index) => {
         const cellDiv = document.createElement('div');
         cellDiv.classList.add('cell');
@@ -16,15 +19,21 @@ function createBoard() {
     });
 }
 
-
 function handleCellClick(e) {
     const index = e.target.dataset.index;
 
     if (cells[index] || !gameActive) return;
 
     cells[index] = currentPlayer;
-    e.target.textContent = currentPlayer;
-    e.target.classList.add('taken');
+
+    const img = document.createElement('img');
+    img.src = currentPlayer === 'LLVM' ? staticUrls.x : staticUrls.o;
+    img.alt = currentPlayer;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    e.target.appendChild(img);
+
+    e.target.classList.add('taken'); 
 
     if (checkWinner()) {
         winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
@@ -38,7 +47,7 @@ function handleCellClick(e) {
         return;
     }
 
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
 }
 
 function checkWinner() {
@@ -59,4 +68,6 @@ function checkWinner() {
     });
 }
 
-createBoard();
+function replayGame() {
+    createBoard(staticUrls);
+}
