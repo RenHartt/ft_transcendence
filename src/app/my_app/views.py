@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
-
+from django.views.decorators.cache import never_cache
 from django.contrib import messages
 
+@never_cache
 def home(request):
     return render(request, 'my_app/home.html')
 
@@ -25,6 +26,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
+    clear_session(request)
     return redirect('login')
 
 def register(request):
