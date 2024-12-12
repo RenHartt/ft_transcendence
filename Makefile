@@ -1,22 +1,22 @@
 all: up
 
 up:
-	docker compose up -d --build
+	docker compose -f src/docker-compose.yml up -d --build
 
 down:
-	docker compose down
+	docker compose -f src/docker-compose.yml down
 
 logs:
-	docker compose logs -f
+	docker compose -f src/docker-compose.yml logs -f
 
 restart:
-	docker compose restart
+	docker compose -f src/docker-compose.yml restart
 
 stop:
-	docker compose stop
+	docker compose -f src/docker-compose.yml stop
 
 clean:
-	docker compose down --rmi all --volumes --remove-orphans
+	docker compose -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
 
 help:
 	@echo "Usage: make [target]"
