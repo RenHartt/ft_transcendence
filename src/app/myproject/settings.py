@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Nécessaire pour allauth
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'my_app',
 
     # django-allauth
     'allauth',
@@ -68,7 +67,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'myproject/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
