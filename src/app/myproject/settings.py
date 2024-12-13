@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,7 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -96,13 +94,6 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-print("Database configuration:")
-print(f"DB_NAME: {config('DB_NAME')}")
-print(f"DB_USER: {config('DB_USER')}")
-print(f"DB_PASSWORD: {config('DB_PASSWORD')}")
-print(f"DB_HOST: {config('DB_HOST')}")
-print(f"DB_PORT: {config('DB_PORT')}")
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
