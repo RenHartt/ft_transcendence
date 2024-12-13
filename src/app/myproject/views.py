@@ -5,6 +5,7 @@ from django.contrib.auth import logout as auth_logout
 from django.views.decorators.cache import never_cache
 from django.contrib.sessions.models import Session
 from django.contrib import messages
+from django.utils.translation import gettext as _
 
 @never_cache
 def home(request):
@@ -22,14 +23,16 @@ def login(request):
             auth_login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Invalid username or password')
+            message = _("Invalid username or password")
+            messages.error(request, message)
     return render(request, 'my_app/login.html')
 
 def fortytwologin(request):
     print("42 login")
     code = request.GET.get('code', None)
     if(code == None):
-        return(HttpResponse("code param not found"))
+        message = _("code param not found")
+        return(HttpResponse(message, status=400))
     
     data = {
         'grant_type': 'authorization_code',

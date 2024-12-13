@@ -34,6 +34,6 @@ class FortyTwoOAuth2(BaseOAuth2):
             try:
                 return get_response(request)
             except AuthForbidden:
-                # Redirigez vers la page de connexion ou affichez un message d'erreur
                 return redirect('login')
         return middleware
+        
