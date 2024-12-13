@@ -23,16 +23,14 @@ def login(request):
             auth_login(request, user)
             return redirect('home')
         else:
-            message = _("Invalid username or password")
-            messages.error(request, message)
+            messages.error(request, 'Invalid username or password')
     return render(request, 'my_app/login.html')
 
 def fortytwologin(request):
     print("42 login")
     code = request.GET.get('code', None)
     if(code == None):
-        message = _("code param not found")
-        return(HttpResponse(message, status=400))
+        return(HttpResponse("code param not found"))
     
     data = {
         'grant_type': 'authorization_code',
