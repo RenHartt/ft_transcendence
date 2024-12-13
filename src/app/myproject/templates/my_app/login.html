@@ -10,13 +10,13 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column; /* Aligne les éléments verticalement */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Assure que le contenu occupe tout l'écran */
+            min-height: 100vh;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9; /* Couleur de fond */
-            text-align: center; /* Centre le texte dans les éléments */
+            background-color: #f4f4f9;
+            text-align: center;
         }
 
         header {
@@ -35,11 +35,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             width: 100%;
-            max-width: 400px; /* Limite la largeur du formulaire */
+            max-width: 400px;
         }
 
-        button {
-            background-color: #f6f6f6;
+        button, .oauth-btn {
+            background-color: #8b8989;
             color: black;
             border: none;
             padding: 0.5rem 1rem;
@@ -49,8 +49,9 @@
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
+        button:hover, .oauth-btn:hover {
             background-color: #111111;
+            color: white;
         }
 
         p {
@@ -58,12 +59,31 @@
         }
 
         a {
-            color: #000000;
+            background-color: #8b8989;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+
             text-decoration: none;
         }
 
         a:hover {
             text-decoration: underline;
+        }
+
+        .oauth-btn {
+            margin-top: 1rem;
+            display: block;
+        }
+
+        .oauth-btn img {
+            height: 20px;
+            margin-right: 0.5rem;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -81,6 +101,13 @@
 
         <button type="submit">Log In</button>
     </form>
-    <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+    
+    <p>Or</p>
+    <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+        <img src="{% static 'images/42.png' %}" alt="42 Logo">
+        Log In with 42
+    </a>
+    
+    <p><a href="{% url 'register' %}">Sign Up</a></p>
 </body>
 </html>

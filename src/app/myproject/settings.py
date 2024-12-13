@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',  # Nécessaire pour allauth
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # django-allauth
+    'social_django',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -150,12 +151,17 @@ LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # Options : 'username', 'email', 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+SOCIAL_AUTH_42_KEY = 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70'
+SOCIAL_AUTH_42_SECRET = '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'
+SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
 
 # Configurer les backends d'authentification
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Backend classique de Django
-    'allauth.account.auth_backends.AuthenticationBackend',  # Backend allauth
+    'allauth.account.auth_backends.AuthenticationBackend', 
+    'myproject.auth.FortyTwoOAuth2',  # Le backend pour 42
 ]
+
 
 # Configuration des e-mails (à adapter pour un envoi réel si besoin)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
