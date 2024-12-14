@@ -19,10 +19,11 @@ from django.contrib.auth.views import LogoutView
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),  
+    path('', views.home, name='index'),  
     path('about/', views.about, name='about'),
     path('login/', views.login, name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('register/', views.register, name='register'),
     path('oauth/', include('social_django.urls', namespace='social')),  # Ajouter les URL pour OAuth
+    path('load/<str:page_name>/', views.load_page, name='load_page'),  # Chargement dynamique
 ]

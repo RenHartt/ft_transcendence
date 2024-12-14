@@ -5,10 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="{% static 'home.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <style>
-        /* Overlay pour l'effet de superposition */
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <!-- <style>
         #overlay {
             display: none;
             position: fixed;
@@ -18,9 +17,8 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: 999;
-        }
+        }   
 
-        /* Fenêtre modale pour le jeu */
         #tic-tac-toe-modal {
             display: none;
             position: fixed;
@@ -49,23 +47,31 @@
         #close-btn:hover {
             background: #1d1d3a;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <header>
-        <img src="{% static 'dragon.png' %}" alt="Logo" class="header-logo">
+        <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
         <h1>__attribute__</h1>
     </header>
     {% if user.is_authenticated %}
 
-    <nav>
-        <a href="#section1">Section 1</a>
-        <a href="#section2">Section 2</a>
-        <a href="#form">Formulaire</a>
-        <a href="javascript:void(0)" onclick="showTicTacToe()">Tic Tac Toe</a>
-        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+    <nav class="poulet">
+        <a href="#section1" class="menu">Section 1</a>
+        <a href="#section2" class="menu">Section 2</a>
+        <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>
+        <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="login-button">Logout</button>
+            <button type="submit" class="login-button menu">Logout</button>
+        </form>
+    </nav>
+    <nav class="burger hidden">
+        <a href="#section1" class="menu">Section 1</a>
+        <a href="#section2" class="menu">Section 2</a>
+        <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="login-button menu">Logout</button>
         </form>
     </nav>
 

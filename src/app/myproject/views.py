@@ -6,6 +6,20 @@ from django.views.decorators.cache import never_cache
 from django.contrib.sessions.models import Session
 from django.contrib import messages
 from django.utils.translation import gettext as _
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
+def index(request):
+    return render(request, 'my_app/base.html')
+
+def load_page(request, page_name):
+    if page_name == "login":
+        html = render_to_string('my_app/login.html', {})
+    elif page_name == "home":
+        html = render_to_string('my_app/home.html', {"user": request.user})
+    else:
+        html = render_to_string('my_app/404.html', {})
+    return JsonResponse({"content": html})
 
 @never_cache
 def home(request):

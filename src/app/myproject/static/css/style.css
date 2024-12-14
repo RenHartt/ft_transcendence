@@ -4,10 +4,27 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f9;
+    overflow-x: hidden;
 }
+
 h1 {
     color: #35424a;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
 }
+
+p {
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.hidden {
+    display: none;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
