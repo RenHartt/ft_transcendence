@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -11,14 +12,19 @@ body {
     text-align: center;
 }
 
-header {
-    margin-bottom: 1rem;
-}
-
 h1 {
     margin: 0;
     font-size: 2rem;
     color: #111111;
+}
+
+button {
+    background-color: #8b8989;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 form.jesaispas {
@@ -30,9 +36,8 @@ form.jesaispas {
     max-width: 400px;
 }
 
-button, .oauth-btn {
+button.login, .oauth-btn {
     background-color: #8b8989;
-    color: black;
     border: none;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -41,18 +46,25 @@ button, .oauth-btn {
     transition: background-color 0.3s ease;
 }
 
-button:hover, .oauth-btn:hover {
-    background-color: #111111;
+button.login:hover, .oauth-btn:hover {
+    background-color: #8b8989;
     color: white;
+    transition: color 0.3s ease;
 }
 
 .oauth-btn {
     margin-top: 1rem;
-    display: block;
+    display: inline-block;
+    padding: 0.5rem 1rem;
 }
 
 .oauth-btn img {
     height: 20px;
     margin-right: 0.5rem;
     vertical-align: middle;
+}
+
+.register.a {
+    margin-top: 1rem;
+    font-size: 0.8rem;
 }

@@ -10,16 +10,28 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 
 def index(request):
-    return render(request, 'my_app/base.html')
+    if request.user.is_authenticated:
+        return render(request, 'my_app/index.html')
+    else:
+        return redirect('/?page=login')
 
+
+@never_cache
 def load_page(request, page_name):
     if page_name == "login":
         html = render_to_string('my_app/login.html', {})
     elif page_name == "home":
+        if not request.user.is_authenticated:
+            return JsonResponse({"redirect": "/?page=login"})
         html = render_to_string('my_app/home.html', {"user": request.user})
+    elif page_name == "section1":
+        html = render_to_string('my_app/section1.html', {})
+    elif page_name == "section2":
+        html = render_to_string('my_app/section2.html', {})
     else:
         html = render_to_string('my_app/404.html', {})
     return JsonResponse({"content": html})
+
 
 @never_cache
 def home(request):
@@ -33,12 +45,16 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             auth_login(request, user)
-            return redirect('home')
+            print(f"User {user.username} successfully logged in.")
+            return redirect('/?page=home')
         else:
             messages.error(request, 'Invalid username or password')
-    return render(request, 'my_app/login.html')
+            print("Invalid login attempt.")
+            return redirect('/?page=login')
+    return redirect('/?page=login')
 
 def fortytwologin(request):
     print("42 login")
@@ -49,9 +65,9 @@ def fortytwologin(request):
     data = {
         'grant_type': 'authorization_code',
         'client_id': 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70', #a ne pas mettre en dur
-        'client_secret': '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', #
+        'client_secret': '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', #a ne pas mettre en dur
         'code': code,
-        'redirect_uri': 'http://localhost:8000/login'
+        'redirect_uri': 'http://localhost:8000/?page=login'
     }
     token_response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
 
@@ -63,7 +79,6 @@ def fortytwologin(request):
     if not access_token:
         return HttpResponse("Access token not found in response", status=400)
 
-    # Étape 2 : Récupérer les informations utilisateur
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
@@ -77,14 +92,12 @@ def fortytwologin(request):
     id42 = user_data.get('id')
     login42 = user_data.get('login')
 
-    # Étape 3 : Vérifier ou créer l'utilisateur dans la base de données
     db_user, created = User.objects.get_or_create(username=id42, defaults={
         'first_name': user_data.get('first_name', ''),
         'last_name': user_data.get('last_name', ''),
         'email': user_data.get('email', f'{login42}@student.42.fr')
     })
 
-    # Étape 4 : Ajouter des informations dans la session
     request.session["logged_in"] = True
     request.session["username"] = db_user.username
     request.session["id"] = db_user.id
@@ -92,20 +105,29 @@ def fortytwologin(request):
     request.session.save()
 
     print(f"User {login42} logged in successfully.")
-    return redirect('home')
+    return redirect('/?page=home')
 
 
 def logout(request):
-    auth_logout(request)
-    clear_session(request)
-    return redirect('login')
+    if request.user.is_authenticated:
+        print(f"User {request.user} is being logged out.")
+        auth_logout(request)
+    else:
+        print("No authenticated user found.")
+    request.session.flush()
+    print("Session data after flush:", request.session.items())
+    response = redirect('/?page=login')
+    response.delete_cookie('sessionid')
+    return redirect('/?page=login')
+
+
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('/?page=login')
     else:
         form = UserCreationForm()
     return render(request, 'my_app/register.html', {'form': form})

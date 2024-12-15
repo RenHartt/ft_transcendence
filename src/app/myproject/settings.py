@@ -119,6 +119,7 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+
 # Méthodes d'authentification
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # Options : 'username', 'email', 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
