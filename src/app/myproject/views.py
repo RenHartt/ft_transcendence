@@ -8,7 +8,10 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+import logging
 
+logger = logging.getLogger('myproject')
+@never_cache
 def index(request):
     if request.user.is_authenticated:
         return render(request, 'my_app/index.html')
@@ -20,14 +23,11 @@ def index(request):
 def load_page(request, page_name):
     if page_name == "login":
         html = render_to_string('my_app/login.html', {})
-    elif page_name == "home":
+    elif page_name == "home" or page_name == "index" or page_name == "":
         if not request.user.is_authenticated:
             return JsonResponse({"redirect": "/?page=login"})
-        html = render_to_string('my_app/home.html', {"user": request.user})
-    elif page_name == "section1":
-        html = render_to_string('my_app/section1.html', {})
-    elif page_name == "section2":
-        html = render_to_string('my_app/section2.html', {})
+        else:
+            return JsonResponse({"redirect": "/?page=home"})
     else:
         html = render_to_string('my_app/404.html', {})
     return JsonResponse({"content": html})
@@ -35,6 +35,7 @@ def load_page(request, page_name):
 
 @never_cache
 def home(request):
+    logger.debug("Home page")
     return render(request, 'my_app/home.html')
 
 def about(request):
@@ -67,7 +68,7 @@ def fortytwologin(request):
         'client_id': 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70', #a ne pas mettre en dur
         'client_secret': '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', #a ne pas mettre en dur
         'code': code,
-        'redirect_uri': 'http://localhost:8000/?page=login'
+        'redirect_uri': 'http://localhost:8080/?page=login'
     }
     token_response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
 
@@ -108,18 +109,22 @@ def fortytwologin(request):
     return redirect('/?page=home')
 
 
-def logout(request):
-    if request.user.is_authenticated:
-        print(f"User {request.user} is being logged out.")
-        auth_logout(request)
-    else:
-        print("No authenticated user found.")
-    request.session.flush()
-    print("Session data after flush:", request.session.items())
-    response = redirect('/?page=login')
-    response.delete_cookie('sessionid')
-    return redirect('/?page=login')
+# def logout(request):
+#     if request.user.is_authenticated:
+#         print(f"User {request.user} is being logged out.")
+#         auth_logout(request)
+#     else:
+#         print("No authenticated user found.")
+#     request.session.flush()
+#     print("Session data after flush:", request.session.items())
+#     # response = redirect('/?page=login')
+#     response.delete_cookie('sessionid')
+#     response.delete_cookie('csrftoken')
+#     # return redirect('/?page=login')
 
+def logout(request):
+    auth_logout(request)
+    return redirect('/?page=login')
 
 
 def register(request):

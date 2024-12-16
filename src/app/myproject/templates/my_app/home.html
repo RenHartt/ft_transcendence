@@ -41,17 +41,14 @@
             </header>
         
             <nav class="poulet">
-                <a href="?page=section1" class="menu">Section 1</a>
-                <a href="?page=section2" class="menu">Section 2</a>
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
-                <form method="post" action="?page=login">
+                <button class="login-button menu" id="logout">Logout</button>
+                <!-- <form method="post" action="?page=logout">
                     {% csrf_token %}
                     <button type="submit" class="login-button menu">Logout</button>
-                </form>
+                </form> -->
             </nav>
             <nav class="burger hidden">
-                <a href="?page=section1" class="menu">Section 1</a>
-                <a href="?page=section2" class="menu">Section 2</a>
                 <select name="games" id="games" class="menu">
                     <option value="games" selected disabled>Games</option>
                     <option value="Tic Tac Toe">Tic Tac Toe</option>
@@ -84,8 +81,8 @@
         <script src="{% static 'script.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script>
+            const csrf = "{{ csrf_token }}";
             const staticurl = "{% static '' %}";
-        
             const staticUrls = {
                 x: staticurl + "images/llvm.png",  
                 o: staticurl + "images/gnu.png"  
@@ -94,10 +91,11 @@
             function showTicTacToe() {
                 const overlay = document.getElementById('overlay');
                 const modal = document.getElementById('tic-tac-toe-modal');
+                console.log("Overlay:", overlay, "Modal:", modal); // Vérifiez si les éléments sont détectés
 
                 if (overlay && modal) {
-                    overlay.style.display = 'block';
-                    modal.style.display = 'block';
+                    overlay.classList.add('active'); 
+                    modal.classList.add('active'); 
                 }
 
                 createBoard(staticUrls); 
@@ -108,10 +106,11 @@
                 const modal = document.getElementById('tic-tac-toe-modal');
 
                 if (overlay && modal) {
-                    overlay.style.display = 'none';
-                    modal.style.display = 'none';
+                    overlay.classList.remove('active');
+                    modal.classList.remove('active'); 
                 }
             }
+
         </script>
     </body>
 </html>

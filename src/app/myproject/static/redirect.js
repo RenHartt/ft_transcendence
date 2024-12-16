@@ -44,3 +44,20 @@ function loadPage(page) {
         })
         .catch(error => console.error('Error loading page:', error));
 }
+
+document.querySelector('#logout').addEventListener('click', () => {
+    logout();
+})
+
+async function logout()
+{
+
+    await fetch('/logout/', { method: 'GET' }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrf
+        },
+        body: JSON.stringify({})
+    })
+    .then(window.location.href = "?page=login")
+}
