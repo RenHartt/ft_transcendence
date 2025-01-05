@@ -11,17 +11,18 @@
     <header>
         <h1>Login</h1>
     </header>
-    <form method="post">
+    <form method="POST" action="/?page=login">
         {% csrf_token %}
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
-
+      
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
-
+      
         <button type="submit">Log In</button>
-    </form>
-    
+      </form>
+     
+      
     <p>Or</p>
     <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
         <img src="{% static 'images/42.png' %}" alt="42 Logo">
