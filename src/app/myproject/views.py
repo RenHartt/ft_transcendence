@@ -8,54 +8,77 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound
+import requests
 import logging
 
 logger = logging.getLogger('myproject')
-@never_cache
+
 def index(request):
-    if request.user.is_authenticated:
-        return render(request, 'my_app/index.html')
+    page = request.GET.get('page', 'home')  # Valeur par défaut : 'home'
+
+    if page == 'login':
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+                return redirect('/?page=home')  # Redirection en cas de succès
+            else:
+                messages.error(request, 'Invalid username or password')
+        return render(request, 'my_app/login.html')  # Affiche la page de connexion
+
+    elif page == 'home':
+        if not request.user.is_authenticated:
+            return redirect('/?page=login')  # Redirection vers la connexion si non authentifié
+        return render(request, 'my_app/home.html')
+
+    elif page == 'about':
+        return render(request, 'my_app/about.html')
+
     else:
-        return redirect('/?page=login')
+        return HttpResponseNotFound("Page not found")
 
 
 @never_cache
 def load_page(request, page_name):
     if page_name == "login":
-        html = render_to_string('my_app/login.html', {})
-    elif page_name == "home" or page_name == "index" or page_name == "":
+        return render(request, 'my_app/login.html')
+    elif page_name in ["home", "index", ""]:
         if not request.user.is_authenticated:
-            return JsonResponse({"redirect": "/?page=login"})
+            return redirect('login')
         else:
-            return JsonResponse({"redirect": "/?page=home"})
+            return redirect('home')
     else:
-        html = render_to_string('my_app/404.html', {})
-    return JsonResponse({"content": html})
+        return render(request, 'my_app/404.html')
 
-
+@login_required
 @never_cache
 def home(request):
-    logger.debug("Home page")
-    return render(request, 'my_app/home.html')
+    return render(request, 'my_app/home.html', {"username": request.user.username})
 
 def about(request):
     return render(request, 'my_app/about.html')
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             auth_login(request, user)
-            print(f"User {user.username} successfully logged in.")
-            return redirect('/?page=home')
+            return redirect('/?page=home')  # Redirection vers la page d'accueil
         else:
             messages.error(request, 'Invalid username or password')
-            print("Invalid login attempt.")
-            return redirect('/?page=login')
-    return redirect('/?page=login')
+            return redirect('/?page=login')  # Redirection vers la page de connexion
+    return render(request, 'my_app/login.html')
 
 def fortytwologin(request):
     print("42 login")
@@ -107,20 +130,6 @@ def fortytwologin(request):
 
     print(f"User {login42} logged in successfully.")
     return redirect('/?page=home')
-
-
-# def logout(request):
-#     if request.user.is_authenticated:
-#         print(f"User {request.user} is being logged out.")
-#         auth_logout(request)
-#     else:
-#         print("No authenticated user found.")
-#     request.session.flush()
-#     print("Session data after flush:", request.session.items())
-#     # response = redirect('/?page=login')
-#     response.delete_cookie('sessionid')
-#     response.delete_cookie('csrftoken')
-#     # return redirect('/?page=login')
 
 def logout(request):
     auth_logout(request)
