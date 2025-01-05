@@ -12,7 +12,7 @@ body {
     text-align: center;
 }
 
-h1 {
+h1.title {
     margin: 0;
     font-size: 2rem;
     color: #111111;
@@ -27,7 +27,43 @@ button {
     border-radius: 5px;
 }
 
+header.HeadLog {
+    background: transparent !important;
+    height: 7vh !important;
+}
+
+.label {
+    opacity: 0;
+    position: absolute;
+    top: -5px;
+    z-index: 10;
+    left: 10px;
+    font-size: small;
+    background-color: white;
+    padding: 0 5px;
+    transition: all 0.2s ease;
+}
+
+.input {
+    border: 1px solid gray;
+    border-radius: 6px;
+    width: 80%;
+    position: relative;
+    line-height: 6ex;
+    z-index: 0;
+    transition: all 0.2s ease;
+    padding: 0 1vw;
+}
+.menu-form {
+    position: relative;
+    width: 80%;
+}
+
 form.jesaispas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background: #ffffff;
     padding: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -36,7 +72,7 @@ form.jesaispas {
     max-width: 400px;
 }
 
-button.login, .oauth-btn {
+.login, .oauth-btn {
     background-color: #8b8989;
     border: none;
     padding: 0.5rem 1rem;
@@ -46,25 +82,19 @@ button.login, .oauth-btn {
     transition: background-color 0.3s ease;
 }
 
-button.login:hover, .oauth-btn:hover {
+.login:hover, .oauth-btn:hover {
     background-color: #8b8989;
     color: white;
     transition: color 0.3s ease;
 }
 
 .oauth-btn {
-    margin-top: 1rem;
     display: inline-block;
-    padding: 0.5rem 1rem;
 }
 
 .oauth-btn img {
-    height: 20px;
+    height: 14px;
     margin-right: 0.5rem;
     vertical-align: middle;
 }
 
-.register.a {
-    margin-top: 1rem;
-    font-size: 0.8rem;
-}

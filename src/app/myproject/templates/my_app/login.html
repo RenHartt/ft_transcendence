@@ -8,27 +8,38 @@
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
-    <header>
-        <h1>Login</h1>
+    <header class="HeadLog">
+        <h1 class="title">Login</h1>
     </header>
-    <form method="POST" action="/?page=login">
+    <form method="POST" class="jesaispas" action="/?page=login">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-      
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-      
-        <button type="submit">Log In</button>
-      </form>
-     
-      
-    <p>Or</p>
-    <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
-        <img src="{% static 'images/42.png' %}" alt="42 Logo">
-        Log In with 42
-    </a>
-    
-    <p><a href="{% url 'register' %}">Sign Up</a></p>
+        <div class="menu-form">
+            <label for="username" class="label">Username</label>
+            <input type="text" id="username" class="input" name="username" placeholder="Username" autocomplete="off" autofill="off" aria-autocomplete="none" required><br><br>
+        </div>
+        <div class="menu-form">
+            <label for="password" class="label">Password</label>
+            <input type="password" id="password" class="input" name="password" placeholder="Password" autocomplete="new-password" autofill="off" aria-autocomplete="none" required><br><br>
+        </div>
+        <div class="login-buttons">
+            <style>
+                .login-buttons {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 10px;
+                }
+            </style>
+            <button type="submit" class="login">Log In</button>
+            or
+            <a class="login" href="{% url 'register' %}">Sign Up</a>
+        </div>
+        <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+            <img src="{% static 'images/42.png' %}" alt="42 Logo">
+            Log In with 42
+        </a>
+    </form>
+    <script src="{% static 'login.js' %}"></script>
 </body>
 </html>

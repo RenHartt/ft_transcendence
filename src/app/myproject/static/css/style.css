@@ -7,6 +7,10 @@ body {
     background-color: #f4f4f9;
     overflow-x: hidden;
 }
+a {
+    text-decoration: none;
+    color: black;
+}
 
 section.pages {
     width: 100vw;
