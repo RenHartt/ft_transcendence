@@ -42,11 +42,12 @@
         
             <nav class="poulet">
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
+                <a href="?page=profile" class="menu">Profile</a>
+                <button id="startPong">Jouer à Pong</button>
+                <div id="pongContainer" style="display: none;">
+                    <canvas id="pongCanvas" width="800" height="400"></canvas>
+                </div>
                 <button class="login-button menu" id="logout">Logout</button>
-                <!-- <form method="post" action="?page=logout">
-                    {% csrf_token %}
-                    <button type="submit" class="login-button menu">Logout</button>
-                </form> -->
             </nav>
             <nav class="burger hidden">
                 <select name="games" id="games" class="menu">
@@ -80,7 +81,9 @@
         </section>
         <script src="{% static 'script.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
-        <script>
+        <canvas id="pongCanvas" width="800" height="400"></canvas>
+        <script src="{% static 'pong.js' %}"></script>
+                <script>
             const csrf = "{{ csrf_token }}";
             const staticurl = "{% static '' %}";
             const staticUrls = {
@@ -91,7 +94,7 @@
             function showTicTacToe() {
                 const overlay = document.getElementById('overlay');
                 const modal = document.getElementById('tic-tac-toe-modal');
-                console.log("Overlay:", overlay, "Modal:", modal); // Vérifiez si les éléments sont détectés
+                console.log("Overlay:", overlay, "Modal:", modal);
 
                 if (overlay && modal) {
                     overlay.classList.add('active'); 
@@ -111,6 +114,7 @@
                 }
             }
 
+            
         </script>
     </body>
 </html>
