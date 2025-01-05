@@ -7,6 +7,8 @@
         <title>Home Page</title>
         <link rel="stylesheet" href="{% static 'css/index.css' %}">
     </head>
+
+    
     <body>
         <section id="login" class="pages">
             <header>
@@ -43,10 +45,7 @@
             <nav class="poulet">
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
                 <a href="?page=profile" class="menu">Profile</a>
-                <button id="startPong">Jouer à Pong</button>
-                <div id="pongContainer" style="display: none;">
-                    <canvas id="pongCanvas" width="800" height="400"></canvas>
-                </div>
+                <a href="javascript:void(0)" class="menu" onclick="showPong()">Jouer à Pong</a>
                 <button class="login-button menu" id="logout">Logout</button>
             </nav>
             <nav class="burger hidden">
@@ -55,14 +54,10 @@
                     <option value="Tic Tac Toe">Tic Tac Toe</option>
                 </select>
             </nav>
-            <section id="section1">
-                <h2>Section 1 : Titres et Paragraphes</h2>
-                <p>Bienvenue dans la section 1.</p>
-            </section>
-            <section id="section2">
-                <h2>Section 2 : Scoreboard</h2>
-                <p>Bienvenue dans la section 2.</p>
-            </section>
+
+            <div id="pong-container"></div>
+
+            <button id="stop game" onclick="stopGame()">Stop Game</button>
             <footer>
                 <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
             </footer>
@@ -74,16 +69,18 @@
                 <button id="close-btn" onclick="hideTicTacToe()">Fermer</button>
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
+
+
         {% else %}
-        <p>Vous devez être connecté pour accéder à cette page.</p>
-        <a href="?page=login">Se connecter</a>
-    {% endif %}
+            <p>Vous devez être connecté pour accéder à cette page.</p>
+            <a href="?page=login">Se connecter</a>
+        {% endif %}
         </section>
         <script src="{% static 'script.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <canvas id="pongCanvas" width="800" height="400"></canvas>
         <script src="{% static 'pong.js' %}"></script>
-                <script>
+        <script>
             const csrf = "{{ csrf_token }}";
             const staticurl = "{% static '' %}";
             const staticUrls = {
@@ -114,7 +111,53 @@
                 }
             }
 
+
+            function replayGame() {
+                const board = document.getElementById('board');
+                const winner = document.getElementById('winner');
+                const replayBtn = document.getElementById('replay-btn');
+
+                if (board && winner && replayBtn) {
+                    board.innerHTML = '';
+                    winner.innerHTML = '';
+                    replayBtn.style.display = 'none';
+                    createBoard(staticUrls);
+                }
+            }
+            function showPong() {
+                const pongContainer = document.getElementById('pong-container');
+                let canvas = document.getElementById('pongCanvas');
+
+                if (!pongContainer) {
+                    console.error("❌ Erreur : #pong-container introuvable !");
+                    return;
+                }
+
+                pongContainer.innerHTML = '';
+
+                if (!canvas) {
+                    canvas = document.createElement("canvas");
+                    canvas.id = "pongCanvas";
+                    canvas.width = 200;
+                    canvas.height = 200;
+                }
+
+                pongContainer.appendChild(canvas);
+
+                console.log("✔ Pong ajouté sous Section 2 !");
+                startPongGame(); 
+            }
             
+            function stopGame() {
+                const pongContainer = document.getElementById('pong-container');
+                const canvas = document.getElementById('pongCanvas');
+
+                if (pongContainer && canvas) {
+                    pongContainer.innerHTML = '';
+                    console.log("✔ Pong retiré de la page !");
+                }
+            }
+
         </script>
     </body>
 </html>

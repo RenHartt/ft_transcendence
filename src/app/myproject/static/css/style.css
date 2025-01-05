@@ -123,3 +123,21 @@ p {
     transition: color 0.3s ease;
 }
 
+#pong-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 300px;  /* Largeur max pour s'adapter */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#pongCanvas {
+    border: 2px solid black;
+    background: white;
+    width: 100%; /* S'adapte au conteneur */
+    max-width: 300px; /* Ne dépasse pas */
+    height: auto; /* Conserve le ratio */
+}
