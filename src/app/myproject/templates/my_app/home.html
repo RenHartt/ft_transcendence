@@ -55,7 +55,12 @@
                 </select>
             </nav>
 
-            <div id="pong-container"></div>
+            <div id="pong-wrapper">
+                <div id="pong-container"></div>
+                <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+                <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
+            </div>
+            
 
             <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
             
@@ -125,9 +130,12 @@
                     createBoard(staticUrls);
                 }
             }
+
             function showPong() {
                 const pongContainer = document.getElementById('pong-container');
                 let canvas = document.getElementById('pongCanvas');
+                const stopGameButton = document.getElementById('stopGameButton');
+                const pongScore = document.getElementById('pong-score');
 
                 if (!pongContainer) {
                     console.error("❌ Erreur : #pong-container introuvable !");
@@ -139,25 +147,43 @@
                 if (!canvas) {
                     canvas = document.createElement("canvas");
                     canvas.id = "pongCanvas";
-                    canvas.width = 200;
-                    canvas.height = 200;
+                    canvas.width = 500;
+                    canvas.height = 300;
                 }
 
+                pongContainer.appendChild(pongScore);
                 pongContainer.appendChild(canvas);
+                pongContainer.appendChild(stopGameButton);
 
-                console.log("✔ Pong ajouté sous Section 2 !");
-                startPongGame(); 
+                stopGameButton.style.display = "block"; 
+                pongScore.style.display = "block"; 
+                canvas.style.display = "block";
+                startPongGame();
             }
-            
+
+
             function stopGame() {
-                const pongContainer = document.getElementById('pong-container');
-                const canvas = document.getElementById('pongCanvas');
+    gameRunning = false; // Indiquer que le jeu est arrêté
 
-                if (pongContainer && canvas) {
-                    pongContainer.innerHTML = '';
-                    console.log("✔ Pong retiré de la page !");
-                }
-            }
+    const pongCanvas = document.getElementById('pongCanvas');
+    const stopGameButton = document.getElementById('stopGameButton');
+    const pongScore = document.getElementById('pong-score');
+
+    if (pongCanvas) {
+        pongCanvas.style.display = "none"; 
+    }
+
+    if (stopGameButton) {
+        stopGameButton.style.display = "none";
+    }
+
+    if (pongScore) {
+        pongScore.style.display = "none"; 
+    }
+
+    console.log("🛑 Jeu arrêté !");
+}
+
 
         </script>
     </body>
