@@ -12,44 +12,30 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from django.utils.translation import gettext_lazy as _
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
-
 INSTALLED_APPS = [
-    # Apps Django par défaut
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',  # Nécessaire pour allauth
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'my_app',
-
     # django-allauth
+    'social_django',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
-    # Providers spécifiques (exemple GitHub ou 42 API, ajoute si nécessaire)
-    # 'allauth.socialaccount.providers.github',
-    # 'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +54,7 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'myproject/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +68,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -97,16 +78,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-print("Database configuration:")
-print(f"DB_NAME: {config('DB_NAME')}")
-print(f"DB_USER: {config('DB_USER')}")
-print(f"DB_PASSWORD: {config('DB_PASSWORD')}")
-print(f"DB_HOST: {config('DB_HOST')}")
-print(f"DB_PORT: {config('DB_PORT')}")
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,8 +96,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -136,38 +106,33 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'myproject/static']
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ------------- AJOUTS POUR DJANGO-ALLAUTH -----------------
 
-# Configure django.contrib.sites (nécessaire pour allauth)
 SITE_ID = 1
 
 # URL après connexion/déconnexion
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+
 # Méthodes d'authentification
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # Options : 'username', 'email', 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+SOCIAL_AUTH_42_KEY = 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70'
+SOCIAL_AUTH_42_SECRET = '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'
+SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
 
-# Configurer les backends d'authentification
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Backend classique de Django
-    'allauth.account.auth_backends.AuthenticationBackend',  # Backend allauth
+    'django.contrib.auth.backends.ModelBackend', 
+    'allauth.account.auth_backends.AuthenticationBackend', 
+    'myproject.auth.FortyTwoOAuth2', 
 ]
 
-# Configuration des e-mails (à adapter pour un envoi réel si besoin)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# ----------------------------------------------------------
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

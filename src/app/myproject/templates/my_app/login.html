@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>__attribute__</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+    </header>
+    <form method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Log In</button>
+    </form>
+    
+    <p>Or</p>
+    <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+        <img src="{% static 'images/42.png' %}" alt="42 Logo">
+        Log In with 42
+    </a>
+    
+    <p><a href="{% url 'register' %}">Sign Up</a></p>
+</body>
+</html>

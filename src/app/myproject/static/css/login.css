@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #111111;
+}
+
+button {
+    background-color: #8b8989;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+form.jesaispas {
+    background: #ffffff;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+}
+
+button.login, .oauth-btn {
+    background-color: #8b8989;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button.login:hover, .oauth-btn:hover {
+    background-color: #8b8989;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.oauth-btn {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+}
+
+.oauth-btn img {
+    height: 20px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.register.a {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+}

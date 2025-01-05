@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    </head>
+
+    
+    <body>
+        <section id="login" class="pages">
+            <header>
+                <h1>Login</h1>
+            </header>
+            <form method="post" action="?page=login">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br><br>
+        
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                <button type="submit">Log In</button>
+            </form>
+            
+            <p>Or</p>
+            <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+                <img src="{% static 'images/42.png' %}" alt="42 Logo">
+                Log In with 42
+            </a>
+            
+            <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
+        </section>
+        <section id="home" class="pages hidden">
+        {% if user.is_authenticated %}
+            <header>
+                <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
+                <h1>__attribute__</h1>
+            </header>
+        
+            <nav class="poulet">
+                <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
+                <a href="?page=profile" class="menu">Profile</a>
+                <a href="javascript:void(0)" class="menu" onclick="showPong()">Jouer à Pong</a>
+                <button class="login-button menu" id="logout">Logout</button>
+            </nav>
+            <nav class="burger hidden">
+                <select name="games" id="games" class="menu">
+                    <option value="games" selected disabled>Games</option>
+                    <option value="Tic Tac Toe">Tic Tac Toe</option>
+                </select>
+            </nav>
+
+            <div id="pong-container"></div>
+
+            <button id="stop game" onclick="stopGame()">Stop Game</button>
+            <footer>
+                <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
+            </footer>
+            <div id="overlay" onclick="hideTicTacToe()"></div>
+            <div id="tic-tac-toe-modal">
+                <h1>Tic-Tac-Toe</h1>
+                <div class="board" id="board"></div>
+                <div class="winner" id="winner"></div>
+                <button id="close-btn" onclick="hideTicTacToe()">Fermer</button>
+                <button id="replay-btn" onclick="replayGame()">Rejouer</button>
+            </div>
+
+
+        {% else %}
+            <p>Vous devez être connecté pour accéder à cette page.</p>
+            <a href="?page=login">Se connecter</a>
+        {% endif %}
+        </section>
+        <script src="{% static 'script.js' %}"></script>
+        <script src="{% static 'redirect.js' %}"></script>
+        <canvas id="pongCanvas" width="800" height="400"></canvas>
+        <script src="{% static 'pong.js' %}"></script>
+        <script>
+            const csrf = "{{ csrf_token }}";
+            const staticurl = "{% static '' %}";
+            const staticUrls = {
+                x: staticurl + "images/llvm.png",  
+                o: staticurl + "images/gnu.png"  
+            };
+        
+            function showTicTacToe() {
+                const overlay = document.getElementById('overlay');
+                const modal = document.getElementById('tic-tac-toe-modal');
+                console.log("Overlay:", overlay, "Modal:", modal);
+
+                if (overlay && modal) {
+                    overlay.classList.add('active'); 
+                    modal.classList.add('active'); 
+                }
+
+                createBoard(staticUrls); 
+            }
+
+            function hideTicTacToe() {
+                const overlay = document.getElementById('overlay');
+                const modal = document.getElementById('tic-tac-toe-modal');
+
+                if (overlay && modal) {
+                    overlay.classList.remove('active');
+                    modal.classList.remove('active'); 
+                }
+            }
+
+
+            function replayGame() {
+                const board = document.getElementById('board');
+                const winner = document.getElementById('winner');
+                const replayBtn = document.getElementById('replay-btn');
+
+                if (board && winner && replayBtn) {
+                    board.innerHTML = '';
+                    winner.innerHTML = '';
+                    replayBtn.style.display = 'none';
+                    createBoard(staticUrls);
+                }
+            }
+            function showPong() {
+                const pongContainer = document.getElementById('pong-container');
+                let canvas = document.getElementById('pongCanvas');
+
+                if (!pongContainer) {
+                    console.error("❌ Erreur : #pong-container introuvable !");
+                    return;
+                }
+
+                pongContainer.innerHTML = '';
+
+                if (!canvas) {
+                    canvas = document.createElement("canvas");
+                    canvas.id = "pongCanvas";
+                    canvas.width = 200;
+                    canvas.height = 200;
+                }
+
+                pongContainer.appendChild(canvas);
+
+                console.log("✔ Pong ajouté sous Section 2 !");
+                startPongGame(); 
+            }
+            
+            function stopGame() {
+                const pongContainer = document.getElementById('pong-container');
+                const canvas = document.getElementById('pongCanvas');
+
+                if (pongContainer && canvas) {
+                    pongContainer.innerHTML = '';
+                    console.log("✔ Pong retiré de la page !");
+                }
+            }
+
+        </script>
+    </body>
+</html>
