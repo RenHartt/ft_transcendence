@@ -16,6 +16,7 @@ from django.http import HttpResponseNotFound
 import requests
 import logging
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import update_session_auth_hash
 import json
 
 logger = logging.getLogger('myproject')
@@ -166,19 +167,37 @@ def update_profile(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            request.user.username = data.get('username', request.user.username)
             request.user.email = data.get('email', request.user.email)
             request.user.first_name = data.get('first_name', request.user.first_name)
             request.user.last_name = data.get('last_name', request.user.last_name)
-            request.user.set_password(data.get('password', request.user.password))
             request.user.save()
             return JsonResponse({
-                'username': request.user.username,
                 'email': request.user.email,
                 'first_name': request.user.first_name,
                 'last_name': request.user.last_name,
-                'password': request.user.password
             })
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+@csrf_exempt
+def change_password(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            old_password = data.get('old_password')
+            new_password = data.get('new_password')
+
+            if not request.user.check_password(old_password):
+                return JsonResponse({'error': 'Mot de passe actuel incorrect.'}, status=400)
+
+            request.user.set_password(new_password)
+            request.user.save()
+
+            update_session_auth_hash(request, request.user)
+
+            return JsonResponse({'message': 'Mot de passe changé avec succès.'}, status=200)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)

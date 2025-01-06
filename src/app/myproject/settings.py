@@ -110,7 +110,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SITE_ID = 1
 
 # URL après connexion/déconnexion
-LOGIN_URL = '/login/'
+LOGIN_URL = '/?page=login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
