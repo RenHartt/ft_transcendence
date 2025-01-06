@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('load/<str:page_name>/', views.load_page, name='load_page'),
+    path('api/update-profile', views.update_profile, name='update_profile'),
 ]

@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="{% static 'css/index.css' %}">
     </head>
 
-    
     <body>
         <section id="login" class="pages">
             <header>
@@ -43,9 +42,9 @@
             </header>
         
             <nav class="poulet">
+                <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
-                <a href="?page=profile" class="menu">Profile</a>
-                <a href="javascript:void(0)" class="menu" onclick="showPong()">Jouer à Pong</a>
+                <a href="javascript:void(0)" class="menu" onclick="showPong()">Pong</a>
                 <button class="login-button menu" id="logout">Logout</button>
             </nav>
             <nav class="burger hidden">
@@ -55,6 +54,39 @@
                 </select>
             </nav>
 
+            <div id="profile-container" class="hidden">
+                <h2>Profile</h2>
+                <p>Username: {{ user.username }}</p>
+                <p>Email: {{ user.email }}</p>
+                <p>First Name: {{ user.first_name }}</p>
+                <p>Last Name: {{ user.last_name }}</p>
+
+                <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+            </div>
+
+            <div id="profile-edit-form" class="hidden">
+                <h2>Edit Profile</h2>
+                <form id="editProfileForm">
+                    <label for="edit-email">Email:</label>
+                    <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
+            
+                    <label for="edit-first-name">First Name:</label>
+                    <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
+            
+                    <label for="edit-last-name">Last Name:</label>
+                    <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
+
+                    <label for="edit-password">Password:</label>
+                    <input type="password" id="edit-password" name="password" required><br><br>
+
+                    <label for="edit-confirm-password">Confirm Password:</label>
+                    <input type="password" id="edit-confirm-password" name="confirm_password" required><br><br>
+
+                    <button type="button" id="saveProfileButton">Save Changes</button>
+                    <button type="button" id="cancelEditButton">Cancel</button>
+                </form>
+            </div>
+            
             <div id="pong-wrapper">
                 <div id="pong-container"></div>
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
@@ -163,27 +195,109 @@
 
 
             function stopGame() {
-    gameRunning = false; // Indiquer que le jeu est arrêté
+                gameRunning = false; // Indiquer que le jeu est arrêté
 
-    const pongCanvas = document.getElementById('pongCanvas');
-    const stopGameButton = document.getElementById('stopGameButton');
-    const pongScore = document.getElementById('pong-score');
+                const pongCanvas = document.getElementById('pongCanvas');
+                const stopGameButton = document.getElementById('stopGameButton');
+                const pongScore = document.getElementById('pong-score');
 
-    if (pongCanvas) {
-        pongCanvas.style.display = "none"; 
-    }
+                if (pongCanvas) {
+                    pongCanvas.style.display = "none"; 
+                }
 
-    if (stopGameButton) {
-        stopGameButton.style.display = "none";
-    }
+                if (stopGameButton) {
+                    stopGameButton.style.display = "none";
+                }
 
-    if (pongScore) {
-        pongScore.style.display = "none"; 
-    }
+                if (pongScore) {
+                    pongScore.style.display = "none"; 
+                }
 
-    console.log("🛑 Jeu arrêté !");
+                console.log("🛑 Jeu arrêté !");
 }
 
+            function showProfile() {
+                const profileContainer = document.getElementById('profile-container');
+    
+                if (!profileContainer) {
+                    console.error("❌ Erreur : #profile-container introuvable !");
+                    return;
+                }
+    
+                if (profileContainer.classList.contains('hidden')) {
+                    profileContainer.classList.remove('hidden');
+                } else {
+                    profileContainer.classList.add('hidden');
+                }
+            }
+
+            function editProfile() {
+                const profileContainer = document.getElementById('profile-container');
+                const profileEditForm = document.getElementById('profile-edit-form');
+
+                if (!profileContainer || !profileEditForm) {
+                    console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
+                    return;
+                }
+
+                profileContainer.classList.add('hidden');
+                profileEditForm.classList.remove('hidden');
+
+                document.getElementById('saveProfileButton').addEventListener('click', () => {
+                    const email = document.getElementById('edit-email').value;
+                    const firstName = document.getElementById('edit-first-name').value;
+                    const lastName = document.getElementById('edit-last-name').value;
+                    const password = document.getElementById('edit-password').value;
+                    const confirmPassword = document.getElementById('edit-confirm-password').value;
+
+                    if (password !== confirmPassword) {
+                        alert("Les mots de passe ne correspondent pas.");
+                        return;
+                    }
+
+                    fetch('/api/update-profile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrf,
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            first_name: firstName,
+                            last_name: lastName,
+                            password: password,
+                        }),
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erreur lors de la mise à jour du profil');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("✅ Profil mis à jour avec succès :", data);
+
+                            // Recharger le conteneur de profil avec les nouvelles données
+                            document.querySelector('#profile-container p:nth-child(3)').textContent = `Email: ${data.email}`;
+                            document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
+                            document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
+
+                            // Basculer les vues
+                            profileEditForm.classList.add('hidden');
+                            profileContainer.classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error("Erreur :", error);
+                            alert("Une erreur s'est produite lors de la mise à jour du profil.");
+                        });
+                });
+
+                // Gestion du bouton "Cancel"
+                document.getElementById('cancelEditButton').addEventListener('click', () => {
+                    profileEditForm.classList.add('hidden');
+                    profileContainer.classList.remove('hidden');
+                });
+            }
 
         </script>
     </body>

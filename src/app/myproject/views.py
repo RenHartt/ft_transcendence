@@ -15,7 +15,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 import requests
 import logging
-
+from django.views.decorators.csrf import csrf_exempt
+import json
 logger = logging.getLogger('myproject')
 
 def index(request):
@@ -38,15 +39,14 @@ def index(request):
         if not request.user.is_authenticated:
             return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
-        
-    elif page == 'register':  
+    elif page == 'register':  # 📌 Ajout de la gestion de la page register
         form = UserCreationForm()
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 return redirect('/?page=login')
-        return render(request, 'my_app/register.html', {'form': form}) 
+        return render(request, 'my_app/register.html', {'form': form})  # 🛠️ Renvoie la bonne page !
 
     elif page == 'about':
         return render(request, 'my_app/about.html')
@@ -154,3 +154,40 @@ def register(request):
     else:
         form = UserCreationForm()
         return redirect('/?page=register')
+
+
+
+def profile(request):
+    if request.method == 'GET':
+        return JsonResponse({
+            'username': request.user.username,
+            'email': request.user.email,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name
+        })
+    else:
+        return HttpResponse(status=405)
+    
+
+@login_required
+@csrf_exempt
+def update_profile(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            request.user.username = data.get('username', request.user.username)
+            request.user.email = data.get('email', request.user.email)
+            request.user.first_name = data.get('first_name', request.user.first_name)
+            request.user.last_name = data.get('last_name', request.user.last_name)
+            request.user.set_password(data.get('password', request.user.password))
+            request.user.save()
+            return JsonResponse({
+                'username': request.user.username,
+                'email': request.user.email,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'password': request.user.password
+            })
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
