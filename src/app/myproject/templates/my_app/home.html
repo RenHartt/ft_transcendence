@@ -67,25 +67,37 @@
             <div id="profile-edit-form" class="hidden">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm">
-                    <label for="edit-email">Email:</label>
-                    <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
-            
                     <label for="edit-first-name">First Name:</label>
                     <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
-            
+                    
                     <label for="edit-last-name">Last Name:</label>
                     <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
-
-                    <label for="edit-password">Password:</label>
-                    <input type="password" id="edit-password" name="password" required><br><br>
-
-                    <label for="edit-confirm-password">Confirm Password:</label>
-                    <input type="password" id="edit-confirm-password" name="confirm_password" required><br><br>
-
+                    
+                    <label for="edit-email">Email:</label>
+                    <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
+                    
+                    <button type="button" id="edit-password-button">Change Password</button>
                     <button type="button" id="saveProfileButton">Save Changes</button>
                     <button type="button" id="cancelEditButton">Cancel</button>
                 </form>
             </div>
+
+            <div id="change-password-form" class="hidden">
+                <h2>Change Password</h2>
+                <form id="changePasswordForm">
+                    <label for="old-password">Old Password:</label>
+                    <input type="password" id="old-password" name="old_password" required><br><br>
+            
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password" name="new_password" required><br><br>
+            
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm_password" required><br><br>
+            
+                    <button type="button" id="savePasswordButton">Save Password</button>
+                    <button type="button" id="cancelPasswordButton">Cancel</button>
+                </form>
+            </div>            
             
             <div id="pong-wrapper">
                 <div id="pong-container"></div>
@@ -115,6 +127,7 @@
             <a href="?page=login">Se connecter</a>
         {% endif %}
         </section>
+        <script src="{% static 'profile.js' %}"></script>
         <script src="{% static 'script.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script src="{% static 'profile.js' %}"></script>
@@ -127,6 +140,7 @@
                 x: staticurl + "images/llvm.png",  
                 o: staticurl + "images/gnu.png"  
             };
+
         </script>
     </body>
 </html>
