@@ -1,17 +1,45 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <title>Register</title>
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <form method="post">
+    <header class="HeadLog">
+        <h1 class="title">Sign Up</h1>
+    </header>
+
+    <form method="POST" class="jesaispas" action="/?page=register">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
+
+        <div class="menu-formreg">
+            <label for="{{ form.username.id_for_label }}" class="label">Username</label>
+            <input type="text" id="username" class="input" name="username" placeholder="Username" autocomplete="off" required>
+        </div>
+
+        <div class="menu-form">
+            <label for="{{ form.password1.id_for_label }}" class="label">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" class="input" name="password1" placeholder="Password" autocomplete="new-password" required>
+                <span class="tooltip-icon" data-tooltip="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.">?</span>
+            </div>
+        </div>
+
+        <div class="menu-formreg">
+            <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
+            <input type="password" id="confirm-password" class="input" name="password2" placeholder="Confirm Password" required>
+        </div>
+
+        <div class="login-buttons">
+            <button type="submit" class="login">Register</button>
+            or
+            <button type="button" class="login" onclick="window.location.href='/?page=login'">Log In</button>
+        </div>
     </form>
-    <p>Already have an account? <a href="/?page=login">Log in</a></p>
+
+    <script src="{% static 'login.js' %}"></script>
 </body>
 </html>
