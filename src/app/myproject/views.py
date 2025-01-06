@@ -18,11 +18,10 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 import json
-
 logger = logging.getLogger('myproject')
 
 def index(request):
-    page = request.GET.get('page', 'home')  # Valeur par défaut : 'home'
+    page = request.GET.get('page', 'home') 
 
     if page == 'login':
         if request.method == 'POST':
@@ -32,15 +31,23 @@ def index(request):
 
             if user is not None:
                 auth_login(request, user)
-                return redirect('/?page=home')  # Redirection en cas de succès
+                return redirect('/?page=home')  
             else:
                 messages.error(request, 'Invalid username or password')
-        return render(request, 'my_app/login.html')  # Affiche la page de connexion
+        return render(request, 'my_app/login.html') 
 
     elif page == 'home':
         if not request.user.is_authenticated:
-            return redirect('/?page=login')  # Redirection vers la connexion si non authentifié
+            return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
+    elif page == 'register':  # 📌 Ajout de la gestion de la page register
+        form = UserCreationForm()
+        if request.method == 'POST':
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/?page=login')
+        return render(request, 'my_app/register.html', {'form': form})  # 🛠️ Renvoie la bonne page !
 
     elif page == 'about':
         return render(request, 'my_app/about.html')
@@ -77,7 +84,7 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            return redirect('/?page=home')  # Redirection vers la page d'accueil
+            return redirect('/?page=home')  
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('/?page=login')  # Redirection vers la page de connexion
@@ -147,7 +154,9 @@ def register(request):
             return redirect('/?page=login')
     else:
         form = UserCreationForm()
-    return render(request, 'my_app/register.html', {'form': form})
+        return redirect('/?page=register')
+
+
 
 def profile(request):
     if request.method == 'GET':
