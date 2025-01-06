@@ -145,3 +145,14 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'my_app/register.html', {'form': form})
+
+def profile(request):
+    if request.method == 'GET':
+        return JsonResponse({
+            'username': request.user.username,
+            'email': request.user.email,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name
+        })
+    else:
+        return HttpResponse(status=405)

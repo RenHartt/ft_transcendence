@@ -43,8 +43,8 @@
             </header>
         
             <nav class="poulet">
+                <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
-                <a href="?page=profile" class="menu">Profile</a>
                 <a href="javascript:void(0)" class="menu" onclick="showPong()">Jouer à Pong</a>
                 <button class="login-button menu" id="logout">Logout</button>
             </nav>
@@ -54,6 +54,14 @@
                     <option value="Tic Tac Toe">Tic Tac Toe</option>
                 </select>
             </nav>
+
+            <div id="profile-container" class="hidden">
+                <h2>Profile</h2>
+                <p>Username: {{ user.username }}</p>
+                <p>Email: {{ user.email }}</p>
+                <p>First Name: {{ user.first_name }}</p>
+                <p>Last Name: {{ user.last_name }}</p>
+            </div>
 
             <div id="pong-wrapper">
                 <div id="pong-container"></div>
@@ -184,6 +192,20 @@
     console.log("🛑 Jeu arrêté !");
 }
 
+function showProfile() {
+                const profileContainer = document.getElementById('profile-container');
+    
+                if (!profileContainer) {
+                    console.error("❌ Erreur : #profile-container introuvable !");
+                    return;
+                }
+    
+                if (profileContainer.classList.contains('hidden')) {
+                    profileContainer.classList.remove('hidden');
+                } else {
+                    profileContainer.classList.add('hidden');
+                }
+            }
 
         </script>
     </body>
