@@ -71,3 +71,27 @@ function checkWinner() {
 function replayGame() {
     createBoard(staticUrls);
 }
+
+
+function showTicTacToe() {
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('tic-tac-toe-modal');
+    console.log("Overlay:", overlay, "Modal:", modal);
+
+    if (overlay && modal) {
+        overlay.classList.add('active'); 
+        modal.classList.add('active'); 
+    }
+
+    createBoard(staticUrls); 
+}
+
+function hideTicTacToe() {
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('tic-tac-toe-modal');
+
+    if (overlay && modal) {
+        overlay.classList.remove('active');
+        modal.classList.remove('active'); 
+    }
+}

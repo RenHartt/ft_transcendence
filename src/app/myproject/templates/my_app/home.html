@@ -90,12 +90,13 @@
             <div id="pong-wrapper">
                 <div id="pong-container"></div>
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+                <button id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none; align-self: center;">
+                    Activer/Désactiver 2 joueurs
+                </button>
                 <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-            </div>
-            
 
-            <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-            
+            </div>
+
             <footer>
                 <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
             </footer>
@@ -116,6 +117,7 @@
         </section>
         <script src="{% static 'script.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
+        <script src="{% static 'profile.js' %}"></script>
         <canvas id="pongCanvas" width="800" height="400"></canvas>
         <script src="{% static 'pong.js' %}"></script>
         <script>
@@ -125,180 +127,6 @@
                 x: staticurl + "images/llvm.png",  
                 o: staticurl + "images/gnu.png"  
             };
-        
-            function showTicTacToe() {
-                const overlay = document.getElementById('overlay');
-                const modal = document.getElementById('tic-tac-toe-modal');
-                console.log("Overlay:", overlay, "Modal:", modal);
-
-                if (overlay && modal) {
-                    overlay.classList.add('active'); 
-                    modal.classList.add('active'); 
-                }
-
-                createBoard(staticUrls); 
-            }
-
-            function hideTicTacToe() {
-                const overlay = document.getElementById('overlay');
-                const modal = document.getElementById('tic-tac-toe-modal');
-
-                if (overlay && modal) {
-                    overlay.classList.remove('active');
-                    modal.classList.remove('active'); 
-                }
-            }
-
-
-            function replayGame() {
-                const board = document.getElementById('board');
-                const winner = document.getElementById('winner');
-                const replayBtn = document.getElementById('replay-btn');
-
-                if (board && winner && replayBtn) {
-                    board.innerHTML = '';
-                    winner.innerHTML = '';
-                    replayBtn.style.display = 'none';
-                    createBoard(staticUrls);
-                }
-            }
-
-            function showPong() {
-                const pongContainer = document.getElementById('pong-container');
-                let canvas = document.getElementById('pongCanvas');
-                const stopGameButton = document.getElementById('stopGameButton');
-                const pongScore = document.getElementById('pong-score');
-
-                if (!pongContainer) {
-                    console.error("❌ Erreur : #pong-container introuvable !");
-                    return;
-                }
-
-                pongContainer.innerHTML = '';
-
-                if (!canvas) {
-                    canvas = document.createElement("canvas");
-                    canvas.id = "pongCanvas";
-                    canvas.width = 500;
-                    canvas.height = 300;
-                }
-
-                pongContainer.appendChild(pongScore);
-                pongContainer.appendChild(canvas);
-                pongContainer.appendChild(stopGameButton);
-
-                stopGameButton.style.display = "block"; 
-                pongScore.style.display = "block"; 
-                canvas.style.display = "block";
-                startPongGame();
-            }
-
-
-            function stopGame() {
-                gameRunning = false; // Indiquer que le jeu est arrêté
-
-                const pongCanvas = document.getElementById('pongCanvas');
-                const stopGameButton = document.getElementById('stopGameButton');
-                const pongScore = document.getElementById('pong-score');
-
-                if (pongCanvas) {
-                    pongCanvas.style.display = "none"; 
-                }
-
-                if (stopGameButton) {
-                    stopGameButton.style.display = "none";
-                }
-
-                if (pongScore) {
-                    pongScore.style.display = "none"; 
-                }
-
-                console.log("🛑 Jeu arrêté !");
-}
-
-            function showProfile() {
-                const profileContainer = document.getElementById('profile-container');
-    
-                if (!profileContainer) {
-                    console.error("❌ Erreur : #profile-container introuvable !");
-                    return;
-                }
-    
-                if (profileContainer.classList.contains('hidden')) {
-                    profileContainer.classList.remove('hidden');
-                } else {
-                    profileContainer.classList.add('hidden');
-                }
-            }
-
-            function editProfile() {
-                const profileContainer = document.getElementById('profile-container');
-                const profileEditForm = document.getElementById('profile-edit-form');
-
-                if (!profileContainer || !profileEditForm) {
-                    console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
-                    return;
-                }
-
-                profileContainer.classList.add('hidden');
-                profileEditForm.classList.remove('hidden');
-
-                document.getElementById('saveProfileButton').addEventListener('click', () => {
-                    const email = document.getElementById('edit-email').value;
-                    const firstName = document.getElementById('edit-first-name').value;
-                    const lastName = document.getElementById('edit-last-name').value;
-                    const password = document.getElementById('edit-password').value;
-                    const confirmPassword = document.getElementById('edit-confirm-password').value;
-
-                    if (password !== confirmPassword) {
-                        alert("Les mots de passe ne correspondent pas.");
-                        return;
-                    }
-
-                    fetch('/api/update-profile', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': csrf,
-                        },
-                        body: JSON.stringify({
-                            email: email,
-                            first_name: firstName,
-                            last_name: lastName,
-                            password: password,
-                        }),
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Erreur lors de la mise à jour du profil');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log("✅ Profil mis à jour avec succès :", data);
-
-                            // Recharger le conteneur de profil avec les nouvelles données
-                            document.querySelector('#profile-container p:nth-child(3)').textContent = `Email: ${data.email}`;
-                            document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
-                            document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
-
-                            // Basculer les vues
-                            profileEditForm.classList.add('hidden');
-                            profileContainer.classList.remove('hidden');
-                        })
-                        .catch(error => {
-                            console.error("Erreur :", error);
-                            alert("Une erreur s'est produite lors de la mise à jour du profil.");
-                        });
-                });
-
-                // Gestion du bouton "Cancel"
-                document.getElementById('cancelEditButton').addEventListener('click', () => {
-                    profileEditForm.classList.add('hidden');
-                    profileContainer.classList.remove('hidden');
-                });
-            }
-
         </script>
     </body>
 </html>

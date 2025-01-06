@@ -39,14 +39,14 @@ def index(request):
         if not request.user.is_authenticated:
             return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
-    elif page == 'register':  # 📌 Ajout de la gestion de la page register
+    elif page == 'register':  
         form = UserCreationForm()
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 return redirect('/?page=login')
-        return render(request, 'my_app/register.html', {'form': form})  # 🛠️ Renvoie la bonne page !
+        return render(request, 'my_app/register.html', {'form': form})  
 
     elif page == 'about':
         return render(request, 'my_app/about.html')

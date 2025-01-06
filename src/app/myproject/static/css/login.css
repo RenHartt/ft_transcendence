@@ -159,7 +159,7 @@ a.login {
 
 .tooltip-icon {
     position: absolute;
-    right: 22px;
+    right: 22px; /* Place l'icône à droite */
     top: 50%;
     transform: translateY(-50%);
     background: gray;
