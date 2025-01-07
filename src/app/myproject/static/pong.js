@@ -154,20 +154,49 @@ function resetGame() {
 }
 
 function showPong() {
-    resetGame();
-    let stopGameButton = document.getElementById("stopGameButton");
-    let pongScore = document.getElementById("pong-score");
+    console.log("🏓 Toggle du jeu Pong");
 
-    if (stopGameButton) stopGameButton.style.display = "block";
-    if (pongScore) pongScore.style.display = "block";
+    const pongWrapper = document.getElementById('pong-wrapper');
+    const pongCanvas = document.getElementById('pongCanvas');
+    const stopGameButton = document.getElementById('stopGameButton');
+    const pongScore = document.getElementById('pong-score');
+    const twoPlayerButton = document.getElementById('twoPlayerButton');
 
-    startPongGame();
+    if (!pongWrapper) {
+        console.error("❌ Erreur : #pong-wrapper introuvable !");
+        return;
+    }
+
+    if (pongWrapper.style.display === "block") {
+        console.log("🛑 Masquer Pong");
+        stopGame();  
+    } else {
+        console.log("🏓 Afficher Pong");
+        pongWrapper.style.display = "block";
+
+        if (!pongCanvas) {
+            const canvas = document.createElement("canvas");
+            canvas.id = "pongCanvas";
+            canvas.width = 500;
+            canvas.height = 300;
+            pongWrapper.appendChild(canvas);
+        } else {
+            pongCanvas.style.display = "block";
+        }
+
+        if (stopGameButton) stopGameButton.style.display = "block";
+        if (pongScore) pongScore.style.display = "block";
+        if (twoPlayerButton) twoPlayerButton.style.display = "block";
+
+        startPongGame();
+    }
 }
+
 
 function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     gameRunning = false;
-
+    console.log("🛑 Arrêter le jeu Pong");
     let canvas = document.getElementById("pongCanvas");
     let stopGameButton = document.getElementById("stopGameButton");
     let pongScore = document.getElementById("pong-score");
@@ -240,19 +269,15 @@ function stopGame() {
     if (pongCanvas) {
         pongCanvas.style.display = "none"; 
     }
-
     if (stopGameButton) {
         stopGameButton.style.display = "none";
     }
-
     if (pongScore) {
         pongScore.style.display = "none"; 
     }
-
     if (twoPlayerButton) {
         twoPlayerButton.style.display = "none";
     }
-
 }
 
 

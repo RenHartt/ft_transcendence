@@ -113,4 +113,104 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
-/* ######### FOOTER ########### */
+
+#profile-edit-form {
+    display: none;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+#profile-edit-form h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#editProfileForm label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+#editProfileForm input {
+    border: 1px solid gray;
+    border-radius: 6px;
+    width: 80%;
+    position: relative;
+    line-height: 6ex;
+    z-index: 0;
+    transition: all 0.2s ease;
+    padding: 0 1vw;
+}
+
+#editProfileForm input:focus {
+    border-color: #8b8989;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#editProfileForm button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+#edit-password-button {
+    background: #8b8989;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+#saveProfileButton {
+    background-color: #8b8989;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+
+#cancelEditButton {
+    background-color: #8b8989;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#edit-password-button:hover {
+    color: white;
+    background: #8b8989;
+}
+
+#saveProfileButton:hover {
+    color: white;
+    background: #8b8989;
+}
+
+#cancelEditButton:hover {
+    color: white;
+    background: #8b8989;
+}
+
+old-password {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}

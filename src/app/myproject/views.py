@@ -18,6 +18,8 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 import json
+
+
 logger = logging.getLogger('myproject')
 
 def index(request):
@@ -87,59 +89,8 @@ def login(request):
             return redirect('/?page=home')  
         else:
             messages.error(request, 'Invalid username or password')
-            return redirect('/?page=login')  # Redirection vers la page de connexion
+            return redirect('/?page=login') 
     return render(request, 'my_app/login.html')
-
-def fortytwologin(request):
-    print("42 login")
-    code = request.GET.get('code', None)
-    if(code == None):
-        return(HttpResponse("code param not found"))
-    
-    data = {
-        'grant_type': 'authorization_code',
-        'client_id': 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70', #a ne pas mettre en dur
-        'client_secret': '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', #a ne pas mettre en dur
-        'code': code,
-        'redirect_uri': 'http://localhost:8080/?page=login'
-    }
-    token_response = requests.post('https://api.intra.42.fr/oauth/token', data=data)
-
-    if token_response.status_code != 200:
-        print("Failed to get access token:", token_response.json())
-        return HttpResponse("Bad 42 API request, U mad ??", status=400)
-
-    access_token = token_response.json().get('access_token')
-    if not access_token:
-        return HttpResponse("Access token not found in response", status=400)
-
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-    user_response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
-
-    if user_response.status_code != 200:
-        print("Failed to fetch user data:", user_response.json())
-        return HttpResponse("Failed to fetch user data", status=400)
-
-    user_data = user_response.json()
-    id42 = user_data.get('id')
-    login42 = user_data.get('login')
-
-    db_user, created = User.objects.get_or_create(username=id42, defaults={
-        'first_name': user_data.get('first_name', ''),
-        'last_name': user_data.get('last_name', ''),
-        'email': user_data.get('email', f'{login42}@student.42.fr')
-    })
-
-    request.session["logged_in"] = True
-    request.session["username"] = db_user.username
-    request.session["id"] = db_user.id
-    request.session["pfp"] = user_data.get('image', {}).get('versions', {}).get('medium', '')
-    request.session.save()
-
-    print(f"User {login42} logged in successfully.")
-    return redirect('/?page=home')
 
 def logout(request):
     auth_logout(request)
@@ -210,3 +161,25 @@ def change_password(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+from django.http import JsonResponse
+
+@csrf_exempt 
+@login_required 
+def save_profile(request):
+    """Mise à jour du profil utilisateur"""
+    if request.method == 'POST':
+        user = request.user 
+
+        first_name = request.POST.get('first_name', user.first_name)
+        last_name = request.POST.get('last_name', user.last_name)
+        email = request.POST.get('email', user.email)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+
+        user.save()
+
+        return JsonResponse({'message': 'Profil mis à jour avec succès !'})
+
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
