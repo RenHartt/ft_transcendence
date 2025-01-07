@@ -102,12 +102,13 @@
             <div id="pong-wrapper">
                 <div id="pong-container"></div>
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+                <button id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none; align-self: center;">
+                    Activer/Désactiver 2 joueurs
+                </button>
                 <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-            </div>
-            
 
-            <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-            
+            </div>
+
             <footer>
                 <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
             </footer>
@@ -120,15 +121,15 @@
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
 
-
         {% else %}
             <p>Vous devez être connecté pour accéder à cette page.</p>
             <a href="?page=login">Se connecter</a>
         {% endif %}
         </section>
         <script src="{% static 'profile.js' %}"></script>
-        <script src="{% static 'script.js' %}"></script>
+        <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
+        <script src="{% static 'profile.js' %}"></script>
         <canvas id="pongCanvas" width="800" height="400"></canvas>
         <script src="{% static 'pong.js' %}"></script>
         <script>
@@ -138,258 +139,6 @@
                 x: staticurl + "images/llvm.png",  
                 o: staticurl + "images/gnu.png"  
             };
-        
-            function showTicTacToe() {
-                const overlay = document.getElementById('overlay');
-                const modal = document.getElementById('tic-tac-toe-modal');
-                console.log("Overlay:", overlay, "Modal:", modal);
-
-                if (overlay && modal) {
-                    overlay.classList.add('active'); 
-                    modal.classList.add('active'); 
-                }
-
-                createBoard(staticUrls); 
-            }
-
-            function hideTicTacToe() {
-                const overlay = document.getElementById('overlay');
-                const modal = document.getElementById('tic-tac-toe-modal');
-
-                if (overlay && modal) {
-                    overlay.classList.remove('active');
-                    modal.classList.remove('active'); 
-                }
-            }
-
-            function replayGame() {
-                const board = document.getElementById('board');
-                const winner = document.getElementById('winner');
-                const replayBtn = document.getElementById('replay-btn');
-
-                if (board && winner && replayBtn) {
-                    board.innerHTML = '';
-                    winner.innerHTML = '';
-                    replayBtn.style.display = 'none';
-                    createBoard(staticUrls);
-                }
-            }
-
-            function showPong() {
-                const pongContainer = document.getElementById('pong-container');
-                let canvas = document.getElementById('pongCanvas');
-                const stopGameButton = document.getElementById('stopGameButton');
-                const pongScore = document.getElementById('pong-score');
-
-                if (!pongContainer) {
-                    console.error("❌ Erreur : #pong-container introuvable !");
-                    return;
-                }
-
-                pongContainer.innerHTML = '';
-
-                if (!canvas) {
-                    canvas = document.createElement("canvas");
-                    canvas.id = "pongCanvas";
-                    canvas.width = 500;
-                    canvas.height = 300;
-                }
-
-                pongContainer.appendChild(pongScore);
-                pongContainer.appendChild(canvas);
-                pongContainer.appendChild(stopGameButton);
-
-                stopGameButton.style.display = "block"; 
-                pongScore.style.display = "block"; 
-                canvas.style.display = "block";
-                startPongGame();
-            }
-
-
-            function stopGame() {
-                gameRunning = false; // Indiquer que le jeu est arrêté
-
-                const pongCanvas = document.getElementById('pongCanvas');
-                const stopGameButton = document.getElementById('stopGameButton');
-                const pongScore = document.getElementById('pong-score');
-
-                if (pongCanvas) {
-                    pongCanvas.style.display = "none"; 
-                }
-
-                if (stopGameButton) {
-                    stopGameButton.style.display = "none";
-                }
-
-                if (pongScore) {
-                    pongScore.style.display = "none"; 
-                }
-
-}
-
-            function showProfile() {
-                const profileContainer = document.getElementById('profile-container');
-    
-                if (!profileContainer) {
-                    return;
-                }
-    
-                if (profileContainer.classList.contains('hidden')) {
-                    profileContainer.classList.remove('hidden');
-                } else {
-                    profileContainer.classList.add('hidden');
-                }
-            }
-
-            function editProfile() {
-                const profileContainer = document.getElementById('profile-container');
-                const profileEditForm = document.getElementById('profile-edit-form');
-                const changePasswordForm = document.getElementById('change-password-form');
-
-                if (!profileContainer || !profileEditForm || !changePasswordForm) {
-                    console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
-                    return;
-                }
-
-                profileContainer.classList.add('hidden');
-                profileEditForm.classList.remove('hidden');
-
-                const saveProfileButton = document.getElementById('saveProfileButton');
-                const cancelEditButton = document.getElementById('cancelEditButton');
-                const editPasswordButton = document.getElementById('edit-password-button');
-
-                saveProfileButton.replaceWith(saveProfileButton.cloneNode(true));
-                cancelEditButton.replaceWith(cancelEditButton.cloneNode(true));
-                editPasswordButton.replaceWith(editPasswordButton.cloneNode(true));
-
-                document.getElementById('savePasswordButton').addEventListener('click', () => {
-                    console.log("savePasswordButton déclenché"); 
-                    const oldPasswordField = document.getElementById('old-password');
-                    const newPasswordField = document.getElementById('new-password');
-                    const confirmPasswordField = document.getElementById('confirm-password');
-
-                    const oldPassword = oldPasswordField.value;
-                    const newPassword = newPasswordField.value;
-                    const confirmPassword = confirmPasswordField.value;
-
-                    if (newPassword !== confirmPassword) {
-                        alert("Les mots de passe ne correspondent pas.");
-                        return;
-                    }
-
-                    fetch('/api/change-password', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': csrf,
-                        },
-                        body: JSON.stringify({
-                            old_password: oldPassword,
-                            new_password: newPassword,
-                        }),
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            } else {
-                                return response.json().then(data => {
-                                    throw new Error(data.error || 'Erreur inconnue');
-                                });
-                            }
-                        })
-                        .then(data => {
-                            alert(data.message || "Mot de passe changé avec succès !");
-
-                            const oldPasswordField = document.getElementById('old-password');
-                            const newPasswordField = document.getElementById('new-password');
-                            const confirmPasswordField = document.getElementById('confirm-password');
-
-                            oldPasswordField.value = '';
-                            newPasswordField.value = '';
-                            confirmPasswordField.value = '';
-
-                            // Masquer le formulaire de changement de mot de passe
-                            const changePasswordForm = document.getElementById('change-password-form');
-                            const profileEditForm = document.getElementById('profile-edit-form');
-                            changePasswordForm.classList.add('hidden');
-                            profileEditForm.classList.remove('hidden');
-                        })
-                        .catch(error => {
-                            alert(error.message || "Une erreur s'est produite lors du changement de mot de passe.");
-                        });
-                });
-
-                // Gestion du bouton "Cancel"
-                document.getElementById('cancelEditButton').addEventListener('click', () => {
-                    profileEditForm.classList.add('hidden');
-                    profileContainer.classList.remove('hidden');
-                });
-
-                // Gestion du bouton "Change Password"
-                document.getElementById('edit-password-button').addEventListener('click', () => {
-                    profileEditForm.classList.add('hidden');
-                    changePasswordForm.classList.remove('hidden');
-
-                    // Gestion des boutons dans le formulaire de mot de passe
-                    const savePasswordButton = document.getElementById('savePasswordButton');
-                    const cancelPasswordButton = document.getElementById('cancelPasswordButton');
-
-                    savePasswordButton.replaceWith(savePasswordButton.cloneNode(true));
-                    cancelPasswordButton.replaceWith(cancelPasswordButton.cloneNode(true));
-
-                    document.getElementById('savePasswordButton').addEventListener('click', () => {
-                const oldPassword = document.getElementById('old-password').value;
-                const newPassword = document.getElementById('new-password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-
-                if (newPassword !== confirmPassword) {
-                    alert("Les mots de passe ne correspondent pas.");
-                    return;
-                }
-
-                fetch('/api/change-password', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrf,
-                    },
-                    body: JSON.stringify({
-                        old_password: oldPassword,
-                        new_password: newPassword,
-                    }),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json(); // La réponse est correcte, on retourne les données JSON
-                        } else {
-                            return response.json().then(data => {
-                                throw new Error(data.error || 'Erreur inconnue');
-                            });
-                        }
-                    })
-                    .then(data => {
-                        alert(data.message || "Mot de passe changé avec succès !");
-                        console.log("✅ Mot de passe changé :", data);
-
-                        // Masquer le formulaire de changement de mot de passe
-                        const changePasswordForm = document.getElementById('change-password-form');
-                        const profileEditForm = document.getElementById('profile-edit-form');
-                        changePasswordForm.classList.add('hidden');
-                        profileEditForm.classList.remove('hidden');
-                    })
-                    .catch(error => {
-                        console.error("Erreur :", error);
-                        alert(error.message || "Une erreur s'est produite lors du changement de mot de passe.");
-                    });
-            });
-
-                    // Gestion du bouton "Cancel Password"
-                    document.getElementById('cancelPasswordButton').addEventListener('click', () => {
-                        changePasswordForm.classList.add('hidden');
-                        profileEditForm.classList.remove('hidden');
-                    });
-                });
-            }
 
         </script>
     </body>

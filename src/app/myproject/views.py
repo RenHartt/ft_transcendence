@@ -40,17 +40,17 @@ def index(request):
         if not request.user.is_authenticated:
             return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
-    elif page == 'register':  # 📌 Ajout de la gestion de la page register
+    elif page == 'register':  
         form = UserCreationForm()
         if request.method == 'POST':
             form = UserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 return redirect('/?page=login')
-        return render(request, 'my_app/register.html', {'form': form})  # 🛠️ Renvoie la bonne page !
+        return render(request, 'my_app/register.html', {'form': form})  
 
-    elif page == 'about':
-        return render(request, 'my_app/about.html')
+    elif page == 'tictactoe':
+        return render(request, 'my_app/tictactoe.html')
 
     else:
         return HttpResponseNotFound("Page not found")
@@ -73,8 +73,8 @@ def load_page(request, page_name):
 def home(request):
     return render(request, 'my_app/home.html', {"username": request.user.username})
 
-def about(request):
-    return render(request, 'my_app/about.html')
+def tictactoe(request):
+    return render(request, 'my_app/tictactoe.html')
 
 def login(request):
     if request.method == 'POST':

@@ -5,7 +5,7 @@ from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
+    path('tictactoe/', views.tictactoe, name='tictactoe'),
     path('logout/', views.logout, name='logout'), 
     path('register/', views.register, name='register'),
     path('oauth/', include('social_django.urls', namespace='social')),
