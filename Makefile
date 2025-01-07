@@ -23,7 +23,7 @@ clean:
 	@echo "🧹 Cleaning up Docker environment (containers, images, volumes)..."
 	@$(DOCKER_COMPOSE) -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
 	@echo "🔍 Checking for blocked ports..."
-	@for port in 5432; do \
+	@for port in $$DB_PORT; do \
 		PID=$$(sudo lsof -t -i :$$port); \
 		if [ ! -z "$$PID" ]; then \
 			echo "💥 Killing process on port $$port (PID: $$PID)..."; \
