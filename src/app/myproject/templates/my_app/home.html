@@ -45,6 +45,7 @@
                 <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
                 <a href="javascript:void(0)" class="menu" onclick="showPong()">Pong</a>
+
                 <button class="login-button menu" id="logout">Logout</button>
             </nav>
             <nav class="burger hidden">
@@ -60,11 +61,10 @@
                 <p>Email: {{ user.email }}</p>
                 <p>First Name: {{ user.first_name }}</p>
                 <p>Last Name: {{ user.last_name }}</p>
-
                 <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
             </div>
 
-            <div id="profile-edit-form" class="hidden">
+            <div id="profile-edit-form" class="editProfileForm">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm">
                     <label for="edit-first-name">First Name:</label>
@@ -75,7 +75,8 @@
                     
                     <label for="edit-email">Email:</label>
                     <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
-                    
+                    <label for="edit-image">Image:</label>
+                    <input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
                     <button type="button" id="edit-password-button">Change Password</button>
                     <button type="button" id="saveProfileButton">Save Changes</button>
                     <button type="button" id="cancelEditButton">Cancel</button>
@@ -99,14 +100,13 @@
                 </form>
             </div>            
             
-            <div id="pong-wrapper">
+            <div id="pong-wrapper" class="hidden">
                 <div id="pong-container"></div>
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
                 <button id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none; align-self: center;">
                     Activer/Désactiver 2 joueurs
                 </button>
                 <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-
             </div>
 
             <footer>

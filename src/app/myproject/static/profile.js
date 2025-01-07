@@ -2,9 +2,11 @@ function showProfile() {
     const profileContainer = document.getElementById('profile-container');
 
     if (!profileContainer) {
+        console.error("❌ Erreur : #profile-container introuvable !");
         return;
     }
 
+    console.log("👤 Afficher le profil");
     if (profileContainer.classList.contains('hidden')) {
         profileContainer.classList.remove('hidden');
     } else {
@@ -12,37 +14,126 @@ function showProfile() {
     }
 }
 
-
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
 
-    if (!profileContainer || !profileEditForm || !changePasswordForm) {
+    if (!profileContainer || !profileEditForm) {
         console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
         return;
     }
 
-    profileContainer.classList.add('hidden');
-    profileEditForm.classList.remove('hidden');
+    profileContainer.style.display = 'none';
+    profileEditForm.style.display = 'block';
 
-    const saveProfileButton = document.getElementById('saveProfileButton');
-    const cancelEditButton = document.getElementById('cancelEditButton');
-    const editPasswordButton = document.getElementById('edit-password-button');
+    document.getElementById('saveProfileButton').addEventListener('click', () => {
+        console.log("🚀 Enregistrer le profil");
+        const email = document.getElementById('edit-email').value;
+        const firstName = document.getElementById('edit-first-name').value;
+        const lastName = document.getElementById('edit-last-name').value;
+        const password = document.getElementById('edit-password');
+        const confirmPassword = document.getElementById('edit-confirm-password');
+        console.log("Email:", email, "First Name:", firstName, "Last Name:", lastName, "Password:", password, "Confirm Password:", confirmPassword);
+        if (password !== confirmPassword) {
+            alert("Les mots de passe ne correspondent pas.");
+            return;
+        }
 
-    saveProfileButton.replaceWith(saveProfileButton.cloneNode(true));
-    cancelEditButton.replaceWith(cancelEditButton.cloneNode(true));
-    editPasswordButton.replaceWith(editPasswordButton.cloneNode(true));
+        fetch('/api/update-profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf,
+            },
+            body: JSON.stringify({
+                email: email,
+                first_name: firstName,
+                last_name: lastName,
+                password: password,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de la mise à jour du profil');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("✅ Profil mis à jour avec succès :", data);
 
+                document.querySelector('#profile-container p:nth-child(3)').textContent = `Email: ${data.email}`;
+                document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
+                document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
+
+                // Basculer les vues
+                profileEditForm.style.display = 'none';
+                profileContainer.style.display = 'block';
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite lors de la mise à jour du profil.");
+            });
+    });
+
+    document.getElementById('cancelEditButton').addEventListener('click', () => {
+        profileEditForm.classList.add('hidden');
+        profileContainer.classList.remove('hidden');
+    });
+
+    document.getElementById('edit-password-button').addEventListener('click', () => {
+        console.log("🛠 Affichage du formulaire de changement de mot de passe");
+    
+        const changePasswordForm = document.getElementById('change-password-form');
+        
+        if (!changePasswordForm) {
+            console.error("❌ Erreur : #change-password-form introuvable !");
+            return;
+        }
+        profileEditForm.style.display = 'none';
+        changePasswordForm.style.display = 'block';
+    });
+    
+    document.getElementById('cancelPasswordButton').addEventListener('click', () => {
+        console.log("🔄 Annulation du changement de mot de passe");
+    
+        const changePasswordForm = document.getElementById('change-password-form');
+        const profileEditForm = document.getElementById('profile-edit-form');
+    
+        if (!changePasswordForm || !profileEditForm) {
+            console.error("❌ Erreur : Formulaire introuvable !");
+            return;
+        }
+    
+        changePasswordForm.style.display = 'none';
+        profileEditForm.style.display = 'block';
+    });
+
+    document.getElementById('cancelEditButton').addEventListener('click', () => {
+        console.log("🔄 Annulation de l'édition du profil");
+    
+        const profileEditForm = document.getElementById('profile-edit-form');
+        const profileContainer = document.getElementById('profile-container');
+    
+        if (!profileEditForm || !profileContainer) {
+            console.error("❌ Erreur : Formulaire d'édition de profil ou conteneur de profil introuvable !");
+            return;
+        }
+    
+        profileEditForm.style.display = 'none';
+        profileContainer.style.display = 'block';
+    });
+    
     document.getElementById('savePasswordButton').addEventListener('click', () => {
-        console.log("savePasswordButton déclenché"); 
-        const oldPasswordField = document.getElementById('old-password');
-        const newPasswordField = document.getElementById('new-password');
-        const confirmPasswordField = document.getElementById('confirm-password');
+        console.log("🚀 Enregistrement du nouveau mot de passe");
 
-        const oldPassword = oldPasswordField.value;
-        const newPassword = newPasswordField.value;
-        const confirmPassword = confirmPasswordField.value;
+        const oldPassword = document.getElementById('old-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
 
         if (newPassword !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
@@ -61,104 +152,23 @@ function editProfile() {
             }),
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.json().then(data => {
-                        throw new Error(data.error || 'Erreur inconnue');
-                    });
+                if (!response.ok) {
+                    throw new Error("Erreur lors du changement de mot de passe");
                 }
+                return response.json();
             })
             .then(data => {
-                alert(data.message || "Mot de passe changé avec succès !");
+                console.log("✅ Mot de passe changé avec succès :", data);
+                alert("Votre mot de passe a été changé avec succès.");
 
-                const oldPasswordField = document.getElementById('old-password');
-                const newPasswordField = document.getElementById('new-password');
-                const confirmPasswordField = document.getElementById('confirm-password');
-
-                oldPasswordField.value = '';
-                newPasswordField.value = '';
-                confirmPasswordField.value = '';
-
-                // Masquer le formulaire de changement de mot de passe
-                const changePasswordForm = document.getElementById('change-password-form');
-                const profileEditForm = document.getElementById('profile-edit-form');
-                changePasswordForm.classList.add('hidden');
-                profileEditForm.classList.remove('hidden');
+                document.getElementById('change-password-form').style.display = 'none';
+                document.getElementById('profile-edit-form').style.display = 'block';
             })
             .catch(error => {
-                alert(error.message || "Une erreur s'est produite lors du changement de mot de passe.");
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
     });
 
-    // Gestion du bouton "Cancel"
-    document.getElementById('cancelEditButton').addEventListener('click', () => {
-        profileEditForm.classList.add('hidden');
-        profileContainer.classList.remove('hidden');
-    });
 
-    // Gestion du bouton "Change Password"
-    document.getElementById('edit-password-button').addEventListener('click', () => {
-        profileEditForm.classList.add('hidden');
-        changePasswordForm.classList.remove('hidden');
-
-        // Gestion des boutons dans le formulaire de mot de passe
-        const savePasswordButton = document.getElementById('savePasswordButton');
-        const cancelPasswordButton = document.getElementById('cancelPasswordButton');
-
-        savePasswordButton.replaceWith(savePasswordButton.cloneNode(true));
-        cancelPasswordButton.replaceWith(cancelPasswordButton.cloneNode(true));
-
-        document.getElementById('savePasswordButton').addEventListener('click', () => {
-    const oldPassword = document.getElementById('old-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-
-    if (newPassword !== confirmPassword) {
-        alert("Les mots de passe ne correspondent pas.");
-        return;
-    }
-
-    fetch('/api/change-password', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrf,
-        },
-        body: JSON.stringify({
-            old_password: oldPassword,
-            new_password: newPassword,
-        }),
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // La réponse est correcte, on retourne les données JSON
-            } else {
-                return response.json().then(data => {
-                    throw new Error(data.error || 'Erreur inconnue');
-                });
-            }
-        })
-        .then(data => {
-            alert(data.message || "Mot de passe changé avec succès !");
-            console.log("✅ Mot de passe changé :", data);
-
-            // Masquer le formulaire de changement de mot de passe
-            const changePasswordForm = document.getElementById('change-password-form');
-            const profileEditForm = document.getElementById('profile-edit-form');
-            changePasswordForm.classList.add('hidden');
-            profileEditForm.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error("Erreur :", error);
-            alert(error.message || "Une erreur s'est produite lors du changement de mot de passe.");
-        });
-});
-
-        // Gestion du bouton "Cancel Password"
-        document.getElementById('cancelPasswordButton').addEventListener('click', () => {
-            changePasswordForm.classList.add('hidden');
-            profileEditForm.classList.remove('hidden');
-        });
-    });
 }

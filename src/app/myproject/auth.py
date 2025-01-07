@@ -1,6 +1,7 @@
 from social_core.backends.oauth import BaseOAuth2
 from django.shortcuts import redirect
 from social_core.exceptions import AuthForbidden
+
 class FortyTwoOAuth2(BaseOAuth2):
     """42 OAuth2 authentication backend"""
     name = '42'
@@ -29,6 +30,7 @@ class FortyTwoOAuth2(BaseOAuth2):
             headers={'Authorization': f'Bearer {access_token}'}
         )
         return response
+
     def social_auth_exception_handler(get_response):
         def middleware(request):
             try:
