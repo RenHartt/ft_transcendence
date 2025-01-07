@@ -1,13 +1,13 @@
 all: up
 
-DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null)
+DOCKER_COMPOSE = $(shell command -v docker-compose 2>/dev/null)
 DOCKER_CoMPOSE_EXEC_ALT := $(shell command -v docker 2>/dev/null && docker --help | grep -q 'compose')
 
 ifeq ($(DOCKER_COMPOSE),)
     ifeq ($(DOCKER_COMPOSE_EXEC_ALT),)
         $(error Neither "docker-compose" nor "docker compose" found. Please install Docker Compose.)
     else
-        DOCKER_COMPOSE := docker compose
+        DOCKER_COMPOSE = docker compose
     endif
 endif
 
@@ -64,6 +64,7 @@ help:
 	@echo "  clean     : 🧹 Stop and remove all data (containers, images, volumes)"
 	@echo "  rebuild   : 🛠️ Rebuild the containers"
 	@echo "  help      : 📖 Show this help message"
+	@echo $(DOCKER_COMPOSE)
 	@echo ""
 	@echo "By default, 'make up' is executed."
 	@echo ""
