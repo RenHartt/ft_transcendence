@@ -121,14 +121,13 @@
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
 
-
         {% else %}
             <p>Vous devez être connecté pour accéder à cette page.</p>
             <a href="?page=login">Se connecter</a>
         {% endif %}
         </section>
         <script src="{% static 'profile.js' %}"></script>
-        <script src="{% static 'script.js' %}"></script>
+        <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script src="{% static 'profile.js' %}"></script>
         <canvas id="pongCanvas" width="800" height="400"></canvas>
