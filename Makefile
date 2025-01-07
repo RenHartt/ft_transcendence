@@ -1,16 +1,18 @@
 all: up
 
+DOCKER_COMPOSE=docker-compose
+
 up:
 	@echo "🚀 Starting the containers..."
-	@docker compose -f src/docker-compose.yml up -d --build
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml up -d --build
 
 down:
 	@echo "🛑 Stopping the containers..."
-	@docker compose -f src/docker-compose.yml down
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml down
 
 clean:
 	@echo "🧹 Cleaning up Docker environment (containers, images, volumes)..."
-	@docker compose -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
 	@echo "🔍 Checking for blocked ports..."
 	@for port in 5432; do \
 		PID=$$(sudo lsof -t -i :$$port); \
@@ -25,7 +27,7 @@ clean:
 
 restart:
 	@echo "🔄 Restarting the containers..."
-	@docker compose -f src/docker-compose.yml restart
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml restart
 
 rebuild:
 	@echo "🛠️ Rebuilding the containers..."
@@ -35,11 +37,11 @@ rebuild:
 
 logs:
 	@echo "📋 Showing logs..."
-	@docker compose -f src/docker-compose.yml logs -f
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml logs -f
 
 stop:
 	@echo "🛑 Stopping the containers (without removing them)..."
-	@docker compose -f src/docker-compose.yml stop
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml stop
 
 help:
 	@echo "📖 Usage: make [target]"
