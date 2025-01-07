@@ -1,6 +1,15 @@
 all: up
 
-DOCKER_COMPOSE=docker-compose
+DOCKER_COMPOSE := $(shell command -v docker-compose 2>/dev/null)
+DOCKER_CoMPOSE_EXEC_ALT := $(shell command -v docker 2>/dev/null && docker --help | grep -q 'compose')
+
+ifeq ($(DOCKER_COMPOSE),)
+    ifeq ($(DOCKER_COMPOSE_EXEC_ALT),)
+        $(error Neither "docker-compose" nor "docker compose" found. Please install Docker Compose.)
+    else
+        DOCKER_COMPOSE := docker compose
+    endif
+endif
 
 up:
 	@echo "🚀 Starting the containers..."
