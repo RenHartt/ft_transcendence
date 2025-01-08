@@ -1,18 +1,29 @@
 all: up
 
+DOCKER_COMPOSE = $(shell command -v docker-compose 2>/dev/null)
+DOCKER_CoMPOSE_EXEC_ALT := $(shell command -v docker 2>/dev/null && docker --help | grep -q 'compose')
+
+ifeq ($(DOCKER_COMPOSE),)
+    ifeq ($(DOCKER_COMPOSE_EXEC_ALT),)
+        $(error Neither "docker-compose" nor "docker compose" found. Please install Docker Compose.)
+    else
+        DOCKER_COMPOSE = docker compose
+    endif
+endif
+
 up:
 	@echo "🚀 Starting the containers..."
-	@docker compose -f src/docker-compose.yml up -d --build
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml up -d --build
 
 down:
 	@echo "🛑 Stopping the containers..."
-	@docker compose -f src/docker-compose.yml down
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml down
 
 clean:
 	@echo "🧹 Cleaning up Docker environment (containers, images, volumes)..."
-	@docker compose -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml down --rmi all --volumes --remove-orphans
 	@echo "🔍 Checking for blocked ports..."
-	@for port in 5432; do \
+	@for port in $$DB_PORT; do \
 		PID=$$(sudo lsof -t -i :$$port); \
 		if [ ! -z "$$PID" ]; then \
 			echo "💥 Killing process on port $$port (PID: $$PID)..."; \
@@ -25,7 +36,7 @@ clean:
 
 restart:
 	@echo "🔄 Restarting the containers..."
-	@docker compose -f src/docker-compose.yml restart
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml restart
 
 rebuild:
 	@echo "🛠️ Rebuilding the containers..."
@@ -35,11 +46,11 @@ rebuild:
 
 logs:
 	@echo "📋 Showing logs..."
-	@docker compose -f src/docker-compose.yml logs -f
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml logs -f
 
 stop:
 	@echo "🛑 Stopping the containers (without removing them)..."
-	@docker compose -f src/docker-compose.yml stop
+	@$(DOCKER_COMPOSE) -f src/docker-compose.yml stop
 
 help:
 	@echo "📖 Usage: make [target]"
@@ -53,6 +64,7 @@ help:
 	@echo "  clean     : 🧹 Stop and remove all data (containers, images, volumes)"
 	@echo "  rebuild   : 🛠️ Rebuild the containers"
 	@echo "  help      : 📖 Show this help message"
+	@echo $(DOCKER_COMPOSE)
 	@echo ""
 	@echo "By default, 'make up' is executed."
 	@echo ""
