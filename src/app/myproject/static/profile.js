@@ -10,7 +10,7 @@ function showProfile() {
     if (profileContainer.classList.contains('hidden')) {
         profileContainer.classList.remove('hidden');
     } else {
-        profileContainer.classList.add('hidden');
+        profileContainer.classList.add('hidden');   
     }
 }
 

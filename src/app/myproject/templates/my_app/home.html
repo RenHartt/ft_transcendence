@@ -64,6 +64,7 @@
                 <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
             </div>
 
+
             <div id="profile-edit-form" class="editProfileForm">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm">
@@ -101,13 +102,13 @@
             </div>            
             
             <div id="pong-wrapper" class="hidden">
-                <div id="pong-container"></div>
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
-                <button id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none; align-self: center;">
+                <div id="pong-container"></div>
+                <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
                     Activer/Désactiver 2 joueurs
                 </button>
-                <button id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-            </div>
+                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
+            </div>  
 
             <footer>
                 <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
@@ -120,7 +121,6 @@
                 <button id="close-btn" onclick="hideTicTacToe()">Fermer</button>
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
-
         {% else %}
             <p>Vous devez être connecté pour accéder à cette page.</p>
             <a href="?page=login">Se connecter</a>
@@ -130,7 +130,6 @@
         <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script src="{% static 'profile.js' %}"></script>
-        <canvas id="pongCanvas" width="800" height="400"></canvas>
         <script src="{% static 'pong.js' %}"></script>
         <script>
             const csrf = "{{ csrf_token }}";

@@ -7,23 +7,19 @@ let gameRunning = false;
 let animationFrameId = null;
 
 function startPongGame() {
-    let canvas = document.getElementById("pongCanvas");
+    let canvas = document.createElement("canvas");
     let pongContainer = document.getElementById("pong-container");
-
-    if (!pongContainer) return;
 
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
 
-    if (canvas) {
-        pongContainer.removeChild(canvas);
-    }
-    canvas = document.createElement("canvas");
     canvas.id = "pongCanvas";
     canvas.width = 500;
     canvas.height = 300;
-    pongContainer.appendChild(canvas);
+    console.log(canvas)
+
 
     let ctx = canvas.getContext("2d");
+    pongContainer.appendChild(canvas);
     let playerScore = 0;
     let aiScore = 0;
 
@@ -65,46 +61,68 @@ function startPongGame() {
         if (e.key === "s") window.sPressed = false;
     });
 
+
+    let playerHit = false; 
+    let aiFrozen = false; 
+    
     function update() {
         if (!gameRunning) return;
-
+    
         if (window.wPressed && playerY > 0) playerY -= paddleSpeed;
         if (window.sPressed && playerY < canvas.height - paddleHeight) playerY += paddleSpeed;
-
+    
+        if (ballSpeedX > 0) {
+            playerHit = true;
+        }
+    
         if (window.twoPlayers) {
             if (window.upPressed && aiY > 0) aiY -= paddleSpeed;
             if (window.downPressed && aiY < canvas.height - paddleHeight) aiY += paddleSpeed;
-        } else {
+        } else if (playerHit && !aiFrozen) { 
             let aiCenter = aiY + paddleHeight / 2;
             if (aiCenter < ballY - 10) aiY += paddleSpeed * 0.7;
             if (aiCenter > ballY + 10) aiY -= paddleSpeed * 0.7;
         }
-
+    
         ballX += ballSpeedX;
         ballY += ballSpeedY;
-
+    
         if (ballY <= 0 || ballY >= canvas.height - ballSize) ballSpeedY *= -1;
-
-        if (
-            (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) ||
-            (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight)
-        ) {
+    
+        if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
             ballSpeedX *= -1;
             ballSpeedX = Math.min(maxBallSpeed, Math.abs(ballSpeedX)) * Math.sign(ballSpeedX);
             ballSpeedY = Math.min(maxBallSpeed, Math.abs(ballSpeedY)) * Math.sign(ballSpeedY);
+    
+            playerHit = true;
+            aiFrozen = false;
         }
-
+    
+        if (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
+            ballSpeedX *= -1;
+            ballSpeedX = Math.min(maxBallSpeed, Math.abs(ballSpeedX)) * Math.sign(ballSpeedX);
+            ballSpeedY = Math.min(maxBallSpeed, Math.abs(ballSpeedY)) * Math.sign(ballSpeedY);
+    
+            aiFrozen = true;
+            playerHit = false; 
+        }
+    
         if (ballX <= 0) {
             aiScore++;
             updateScore();
             resetBall();
+            playerHit = false; 
+            aiFrozen = false;
         }
         if (ballX >= canvas.width) {
             playerScore++;
             updateScore();
             resetBall();
+            playerHit = false;
+            aiFrozen = false;
         }
     }
+    
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -142,54 +160,8 @@ function resetGame() {
     if (canvas) {
         pongContainer.removeChild(canvas);
     }
-
-    let newCanvas = document.createElement("canvas");
-    newCanvas.id = "pongCanvas";
-    newCanvas.width = 500;
-    newCanvas.height = 500;
-    pongContainer.appendChild(newCanvas);
-
     if (pongScore) pongScore.textContent = "Score: 0 - 0";
     if (stopGameButton) stopGameButton.style.display = "none";
-}
-
-function showPong() {
-    console.log("🏓 Toggle du jeu Pong");
-
-    const pongWrapper = document.getElementById('pong-wrapper');
-    const pongCanvas = document.getElementById('pongCanvas');
-    const stopGameButton = document.getElementById('stopGameButton');
-    const pongScore = document.getElementById('pong-score');
-    const twoPlayerButton = document.getElementById('twoPlayerButton');
-
-    if (!pongWrapper) {
-        console.error("❌ Erreur : #pong-wrapper introuvable !");
-        return;
-    }
-
-    if (pongWrapper.style.display === "block") {
-        console.log("🛑 Masquer Pong");
-        stopGame();  
-    } else {
-        console.log("🏓 Afficher Pong");
-        pongWrapper.style.display = "block";
-
-        if (!pongCanvas) {
-            const canvas = document.createElement("canvas");
-            canvas.id = "pongCanvas";
-            canvas.width = 500;
-            canvas.height = 300;
-            pongWrapper.appendChild(canvas);
-        } else {
-            pongCanvas.style.display = "block";
-        }
-
-        if (stopGameButton) stopGameButton.style.display = "block";
-        if (pongScore) pongScore.style.display = "block";
-        if (twoPlayerButton) twoPlayerButton.style.display = "block";
-
-        startPongGame();
-    }
 }
 
 
@@ -229,35 +201,24 @@ function showPong() {
     const pongContainer = document.getElementById('pong-container');
     let canvas = document.getElementById('pongCanvas');
     const stopGameButton = document.getElementById('stopGameButton');
-    
+    const pongWrapper = document.getElementById('pong-wrapper');
     const pongScore = document.getElementById('pong-score');
     const twoPlayerButton = document.getElementById('twoPlayerButton');
 
-    if (!pongContainer) {
-        return;
+
+    if (pongWrapper.style.display === "block") {
+        console.log("🛑 Masquer Pong");
+        stopGame();
+        document.querySelector("#pong-container").innerHTML = '';
+    } else {
+        console.log("🏓 Afficher Pong");
+        startPongGame();
+        pongWrapper.style.display = "block";
+        stopGameButton.style.display = "block";
+        pongScore.style.display = "block";
+        twoPlayerButton.style.display = "block";
     }
-
-    pongContainer.innerHTML = '';
-
-    if (!canvas) {
-        canvas = document.createElement("canvas");
-        canvas.id = "pongCanvas";
-        canvas.width = 300;
-        canvas.height = 300;
-    }
-
-    pongContainer.appendChild(pongScore);
-    pongContainer.appendChild(canvas);
-    pongContainer.appendChild(stopGameButton);
-
-    stopGameButton.style.display = "block"; 
-    pongScore.style.display = "block"; 
-    canvas.style.display = "block";
-    twoPlayerButton.style.display = "block";
-
-    startPongGame();
 }
-
 
 function stopGame() {
     gameRunning = false; 
@@ -266,18 +227,11 @@ function stopGame() {
     const stopGameButton = document.getElementById('stopGameButton');
     const pongScore = document.getElementById('pong-score');
     const twoPlayerButton = document.getElementById('twoPlayerButton');
-    if (pongCanvas) {
-        pongCanvas.style.display = "none"; 
-    }
-    if (stopGameButton) {
-        stopGameButton.style.display = "none";
-    }
-    if (pongScore) {
-        pongScore.style.display = "none"; 
-    }
-    if (twoPlayerButton) {
-        twoPlayerButton.style.display = "none";
-    }
+    const pongWrapper = document.getElementById('pong-wrapper');
+
+    pongCanvas.style.display = "none"; 
+    stopGameButton.style.display = "none";
+    pongScore.style.display = "none"; 
+    twoPlayerButton.style.display = "none";
+    pongWrapper.style.display = "none"
 }
-
-

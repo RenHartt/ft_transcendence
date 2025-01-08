@@ -147,8 +147,8 @@ p {
 }
 
 #pongCanvas {
-    border: 2px solid black;
-    background: white;
+    border-radius: 8px;
+    background: rgb(230, 230, 230);
     width: 100%;
     max-width: 400px;
     height: auto;
