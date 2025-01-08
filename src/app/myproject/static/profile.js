@@ -6,7 +6,6 @@ function showProfile() {
         return;
     }
 
-    console.log("👤 Afficher le profil");
     if (profileContainer.classList.contains('hidden')) {
         profileContainer.classList.remove('hidden');
     } else {
@@ -65,7 +64,6 @@ function editProfile() {
                 document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
                 document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
 
-                // Basculer les vues
                 profileEditForm.style.display = 'none';
                 profileContainer.style.display = 'block';
             })
@@ -169,6 +167,51 @@ function editProfile() {
                 alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
     });
+}
 
+function addFriend() {
+    const profileContainer = document.getElementById('profile-container');
+    const addFriendForm = document.getElementById('friend-request-form');  
 
+    if (!profileContainer || !addFriendForm) {
+        console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
+        return;
+    }
+
+    profileContainer.style.display = 'none';
+    addFriendForm.style.display = 'block';
+
+    document.getElementById('addFriendButton').addEventListener('click', () => {
+        console.log("🚀 Ajouter un ami");
+        const friendEmail = document.getElementById('friend-email').value;
+        console.log("Email de l'ami:", friendEmail);
+
+        fetch('/api/add-friend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf,
+            },
+            body: JSON.stringify({
+                email: friendEmail,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'ajout de l\'ami');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("✅ Ami ajouté avec succès :", data);
+                alert("Ami ajouté avec succès.");
+
+                addFriendForm.style.display = 'none';
+                profileContainer.style.display = 'block';
+            })
+            .catch(error => {
+                console.error("Erreur :", error);
+                alert("Une erreur s'est produite lors de l'ajout de l'ami.");
+            });
+    });
 }

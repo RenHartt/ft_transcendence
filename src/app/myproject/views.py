@@ -183,3 +183,20 @@ def save_profile(request):
         return JsonResponse({'message': 'Profil mis à jour avec succès !'})
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
+@csrf_exempt
+@login_required
+def add_friend(request):
+    """Ajouter un ami"""
+    if request.method == 'POST':
+        friend_username = request.POST.get('username')
+        friend = User.objects.filter(username=friend_username).first()
+
+        if friend is None:
+            return JsonResponse({'error': 'Utilisateur introuvable'}, status=404)
+
+        request.user.friends.add(friend)
+
+        return JsonResponse({'message': 'Ami ajouté avec succès !'})
+
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)

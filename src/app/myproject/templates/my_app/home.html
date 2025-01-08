@@ -61,12 +61,25 @@
                 <p>Email: {{ user.email }}</p>
                 <p>First Name: {{ user.first_name }}</p>
                 <p>Last Name: {{ user.last_name }}</p>
+
+                <h2>Friends</h2>
+                <ul id="friends-list">
+                    {% for friend in friends %}
+                        <li>{{ friend.username }}</li>
+                    {% endfor %}
+                </ul>
+                <h2>Friend Requests</h2>
+                <ul id="friend-requests">
+                    {% for request in friend_requests %}
+                        <li>{{ request.username }}</li>
+                    {% endfor %}
+                </ul>
+
                 <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+                <button id="addFriendButton" onclick="addFriend()">Add Friend</button>
             </div>
 
-
-
-            <div id="profile-edit-form" class="editProfileForm">
+            <div id="profile-edit-form" class="editProfileForm hidden">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm">
                     <label for="edit-first-name">First Name:</label>
@@ -101,7 +114,16 @@
                     <button type="button" id="cancelPasswordButton">Cancel</button>
                 </form>
             </div>
-                    
+
+            <div id="friend-request-form" class="editProfileForm hidden">
+                <h2>Add Friend</h2>
+                <form id="addFriendForm">
+                    <label for="friend-username">Username:</label>
+                    <input type="text" id="friend-username" name="username" required><br><br>
+                    <button type="button" id="sendFriendRequestButton">Send Request</button>
+                    <button type="button" id="cancelFriendRequestButton">Cancel</button>
+                </form>
+            </div>
             
             <div id="pong-wrapper" class="hidden">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
@@ -131,7 +153,6 @@
         <script src="{% static 'profile.js' %}"></script>
         <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
-        <script src="{% static 'profile.js' %}"></script>
         <script src="{% static 'pong.js' %}"></script>
         <script>
             const csrf = "{{ csrf_token }}";
