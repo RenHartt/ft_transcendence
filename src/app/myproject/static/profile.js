@@ -1,17 +1,32 @@
+
 function showProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const changePasswordForm = document.getElementById('change-password-form');
-
-    if (!profileContainer) {
-        return;
+    const overlay = document.getElementById('overlay');
+    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
+    const pongWrapper = document.getElementById('pong-wrapper');
+    if (gameRunning) {
+        stopGame();
+    }
+    if (gameActive) {
+        hideTicTacToe();
     }
 
-    console.log("👤 Toggle du profil");
-    profileEditForm.classList.add('hidden');
-    changePasswordForm.classList.add('hidden');
-    profileContainer.classList.toggle('hidden');
+    if (!profileContainer) return;
+
+    if (!profileContainer.classList.contains('hidden')) {
+        profileContainer.classList.add('hidden');
+    } else {
+        overlay.classList.remove('active');
+        ticTacToeModal.classList.remove('active');
+        if (pongWrapper) pongWrapper.style.display = 'none';
+        profileEditForm.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        profileContainer.classList.remove('hidden');
+    }
 }
+
 
 function editProfile() {
     console.log("🛠 Edition du profil");

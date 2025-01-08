@@ -74,6 +74,10 @@ function replayGame() {
 
 
 function showTicTacToe() {
+    if (gameRunning) {
+        stopGame();
+    }
+    gameActive = true;
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('tic-tac-toe-modal');
     console.log("Overlay:", overlay, "Modal:", modal);
