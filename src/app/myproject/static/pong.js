@@ -234,4 +234,6 @@ function stopGame() {
     pongScore.style.display = "none"; 
     twoPlayerButton.style.display = "none";
     pongWrapper.style.display = "none"
+    document.querySelector("#pong-container").innerHTML = '';
+
 }
