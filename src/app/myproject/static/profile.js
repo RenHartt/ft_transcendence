@@ -26,13 +26,12 @@ function showProfile() {
         profileEditForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
-        addFriendForm.style.display = 'none';
+        addFriendForm.classList.add('hidden'); 
     }
 }
 
 
 function editProfile() {
-    console.log("🛠 Edition du profil");
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     if (!profileContainer || !profileEditForm) {
@@ -168,49 +167,43 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
-    const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const overlay = document.getElementById('overlay');
+    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
+    const pongWrapper = document.getElementById('pong-wrapper');
 
-    if (!profileContainer || !addFriendForm || !cancelFriendRequestButton) {
-        console.error("❌ Erreur : Élément introuvable !");
-        return;
-    }
+    if (!profileContainer || !addFriendForm) return;
 
-    profileContainer.style.display = 'none';
-    addFriendForm.style.display = 'block';
+    overlay.classList.remove('active');
+    ticTacToeModal.classList.remove('active');
+    pongWrapper.style.display = 'none';
+    profileEditForm.classList.add('hidden');
+    changePasswordForm.classList.add('hidden');
+    profileContainer.classList.add('hidden');
+    addFriendForm.classList.remove('hidden');
 
     document.getElementById('sendFriendRequestButton').addEventListener('click', () => {
         const friendUsername = document.getElementById('friend-username').value;
-        console.log("Nom d'utilisateur de l'ami:", friendUsername);
-
         fetch('/api/add-friend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrf,
             },
-            body: JSON.stringify({
-                username: friendUsername,
-            }),
+            body: JSON.stringify({ username: friendUsername }),
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur lors de l\'ajout de l\'ami');
-            }
-            return response.json();
-        })
+        .then(response => response.ok ? response.json() : Promise.reject('Erreur'))
         .then(data => {
             alert("Ami ajouté avec succès.");
-            addFriendForm.style.display = 'none';
-            profileContainer.style.display = 'block';
+            addFriendForm.classList.add('hidden');
+            profileContainer.classList.remove('hidden');
         })
-        .catch(error => {
-            console.error("Erreur :", error);
-            alert("Une erreur s'est produite lors de l'ajout de l'ami.");
-        });
+        .catch(error => alert("Une erreur s'est produite."));
     });
 
-    cancelFriendRequestButton.addEventListener('click', () => {
-        addFriendForm.style.display = 'none';
-        profileContainer.style.display = 'block';
+    document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {
+        addFriendForm.classList.add('hidden');
+        profileContainer.classList.remove('hidden');
     });
 }
