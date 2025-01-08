@@ -115,7 +115,6 @@ footer {
 }
 
 #profile-edit-form {
-    display: none;
     border: 1px solid #ddd;
     max-width: 400px;
     margin: 20px auto;
@@ -126,13 +125,20 @@ footer {
     font-family: Arial, sans-serif;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Pour éviter les espaces blancs autour */
+  }
+  
+
 #profile-edit-form h2 {
     margin-bottom: 15px;
     color: #333;
 }
 
+
 .editProfileForm {
-    display: none;
     max-width: 400px;
     margin: 20px auto;
     padding: 20px;
@@ -195,4 +201,66 @@ footer {
 .editProfileForm p {
     margin-bottom: 0.5rem;
     color: #555;
+}
+
+#profile-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#profile-container h2 {
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 15px;
+}
+
+#profile-container p {
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 10px;
+}
+
+#editProfileButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #8b8989;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+#editProfileButton:hover {
+    color: white;
+    background-color: #8b8989;
+    transition: color 0.4s ease;
+}
+
+@media (max-width: 576px) {
+    #profile-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    #profile-container h2 {
+        font-size: 1.25rem;
+    }
+
+    #profile-container p {
+        font-size: 0.95rem;
+    }
+
+    #editProfileButton {
+        font-size: 13px;
+        padding: 8px;
+    }
 }
