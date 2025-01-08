@@ -185,7 +185,7 @@ img {
     margin-top: 10px;
     border: none;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     background-color: #8b8989;
@@ -232,7 +232,7 @@ img {
     margin-top: 10px;
     border: none;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     background-color: #8b8989;
     color: black;

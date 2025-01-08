@@ -101,13 +101,25 @@
             </div>
                     
             
-            <div id="pong-wrapper" class="hidden">
+            <div id="pong-wrapper" class="hidden editProfileForm">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+                
                 <div id="pong-container"></div>
                 <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
-                    Activer/Désactiver 2 joueurs
+                    Two Players
                 </button>
                 <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
+                <button class="PongButton" id="pong-settings-badge" onclick="togglePongSettings()">Settings</button>
+                <div id="pong-settings-popup" class="hidden">
+                    <h3>Settings</h3>
+                    <label for="paddleColor">Paddle Color:</label>
+                    <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
+                    
+                    <label for="ballColor">Ball Color:</label>
+                    <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
+            
+                    <button onclick="togglePongSettings()">Close</button>
+                </div>
             </div>  
 
             <footer>
