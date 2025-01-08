@@ -6,6 +6,8 @@ function showProfile() {
     const overlay = document.getElementById('overlay');
     const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
     const pongWrapper = document.getElementById('pong-wrapper');
+    const addFriendForm = document.getElementById("friend-request-form");
+
     if (gameRunning) {
         stopGame();
     }
@@ -24,6 +26,7 @@ function showProfile() {
         profileEditForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
+        addFriendForm.style.display = 'none';
     }
 }
 
@@ -32,7 +35,6 @@ function editProfile() {
     console.log("🛠 Edition du profil");
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
-
     if (!profileContainer || !profileEditForm) {
         return;
     }
@@ -88,6 +90,8 @@ function editProfile() {
         profileEditForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
     });
+
+    
 
     document.getElementById('edit-password-button').addEventListener('click', () => {
         console.log("🛠 Affichage du formulaire de changement de mot de passe");
@@ -164,19 +168,19 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
+    const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
 
-    if (!profileContainer || !addFriendForm) {
-        console.error("❌ Erreur : Conteneur de profil ou formulaire introuvable !");
+    if (!profileContainer || !addFriendForm || !cancelFriendRequestButton) {
+        console.error("❌ Erreur : Élément introuvable !");
         return;
     }
 
     profileContainer.style.display = 'none';
     addFriendForm.style.display = 'block';
 
-    document.getElementById('addFriendButton').addEventListener('click', () => {
-        console.log("🚀 Ajouter un ami");
-        const friendEmail = document.getElementById('friend-email').value;
-        console.log("Email de l'ami:", friendEmail);
+    document.getElementById('sendFriendRequestButton').addEventListener('click', () => {
+        const friendUsername = document.getElementById('friend-username').value;
+        console.log("Nom d'utilisateur de l'ami:", friendUsername);
 
         fetch('/api/add-friend', {
             method: 'POST',
@@ -185,25 +189,28 @@ function addFriend() {
                 'X-CSRFToken': csrf,
             },
             body: JSON.stringify({
-                email: friendEmail,
+                username: friendUsername,
             }),
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors de l\'ajout de l\'ami');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("✅ Ami ajouté avec succès :", data);
-                alert("Ami ajouté avec succès.");
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout de l\'ami');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("Ami ajouté avec succès.");
+            addFriendForm.style.display = 'none';
+            profileContainer.style.display = 'block';
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert("Une erreur s'est produite lors de l'ajout de l'ami.");
+        });
+    });
 
-                addFriendForm.style.display = 'none';
-                profileContainer.style.display = 'block';
-            })
-            .catch(error => {
-                console.error("Erreur :", error);
-                alert("Une erreur s'est produite lors de l'ajout de l'ami.");
-            });
+    cancelFriendRequestButton.addEventListener('click', () => {
+        addFriendForm.style.display = 'none';
+        profileContainer.style.display = 'block';
     });
 }

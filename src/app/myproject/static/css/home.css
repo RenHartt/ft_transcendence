@@ -245,6 +245,26 @@ img {
     transition: color 0.4s ease;
 }
 
+#addFriendButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #8b8989;
+    color: black;
+    transition: background-color 0.3s ease;
+}
+
+#addFriendButton:hover {
+    color: white;
+    background-color: #8b8989;
+    transition: color 0.4s ease;
+}
+
+
 @media (max-width: 576px) {
     #profile-container {
         max-width: 90%;
@@ -264,3 +284,4 @@ img {
         padding: 8px;
     }
 }
+
