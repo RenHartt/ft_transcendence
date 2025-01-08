@@ -80,17 +80,25 @@ function showTicTacToe() {
     gameActive = true;
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('tic-tac-toe-modal');
-    console.log("Overlay:", overlay, "Modal:", modal);
+    const profileContainer = document.getElementById('profile-container');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
 
     if (overlay && modal) {
-        overlay.classList.add('active'); 
-        modal.classList.add('active'); 
+        overlay.classList.add('active');
+        modal.classList.add('active');
     }
+    if (profileContainer) profileContainer.classList.add('hidden');
+    if (profileEditForm) profileEditForm.classList.add('hidden');
+    if (changePasswordForm) changePasswordForm.classList.add('hidden');
 
-    createBoard(staticUrls); 
+    console.log("Overlay:", overlay, "Modal:", modal);
+    createBoard(staticUrls);
 }
 
+
 function hideTicTacToe() {
+    gameActive = false;
     const overlay = document.getElementById('overlay');
     const modal = document.getElementById('tic-tac-toe-modal');
 
