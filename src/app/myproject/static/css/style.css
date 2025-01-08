@@ -7,6 +7,7 @@ body {
     background-color: #f4f4f9;
     overflow-x: hidden;
 }
+
 a {
     text-decoration: none;
     color: black;
@@ -42,6 +43,7 @@ p {
     margin: 20px auto;
     width: max-content;
 }
+
 .cell {
     width: 100px;
     height: 100px;
@@ -57,6 +59,7 @@ p {
     cursor: not-allowed;
     background-color: #dcdcdc;
 }
+
 .winner {
     color: #11111d;
     font-size: 1.5rem;
@@ -99,7 +102,7 @@ p {
 #tic-tac-toe-modal.active {
     visibility: visible;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1); /* Zoom fluide */
+    transform: translate(-50%, -50%) scale(1);
 }
 
 #tic-tac-toe-modal h1 {

@@ -65,6 +65,7 @@
             </div>
 
 
+
             <div id="profile-edit-form" class="editProfileForm">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm">
@@ -84,7 +85,7 @@
                 </form>
             </div>
 
-            <div id="change-password-form" class="hidden">
+            <div id="change-password-form" class="editProfileForm hidden">
                 <h2>Change Password</h2>
                 <form id="changePasswordForm">
                     <label for="old-password">Old Password:</label>
@@ -96,10 +97,11 @@
                     <label for="confirm-password">Confirm Password:</label>
                     <input type="password" id="confirm-password" name="confirm_password" required><br><br>
             
-                    <button type="button" id="savePasswordButton">Save Password</button>
+                    <button type="button" id="savePasswordButton">Save Changes</button>
                     <button type="button" id="cancelPasswordButton">Cancel</button>
                 </form>
-            </div>            
+            </div>
+                    
             
             <div id="pong-wrapper" class="hidden">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
