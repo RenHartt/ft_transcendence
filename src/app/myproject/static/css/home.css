@@ -82,7 +82,7 @@ section.container {
     padding: 1rem;
     max-width: 800px;
     background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 h1, h2 {
     color: #111111;
@@ -128,8 +128,8 @@ footer {
 img {
     max-width: 100%;
     height: auto;
-    display: block; /* Pour éviter les espaces blancs autour */
-  }
+    display: block;
+}
   
 
 #profile-edit-form h2 {
@@ -144,7 +144,6 @@ img {
     padding: 20px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
 }
 
@@ -176,7 +175,7 @@ img {
 .editProfileForm input:focus {
     border-color: #8b8989;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .editProfileForm button {
@@ -261,6 +260,7 @@ img {
 #addFriendButton:hover {
     color: white;
     background-color: #8b8989;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   
     transition: color 0.4s ease;
 }
 

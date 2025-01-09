@@ -74,7 +74,7 @@ function replayGame() {
 
 
 function showTicTacToe() {
-    if (gameRunning) {
+    if (gameState.gameRunning) {
         stopGame();
     }
     gameActive = true;

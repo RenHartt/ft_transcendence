@@ -142,7 +142,10 @@
                     
                     <label for="ballColor">Ball Color:</label>
                     <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
-            
+                    
+                    <label for="ballSpeed">Ball Speed:</label>
+                    <input type="range" id="ballSpeed" min="1" max="10" value="5" onchange="updateBallSpeed(this.value)">
+
                     <button onclick="togglePongSettings()">Close</button>
                 </div>
             </div>  
