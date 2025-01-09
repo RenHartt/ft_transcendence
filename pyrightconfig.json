@@ -1,0 +1,44 @@
+{
+  // Directories and files to include for type checking
+  "include": [
+    "src/app/manage.py",
+    "src/app/my_app",
+    "src/app/myproject"
+  ],
+
+  // Directories and files to exclude from type checking
+  "exclude": [
+    "**/__pycache__",
+    "**/migrations",
+    "node_modules",
+    ".venv",
+    "venv",
+    "build",
+    "dist"
+  ],
+
+  // Python version your project uses
+  "pythonVersion": "3.11",
+
+  // Point to your virtual environment where Django is installed
+  // "venvPath" is the folder containing the venv
+  // "venv" is the name of that venv folder
+  "venvPath": ".",
+  "venv": ".venv",
+
+  // Control how missing imports/stubs are reported
+  "reportMissingImports": "warning",
+  "reportMissingTypeStubs": "none",
+
+  // Optional: Enable more thorough type checking by uncommenting:
+  // "strict": true,
+
+  // Optional: If your source code is not discovered automatically,
+  // you can add extra search paths:
+  // "python.analysis.extraPaths": [
+  //   "./src"
+  // ]
+  "python.analysis.extraPaths": [
+    "/usr/lib/python3.11/site-packages" // Adjust for your Python version
+  ]
+}

@@ -21,6 +21,7 @@ class FortyTwoOAuth2(BaseOAuth2):
             'email': response.get('email'),
             'first_name': response.get('first_name'),
             'last_name': response.get('last_name'),
+            'pp_link': response.get('image', {}).get('link'),
         }
 
     def user_data(self, access_token, *args, **kwargs):
