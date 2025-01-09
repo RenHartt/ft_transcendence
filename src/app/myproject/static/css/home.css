@@ -77,12 +77,13 @@ nav .login-button:hover {
     background-color: #939191;
     color: #212121
 }
+
 section.container {
     margin: 2rem auto;
     padding: 1rem;
     max-width: 800px;
     background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 h1, h2 {
     color: #111111;
@@ -104,18 +105,28 @@ img {
     height: auto;
 }
 footer {
-    position: fixed;
-    width: 100vw;
-    bottom: 0;
-    margin-top: auto;
-    background-color: #35424a; 
+    background-color: #333;
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+#footer {
+    display: flex;
+    justify-content: center; /* Centrage du contenu */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
 }
 
 #profile-edit-form {
-    display: none;
+    position: relative;
+    border: 1px solid #ddd;
     max-width: 400px;
     margin: 20px auto;
     padding: 20px;
@@ -125,92 +136,165 @@ footer {
     font-family: Arial, sans-serif;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+  
+
 #profile-edit-form h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+
+.editProfileForm {
+    position: relative;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.editProfileForm h2 {
     text-align: center;
     margin-bottom: 15px;
     color: #333;
 }
 
-#editProfileForm label {
+.editProfileForm label {
+    position: relative;
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     color: #555;
 }
 
-#editProfileForm input {
+.editProfileForm input {
     border: 1px solid gray;
     border-radius: 6px;
     width: 80%;
     position: relative;
     line-height: 6ex;
     z-index: 0;
-    transition: all 0.2s ease;
+    transition: all 0.5s ease;
     padding: 0 1vw;
+    margin-bottom: 1rem; 
 }
 
-#editProfileForm input:focus {
+.editProfileForm input:focus {
     border-color: #8b8989;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#editProfileForm button {
+.editProfileForm button {
     width: 100%;
     padding: 10px;
     margin-top: 10px;
     border: none;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s ease-in-out;
+    transition: background-color 0.3s ease;
+    background-color: #8b8989;
+    color: black;
 }
 
-#edit-password-button {
-    background: #8b8989;
+.editProfileForm button:hover {
+    color: white;
+    background-color: #8b8989;
+    transition: color 0.3s ease;
+}
+
+.editProfileForm p {
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+#profile-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#profile-container h2 {
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 15px;
+}
+
+#profile-container p {
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 10px;
+}
+
+#editProfileButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #8b8989;
     color: black;
     transition: background-color 0.3s ease;
 }
 
-#saveProfileButton {
+#editProfileButton:hover {
+    color: white;
     background-color: #8b8989;
+    transition: color 0.4s ease;
+}
+
+#addFriendButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
     border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
+    background-color: #8b8989;
+    color: black;
     transition: background-color 0.3s ease;
 }
 
-
-#cancelEditButton {
+#addFriendButton:hover {
+    color: white;
     background-color: #8b8989;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   
+    transition: color 0.4s ease;
 }
 
-#edit-password-button:hover {
-    color: white;
-    background: #8b8989;
+
+@media (max-width: 576px) {
+    #profile-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    #profile-container h2 {
+        font-size: 1.25rem;
+    }
+
+    #profile-container p {
+        font-size: 0.95rem;
+    }
+
+    #editProfileButton {
+        font-size: 13px;
+        padding: 8px;
+    }
 }
 
-#saveProfileButton:hover {
-    color: white;
-    background: #8b8989;
-}
-
-#cancelEditButton:hover {
-    color: white;
-    background: #8b8989;
-}
-
-old-password {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-}
