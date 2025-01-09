@@ -173,7 +173,12 @@ function addFriend() {
     const pongWrapper = document.getElementById('pong-wrapper');
 
     if (!profileContainer || !addFriendForm) return;
-
+    if (gameState.gameRunning) {
+        stopGame();
+    }
+    if (gameActive) {
+        hideTicTacToe();
+    }
     overlay.classList.remove('active');
     ticTacToeModal.classList.remove('active');
     pongWrapper.style.display = 'none';

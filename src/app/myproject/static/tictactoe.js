@@ -78,11 +78,12 @@ function showTicTacToe() {
         stopGame();
     }
     gameActive = true;
-    const overlay = document.getElementById('overlay');
-    const modal = document.getElementById('tic-tac-toe-modal');
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
+    const overlay            = document.getElementById('overlay');
+    const modal              = document.getElementById('tic-tac-toe-modal');
+    const profileContainer   = document.getElementById('profile-container');
+    const profileEditForm    = document.getElementById('profile-edit-form');
     const changePasswordForm = document.getElementById('change-password-form');
+    const friendrequest      = document.getElementById('friend-request-form'); 
 
     if (overlay && modal) {
         overlay.classList.add('active');
@@ -91,6 +92,7 @@ function showTicTacToe() {
     if (profileContainer) profileContainer.classList.add('hidden');
     if (profileEditForm) profileEditForm.classList.add('hidden');
     if (changePasswordForm) changePasswordForm.classList.add('hidden');
+    friendrequest.classList.add('hidden');
 
     console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);

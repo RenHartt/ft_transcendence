@@ -265,9 +265,9 @@ function showPong() {
     const stopGameButton      = document.getElementById('stopGameButton');
     const pongScore           = document.getElementById('pong-score');
     const twoPlayerButton     = document.getElementById('twoPlayerButton');
-
-    if (!pongWrapper)
-        return;
+    const friendrequest       = document.getElementById('friend-request-form'); 
+    
+    if (!pongWrapper) return;
 
     if (pongWrapper.style.display === "block") {
         stopGame();                   
@@ -279,9 +279,11 @@ function showPong() {
     profileContainer.classList.add('hidden');
     profileEditForm.classList.add('hidden');
     changePasswordForm.classList.add('hidden');
+    friendrequest.classList.add('hidden'); 
 
     overlay.classList.remove('active');
     ticTacToeModal.classList.remove('active');
+    
     startPongGame();
     pongWrapper.style.display = "block";
     stopGameButton.style.display = "block";
