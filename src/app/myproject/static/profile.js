@@ -6,6 +6,8 @@ function showProfile() {
     const overlay = document.getElementById('overlay');
     const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
     const pongWrapper = document.getElementById('pong-wrapper');
+    const addFriendForm = document.getElementById("friend-request-form");
+
     if (gameRunning) {
         stopGame();
     }
@@ -24,15 +26,14 @@ function showProfile() {
         profileEditForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
+        addFriendForm.classList.add('hidden'); 
     }
 }
 
 
 function editProfile() {
-    console.log("🛠 Edition du profil");
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
-
     if (!profileContainer || !profileEditForm) {
         return;
     }
@@ -87,6 +88,8 @@ function editProfile() {
         profileEditForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
     });
+
+    
 
     document.getElementById('edit-password-button').addEventListener('click', () => {
         console.log("🛠 Affichage du formulaire de changement de mot de passe");
@@ -157,5 +160,49 @@ function editProfile() {
                 console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
+    });
+}
+
+function addFriend() {
+    const profileContainer = document.getElementById('profile-container');
+    const addFriendForm = document.getElementById('friend-request-form');  
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const overlay = document.getElementById('overlay');
+    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
+    const pongWrapper = document.getElementById('pong-wrapper');
+
+    if (!profileContainer || !addFriendForm) return;
+
+    overlay.classList.remove('active');
+    ticTacToeModal.classList.remove('active');
+    pongWrapper.style.display = 'none';
+    profileEditForm.classList.add('hidden');
+    changePasswordForm.classList.add('hidden');
+    profileContainer.classList.add('hidden');
+    addFriendForm.classList.remove('hidden');
+
+    document.getElementById('sendFriendRequestButton').addEventListener('click', () => {
+        const friendUsername = document.getElementById('friend-username').value;
+        fetch('/api/add-friend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf,
+            },
+            body: JSON.stringify({ username: friendUsername }),
+        })
+        .then(response => response.ok ? response.json() : Promise.reject('Erreur'))
+        .then(data => {
+            alert("Ami ajouté avec succès.");
+            addFriendForm.classList.add('hidden');
+            profileContainer.classList.remove('hidden');
+        })
+        .catch(error => alert("Une erreur s'est produite."));
+    });
+
+    document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {
+        addFriendForm.classList.add('hidden');
+        profileContainer.classList.remove('hidden');
     });
 }
