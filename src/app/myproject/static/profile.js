@@ -199,6 +199,7 @@ function addFriend() {
             profileContainer.classList.remove('hidden');
         })
         .catch(error => alert("Une erreur s'est produite."));
+        console.log("Username:", friendUsername);
     });
 
     document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {
