@@ -8,7 +8,7 @@ function showProfile() {
     const pongWrapper = document.getElementById('pong-wrapper');
     const addFriendForm = document.getElementById("friend-request-form");
 
-    if (gameRunning) {
+    if (gameState.gameRunning) {
         stopGame();
     }
     if (gameActive) {

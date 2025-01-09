@@ -3,15 +3,51 @@ window.upPressed = false;
 window.downPressed = false;
 window.wPressed = false;
 window.sPressed = false;
-let gameRunning = false;
 let animationFrameId = null;
 
+const gameState = {
+    BallSpeedX: 4,
+    BallSpeedY: 3,
+    gameRunning: false,
+    basecolor: "#8b8989",
+    basespeed: 4
+};
+
+
 function togglePongSettings() {
-    const pongSettings = document.getElementById("pong-settings");
-    if (pongSettings) {
-        pongSettings.classList.toggle("hidden");
+    const settingsPopup = document.getElementById('pong-settings-popup');
+    const overlay = document.getElementById('pong-overlay');
+
+    if (!settingsPopup || !overlay) return;
+
+    settingsPopup.classList.toggle('hidden');
+    overlay.classList.toggle('active');
+
+    if (!settingsPopup.classList.contains('hidden')) {
+        gameState.gameRunning = false;
+    } else {
+        if (document.getElementById('pong-wrapper').style.display === "block") {
+            gameState.gameRunning = true;
+            requestAnimationFrame(gameLoop);
+        }
     }
 }
+
+
+function updatePaddleColor(color) {
+    gameState.basecolor = color;
+}
+
+function updateBallSpeed(speed) {
+    gameState.basespeed = parseFloat(speed);
+
+    if (gameState.gameRunning) {
+        const speedFactor = gameState.basespeed / Math.abs(gameState.BallSpeedX);
+        gameState.BallSpeedX *= speedFactor;
+        gameState.BallSpeedY *= speedFactor;
+    }
+}
+
 
 function startPongGame() {
     let canvas = document.createElement("canvas");
@@ -23,6 +59,7 @@ function startPongGame() {
     canvas.width = 500;
     canvas.height = 300;
     console.log(canvas)
+    gameState.gameRunning = true;
 
 
     let ctx = canvas.getContext("2d");
@@ -35,23 +72,19 @@ function startPongGame() {
         if (pongScore) pongScore.textContent = `Score: ${playerScore} - ${aiScore}`;
     }
 
-    const initialBallSpeedX = 4;
-    const initialBallSpeedY = 3;
-    const maxBallSpeed = 6;
+    const maxBallSpeed = gameState.basespeed
 
     const paddleWidth = 8, paddleHeight = 60;
     let playerY = canvas.height / 2 - paddleHeight / 2;
     let aiY = playerY;
     const ballSize = 14;
     let ballX = canvas.width / 2, ballY = canvas.height / 2;
-    let ballSpeedX = initialBallSpeedX, ballSpeedY = initialBallSpeedY;
+
     const paddleSpeed = 6;
 
     function resetBall() {
         ballX = canvas.width / 2;
         ballY = canvas.height / 2;
-        ballSpeedX = initialBallSpeedX * (Math.random() < 0.5 ? 1 : -1);
-        ballSpeedY = initialBallSpeedY * (Math.random() < 0.5 ? 1 : -1);
     }
 
     document.addEventListener("keydown", (e) => {
@@ -73,12 +106,12 @@ function startPongGame() {
     let aiFrozen = false; 
     
     function update() {
-        if (!gameRunning) return;
+        if (!gameState.gameRunning) return;
     
         if (window.wPressed && playerY > 0) playerY -= paddleSpeed;
         if (window.sPressed && playerY < canvas.height - paddleHeight) playerY += paddleSpeed;
     
-        if (ballSpeedX > 0) {
+        if (gameState.BallSpeedX > 0) {
             playerHit = true;
         }
     
@@ -91,25 +124,19 @@ function startPongGame() {
             if (aiCenter > ballY + 10) aiY -= paddleSpeed * 0.7;
         }
     
-        ballX += ballSpeedX;
-        ballY += ballSpeedY;
+        ballX += gameState.BallSpeedX;
+        ballY += gameState.BallSpeedY;
     
-        if (ballY <= 0 || ballY >= canvas.height - ballSize) ballSpeedY *= -1;
+        if (ballY <= 0 || ballY >= canvas.height - ballSize)gameState.BallSpeedY *= -1;
     
         if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
-            ballSpeedX *= -1;
-            ballSpeedX = Math.min(maxBallSpeed, Math.abs(ballSpeedX)) * Math.sign(ballSpeedX);
-            ballSpeedY = Math.min(maxBallSpeed, Math.abs(ballSpeedY)) * Math.sign(ballSpeedY);
-    
+            gameState.BallSpeedX *= -1;
             playerHit = true;
             aiFrozen = false;
         }
     
         if (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
-            ballSpeedX *= -1;
-            ballSpeedX = Math.min(maxBallSpeed, Math.abs(ballSpeedX)) * Math.sign(ballSpeedX);
-            ballSpeedY = Math.min(maxBallSpeed, Math.abs(ballSpeedY)) * Math.sign(ballSpeedY);
-    
+            gameState.BallSpeedX *= -1;
             aiFrozen = true;
             playerHit = false; 
         }
@@ -131,12 +158,10 @@ function startPongGame() {
     }
     
 
-    
-
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-        ctx.fillStyle = "#8b8989";
+        ctx.fillStyle = gameState.basecolor
         
         ctx.beginPath();
         ctx.roundRect(0, playerY, paddleWidth, paddleHeight, 4);
@@ -160,21 +185,25 @@ function startPongGame() {
     
 
     function gameLoop() {
-        if (!gameRunning) return;
+        if (!gameState.gameRunning) return;
         update();
         draw();
         animationFrameId = requestAnimationFrame(gameLoop);
     }
 
-    gameRunning = true;
+    gameState.gameRunning = true;
     updateScore();
     gameLoop();
+
 }
 
 function resetGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    gameRunning = false;
-
+    gameState.gameRunning = false;
+    gameState.BallSpeedX = 4;
+    gameState.BallSpeedY = 3;
+    gameState.basecolor = "#8b8989";
+    gameState.basespeed = 4;
     let canvas = document.getElementById("pongCanvas");
     let pongContainer = document.getElementById("pong-container");
     let pongScore = document.getElementById("pong-score");
@@ -190,7 +219,8 @@ function resetGame() {
 
 function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
-    gameRunning = false;
+    gameState.gameRunning = false;
+
     console.log("🛑 Arrêter le jeu Pong");
     let canvas = document.getElementById("pongCanvas");
     let stopGameButton = document.getElementById("stopGameButton");
@@ -222,6 +252,7 @@ function replayGame() {
         createBoard(staticUrls);
     }
 }
+
 
 function showPong() {
     const pongWrapper         = document.getElementById('pong-wrapper');
@@ -259,8 +290,9 @@ function showPong() {
 }
 
 
+
 function stopGame() {
-    gameRunning = false; 
+    gameState.gameRunning = false; 
 
     const pongCanvas = document.getElementById('pongCanvas');
     const stopGameButton = document.getElementById('stopGameButton');
@@ -276,3 +308,4 @@ function stopGame() {
     document.querySelector("#pong-container").innerHTML = '';
 
 }
+
