@@ -77,6 +77,7 @@ nav .login-button:hover {
     background-color: #939191;
     color: #212121
 }
+
 section.container {
     margin: 2rem auto;
     padding: 1rem;
@@ -104,17 +105,27 @@ img {
     height: auto;
 }
 footer {
-    position: fixed;
-    width: 100vw;
-    bottom: 0;
-    margin-top: auto;
-    background-color: #35424a; 
+    background-color: #333;
     color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+#footer {
+    display: flex;
+    justify-content: center; /* Centrage du contenu */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
 }
 
 #profile-edit-form {
+    position: relative;
     border: 1px solid #ddd;
     max-width: 400px;
     margin: 20px auto;
@@ -139,6 +150,7 @@ img {
 
 
 .editProfileForm {
+    position: relative;
     max-width: 400px;
     margin: 20px auto;
     padding: 20px;
@@ -154,6 +166,7 @@ img {
 }
 
 .editProfileForm label {
+    position: relative;
     display: block;
     font-weight: bold;
     margin-bottom: 5px;

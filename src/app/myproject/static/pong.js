@@ -15,11 +15,24 @@ const gameState = {
 
 
 function togglePongSettings() {
-    const pongSettings = document.getElementById("pong-settings");
-    if (pongSettings) {
-        pongSettings.classList.toggle("hidden");
+    const settingsPopup = document.getElementById('pong-settings-popup');
+    const overlay = document.getElementById('pong-overlay');
+
+    if (!settingsPopup || !overlay) return;
+
+    settingsPopup.classList.toggle('hidden');
+    overlay.classList.toggle('active');
+
+    if (!settingsPopup.classList.contains('hidden')) {
+        gameState.gameRunning = false;
+    } else {
+        if (document.getElementById('pong-wrapper').style.display === "block") {
+            gameState.gameRunning = true;
+            requestAnimationFrame(gameLoop);
+        }
     }
 }
+
 
 function updatePaddleColor(color) {
     gameState.basecolor = color;
@@ -240,6 +253,7 @@ function replayGame() {
     }
 }
 
+
 function showPong() {
     const pongWrapper         = document.getElementById('pong-wrapper');
     const pongContainer       = document.getElementById('pong-container');
@@ -274,6 +288,7 @@ function showPong() {
     pongScore.style.display = "block";
     twoPlayerButton.style.display = "block";
 }
+
 
 
 function stopGame() {
