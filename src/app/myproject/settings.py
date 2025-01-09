@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-    'users'
     'core',
 ]
 
@@ -128,7 +127,7 @@ AUTHENTICATION_BACKENDS = [
     'myproject.auth.FortyTwoOAuth2', 
 ]
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'core.User'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
