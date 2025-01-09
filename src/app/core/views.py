@@ -18,7 +18,7 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import update_session_auth_hash
 import json
-
+from .models import Friendship
 
 logger = logging.getLogger('myproject')
 
@@ -189,14 +189,29 @@ def save_profile(request):
 def add_friend(request):
     """Ajouter un ami"""
     if request.method == 'POST':
-        friend_username = request.POST.get('username')
-        friend = User.objects.filter(username=friend_username).first()
+        try:
+            data = json.loads(request.body)
+            friend_username = data.get('username')
 
-        if friend is None:
-            return JsonResponse({'error': 'Utilisateur introuvable'}, status=404)
+            if not friend_username:
+                return JsonResponse({'error': 'Nom d\'utilisateur manquant'}, status=400)
 
-        request.user.friends.add(friend)
+            friend = User.objects.filter(username=friend_username).first()
+            if not friend:
+                return JsonResponse({'error': 'Utilisateur introuvable'}, status=404)
 
-        return JsonResponse({'message': 'Ami ajouté avec succès !'})
+            if friend == request.user:
+                return JsonResponse({'error': 'Vous ne pouvez pas vous ajouter vous-même en ami.'}, status=400)
+
+            if Friendship.objects.filter(user=request.user, friend=friend).exists():
+                return JsonResponse({'error': 'Cet utilisateur est déjà votre ami.'}, status=400)
+
+            Friendship.objects.create(user=request.user, friend=friend)
+            Friendship.objects.create(user=friend, friend=request.user)
+
+            return JsonResponse({'message': 'Ami ajouté avec succès !'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Requête invalide (JSON mal formé)'}, status=400)
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)

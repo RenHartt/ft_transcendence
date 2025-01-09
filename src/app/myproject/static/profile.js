@@ -75,7 +75,6 @@ function editProfile() {
                 document.querySelector('#profile-container p:nth-child(3)').textContent = `Email: ${data.email}`;
                 document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
                 document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
-
                 profileEditForm.classList.add('hidden');
                 profileContainer.classList.remove('hidden');
             })
@@ -200,6 +199,7 @@ function addFriend() {
             profileContainer.classList.remove('hidden');
         })
         .catch(error => alert("Une erreur s'est produite."));
+        console.log("Username:", friendUsername);
     });
 
     document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {

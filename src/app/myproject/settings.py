@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -124,5 +126,8 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend', 
     'myproject.auth.FortyTwoOAuth2', 
 ]
+
+AUTH_USER_MODEL = 'core.User'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
