@@ -62,13 +62,28 @@
                 <p>Email: {{ user.email }}</p>
                 <p>First Name: {{ user.first_name }}</p>
                 <p>Last Name: {{ user.last_name }}</p>
+
+                <h2>Friends</h2>
+                <ul id="friends-list" >
+                    {% for friend in friends %}
+                        <li>{{ friend.username }}</li>
+                    {% endfor %}
+                </ul>
+                <h2>Friend Requests</h2>
+                <ul id="friend-requests">
+                    {% for request in friend_requests %}
+                        <li>{{ request.username }}</li>
+                    {% endfor %}
+                </ul>
+
                 <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+                <button id="addFriendButton" onclick="addFriend()">Add Friend</button>
             </div>
 
-
-            <div id="profile-edit-form" class="editProfileForm">
+            <div id="profile-edit-form" class="editProfileForm hidden">
                 <h2>Edit Profile</h2>
-                <form id="editProfileForm">
+                <form id="editProfileForm" class="editProfileForm">
+                    {% csrf_token %}
                     <label for="edit-first-name">First Name:</label>
                     <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
                     
@@ -85,7 +100,7 @@
                 </form>
             </div>
 
-            <div id="change-password-form" class="hidden">
+            <div id="change-password-form" class="editProfileForm hidden">
                 <h2>Change Password</h2>
                 <form id="changePasswordForm">
                     <label for="old-password">Old Password:</label>
@@ -97,24 +112,46 @@
                     <label for="confirm-password">Confirm Password:</label>
                     <input type="password" id="confirm-password" name="confirm_password" required><br><br>
             
-                    <button type="button" id="savePasswordButton">Save Password</button>
+                    <button type="button" id="savePasswordButton">Save Changes</button>
                     <button type="button" id="cancelPasswordButton">Cancel</button>
                 </form>
-            </div>            
+            </div>
+
+            <div id="friend-request-form" class="editProfileForm hidden">
+                <h2>Add Friend</h2>
+                <form id="addFriendForm">
+                    <label for="friend-username">Username:</label>
+                    <input type="text" id="friend-username" name="username" required><br><br>
+                    <button type="button" id="sendFriendRequestButton">Send Request</button>
+                    <button type="button" id="cancelFriendRequestButton">Cancel</button>
+                </form>
+            </div>
             
-            <div id="pong-wrapper" class="hidden">
+            <div id="pong-wrapper" class="hidden editProfileForm">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+                
                 <div id="pong-container"></div>
                 <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
-                    Activer/Désactiver 2 joueurs
+                    Two Players
                 </button>
                 <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
+                <button class="PongButton" id="pong-settings-badge" onclick="togglePongSettings()">Settings</button>
+                <div id="pong-settings-popup" class="hidden">
+                    <h3>Settings</h3>
+                    <label for="paddleColor">Paddle Color:</label>
+                    <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
+                    
+                    <label for="ballColor">Ball Color:</label>
+                    <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
+            
+                    <button onclick="togglePongSettings()">Close</button>
+                </div>
             </div>  
 
             <footer>
                 <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
             </footer>
-            <div id="overlay" onclick="hideTicTacToe()"></div>
+            <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
             <div id="tic-tac-toe-modal">
                 <h1>Tic-Tac-Toe</h1>
                 <div class="board" id="board"></div>
@@ -130,7 +167,6 @@
         <script src="{% static 'profile.js' %}"></script>
         <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
-        <script src="{% static 'profile.js' %}"></script>
         <script src="{% static 'pong.js' %}"></script>
         <script>
             const csrf = "{{ csrf_token }}";

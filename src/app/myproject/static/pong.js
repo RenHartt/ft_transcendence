@@ -6,6 +6,13 @@ window.sPressed = false;
 let gameRunning = false;
 let animationFrameId = null;
 
+function togglePongSettings() {
+    const pongSettings = document.getElementById("pong-settings");
+    if (pongSettings) {
+        pongSettings.classList.toggle("hidden");
+    }
+}
+
 function startPongGame() {
     let canvas = document.createElement("canvas");
     let pongContainer = document.getElementById("pong-container");
@@ -124,17 +131,33 @@ function startPongGame() {
     }
     
 
+    
+
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, playerY, paddleWidth, paddleHeight);
-        ctx.fillRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight);
-        ctx.fillRect(ballX, ballY, ballSize, ballSize);
+    
+        ctx.fillStyle = "#8b8989";
+        
+        ctx.beginPath();
+        ctx.roundRect(0, playerY, paddleWidth, paddleHeight, 4);
+        ctx.fill();
+        ctx.closePath();
+        
+        ctx.beginPath();
+        ctx.roundRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight, 4);
+        ctx.fill();
+        ctx.closePath();
+    
+        ctx.beginPath();
+        ctx.arc(ballX + ballSize / 2, ballY + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+    
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
         ctx.fillText(playerScore, canvas.width / 4, 30);
         ctx.fillText(aiScore, (canvas.width * 3) / 4, 30);
     }
+    
 
     function gameLoop() {
         if (!gameRunning) return;
@@ -182,7 +205,10 @@ function toggleTwoPlayers() {
     window.twoPlayers = !window.twoPlayers;
 }
 
-
+window.togglePongSettings = function () {
+    const settingsPopup = document.getElementById('pong-settings-popup');
+    settingsPopup.classList.toggle('hidden');
+};
 
 function replayGame() {
     const board = document.getElementById('board');
@@ -198,27 +224,40 @@ function replayGame() {
 }
 
 function showPong() {
-    const pongContainer = document.getElementById('pong-container');
-    let canvas = document.getElementById('pongCanvas');
-    const stopGameButton = document.getElementById('stopGameButton');
-    const pongWrapper = document.getElementById('pong-wrapper');
-    const pongScore = document.getElementById('pong-score');
-    const twoPlayerButton = document.getElementById('twoPlayerButton');
+    const pongWrapper         = document.getElementById('pong-wrapper');
+    const pongContainer       = document.getElementById('pong-container');
+    const profileContainer    = document.getElementById('profile-container');
+    const profileEditForm     = document.getElementById('profile-edit-form');
+    const changePasswordForm  = document.getElementById('change-password-form');
+    const overlay             = document.getElementById('overlay');
+    const ticTacToeModal      = document.getElementById('tic-tac-toe-modal');
+    const stopGameButton      = document.getElementById('stopGameButton');
+    const pongScore           = document.getElementById('pong-score');
+    const twoPlayerButton     = document.getElementById('twoPlayerButton');
 
+    if (!pongWrapper)
+        return;
 
     if (pongWrapper.style.display === "block") {
-        console.log("🛑 Masquer Pong");
-        stopGame();
-        document.querySelector("#pong-container").innerHTML = '';
-    } else {
-        console.log("🏓 Afficher Pong");
-        startPongGame();
-        pongWrapper.style.display = "block";
-        stopGameButton.style.display = "block";
-        pongScore.style.display = "block";
-        twoPlayerButton.style.display = "block";
+        stopGame();                   
+        pongContainer.innerHTML = '';  
+        pongWrapper.style.display = "none";
+        return;
     }
+
+    profileContainer.classList.add('hidden');
+    profileEditForm.classList.add('hidden');
+    changePasswordForm.classList.add('hidden');
+
+    overlay.classList.remove('active');
+    ticTacToeModal.classList.remove('active');
+    startPongGame();
+    pongWrapper.style.display = "block";
+    stopGameButton.style.display = "block";
+    pongScore.style.display = "block";
+    twoPlayerButton.style.display = "block";
 }
+
 
 function stopGame() {
     gameRunning = false; 
