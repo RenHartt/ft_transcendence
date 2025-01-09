@@ -13,7 +13,9 @@ echo "Database migrations applied"
 
 echo "Creating superuser..."
 python manage.py shell << END
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 import os
 
 username = os.getenv('DJANGO_SUPERUSER_USERNAME')

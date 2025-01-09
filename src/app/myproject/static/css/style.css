@@ -129,7 +129,9 @@ p {
 }
 
 #pong-wrapper {
+    transform: translate(0%, 0%) scale(1);
     display: none;
+    opacity: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -138,6 +140,12 @@ p {
     max-width: 600px;  
     margin-left: auto;
     margin-right: auto;
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+#pong-wrapper.active {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 

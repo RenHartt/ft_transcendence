@@ -77,6 +77,7 @@ function showTicTacToe() {
     if (gameState.gameRunning) {
         stopGame();
     }
+
     gameActive = true;
     const overlay            = document.getElementById('overlay');
     const modal              = document.getElementById('tic-tac-toe-modal');
@@ -92,7 +93,7 @@ function showTicTacToe() {
     if (profileContainer) profileContainer.classList.add('hidden');
     if (profileEditForm) profileEditForm.classList.add('hidden');
     if (changePasswordForm) changePasswordForm.classList.add('hidden');
-    friendrequest.classList.add('hidden');
+    if (friendrequest) friendrequest.classList.add('hidden');
 
     console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);
