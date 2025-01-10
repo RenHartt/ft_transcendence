@@ -40,21 +40,20 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(blank=False, unique=True)
-    username = models.CharField(max_length=150, blank=True, unique=True, default="")  # ⬅ Ajout de `default=""`
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
-    pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")
-    name = models.CharField(max_length=255, blank=True, null=True, default="")  # ⬅ Ajout de `null=True`
+    email = models.EmailField(blank=True, null=True, unique=True)  # <- Rendre email optionnel
+    username = models.CharField(max_length=150, blank=False, unique=True)  # <- Obligatoire
+    first_name = models.CharField(max_length=30, blank=True)  
+    last_name = models.CharField(max_length=30, blank=True)  
+    pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")  
+    name = models.CharField(max_length=255, blank=True, default='')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    objects = CustomUserManager()  # ⬅ Correction ici !
+    objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'  # <- On utilise `username` au lieu de `email`
+    REQUIRED_FIELDS = []  # <- On enlève `email` des champs requis
 
     class Meta:
         verbose_name = 'User'
@@ -64,7 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name}".strip()
 
     def get_short_name(self):
-        return self.first_name or self.email
+        return self.first_name or self.username
+
 
 
 class Friendship(models.Model):

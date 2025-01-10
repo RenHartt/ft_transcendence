@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 from django.utils.translation import gettext_lazy as _
+import logging
+
+logger = logging.getLogger('myproject')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
@@ -20,6 +23,29 @@ SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,  # Désactive les logs par défaut de Django
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'core': {  # Remplace 'core' par le nom de ton app Django
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,  # Empêche la propagation aux loggers Django
+        },
+    },
+}
+
+logger.debug("Test log DEBUG")
+logger.info("Test log INFO")
+logger.warning("Test log WARNING")
+logger.error("Test log ERROR")
 
 INSTALLED_APPS = [
     'django.contrib.admin',

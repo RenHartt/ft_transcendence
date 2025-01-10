@@ -21,9 +21,10 @@ from django.contrib.auth import update_session_auth_hash
 import json
 from .models import Friendship
 
-logger = logging.getLogger('myproject')
+logger = logging.getLogger('core')
 
 def index(request):
+    logger.info('Index core')
     page = request.GET.get('page', 'home') 
 
     if page == 'login':
@@ -61,6 +62,7 @@ def index(request):
 
 @never_cache
 def load_page(request, page_name):
+    logger.info('load_page core')
     if page_name == "login":
         return render(request, 'my_app/login.html')
     elif page_name in ["home", "index", ""]:
@@ -80,6 +82,7 @@ def tictactoe(request):
     return render(request, 'my_app/tictactoe.html')
 
 def login(request):
+    logger.info('login core')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -97,16 +100,26 @@ def logout(request):
     auth_logout(request)
     return redirect('/?page=login')
 
-
 def register(request):
+    logger.info('📢 register() appelée')
+    logger.info(f'📝 Méthode: {request.method}')
+
     if request.method == 'POST':
+        logger.info('📨 Formulaire POST reçu')
         form = CustomUserCreationForm(request.POST)
+        
         if form.is_valid():
+            logger.info('✅ Formulaire valide, création de l\'utilisateur...')
             form.save()
             return redirect('/?page=login')
+        else:
+            logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
-        form = CustomUserCreationForm()
-        return redirect('/?page=register') 
+        logger.info('🛑 Requête GET, affichage du formulaire')
+        form = CustomUserCreationForm()  # ✅ Crée un formulaire vierge
+
+    return render(request, 'my_app/register.html', {'form': form})  # ✅ Affiche bien le formulaire
+
 
 
 

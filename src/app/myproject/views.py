@@ -81,7 +81,9 @@ def about(request):
     return render(request, 'my_app/about.html')
 
 def login(request):
+    logger.info('login myproject')
     if request.method == 'POST':
+        logger.info('User login myproject')
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
@@ -100,14 +102,18 @@ def logout(request):
 
 
 def register(request):
+    logger.info('New user registration')
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
+        logger.info('New user registration')
         if form.is_valid():
             form.save()
+            logger.info('New user registered')
             return redirect('/?page=login')
         else:
             sys.stdout.flush()
     else:
+        logger.info('New user registration failed')
         form = CustomUserCreationForm()
         return redirect('/?page=register') 
 

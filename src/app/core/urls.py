@@ -2,6 +2,10 @@ from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from . import views
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
+import logging
+
+logger = logging.getLogger('myproject')
+logger.debug("Test log DEBUG")
 
 urlpatterns = [
     path('', views.index, name='index'),
