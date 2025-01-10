@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.cache import never_cache
@@ -10,7 +10,8 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 import requests
@@ -43,9 +44,9 @@ def index(request):
             return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
     elif page == 'register':  
-        form = UserCreationForm()
+        form = CustomUserCreationForm(request.POST)
         if request.method == 'POST':
-            form = UserCreationForm(request.POST)
+            form = CustomUserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 return redirect('/?page=login')
@@ -99,13 +100,14 @@ def logout(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/?page=login')
     else:
-        form = UserCreationForm()
-        return redirect('/?page=register')
+        form = CustomUserCreationForm()
+        return redirect('/?page=register') 
+
 
 
 

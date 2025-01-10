@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.cache import never_cache
@@ -101,13 +101,15 @@ def logout(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/?page=login')
+        else:
+            sys.stdout.flush()
     else:
-        form = UserCreationForm()
-        return redirect('/?page=register')
+        form = CustomUserCreationForm()
+        return redirect('/?page=register') 
 
 
 

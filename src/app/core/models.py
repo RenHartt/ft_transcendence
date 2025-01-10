@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 
-class CustomUserManager(UserManager):
+class CustomUserManager(BaseUserManager):
     def _create_user(self, username=None, email=None, password=None, **extra_fields):
         """
         Creates and saves a User with the given email and password.
@@ -12,7 +12,7 @@ class CustomUserManager(UserManager):
         email = self.normalize_email(email)
         user = self.model(
             email=email,
-            username=username,
+            username=username or "",  # Empêche None
             first_name=extra_fields.pop('first_name', ''),
             last_name=extra_fields.pop('last_name', ''),
             pp_link=extra_fields.pop('pp_link', "https://example.com/default-avatar.jpg"),
@@ -41,20 +41,20 @@ class CustomUserManager(UserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=False, unique=True)
-    username = models.CharField(max_length=150, blank=True, unique=True)  # Added field
-    first_name = models.CharField(max_length=30, blank=True)  # Added field
-    last_name = models.CharField(max_length=30, blank=True)  # Added field
-    pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")  # Added field
-    name = models.CharField(max_length=255, blank=True, default='')
+    username = models.CharField(max_length=150, blank=True, unique=True, default="")  # ⬅ Ajout de `default=""`
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")
+    name = models.CharField(max_length=255, blank=True, null=True, default="")  # ⬅ Ajout de `null=True`
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    objects = CustomUserManager()
+    objects = CustomUserManager()  # ⬅ Correction ici !
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         verbose_name = 'User'
@@ -64,7 +64,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name}".strip()
 
     def get_short_name(self):
-
         return self.first_name or self.email
 
 
