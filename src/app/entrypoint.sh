@@ -9,6 +9,8 @@ echo "Applying database migrations..."
 while ! python manage.py migrate --noinput 2>&1; do
   sleep 0.1
 done
+export DJANGO_SETTINGS_MODULE=myproject.settings
+
 echo "Database migrations applied"
 
 echo "Creating superuser..."

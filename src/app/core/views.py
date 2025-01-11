@@ -23,8 +23,11 @@ from .models import Friendship
 
 logger = logging.getLogger('core')
 
+#logger handlers
+#logger.addHandler(logging.StreamHandler())
+#exemple : logger.info('Hello, world!')
+
 def index(request):
-    logger.info('Index core')
     page = request.GET.get('page', 'home') 
 
     if page == 'login':
@@ -39,7 +42,6 @@ def index(request):
             else:
                 messages.error(request, 'Invalid username or password')
         return render(request, 'my_app/login.html') 
-
     elif page == 'home':
         if not request.user.is_authenticated:
             return redirect('/?page=login')  
@@ -57,12 +59,11 @@ def index(request):
         return render(request, 'my_app/tictactoe.html')
 
     else:
-        return HttpResponseNotFound("Page not found")
+        return render(request, 'my_app/404.html')   
 
 
 @never_cache
 def load_page(request, page_name):
-    logger.info('load_page core')
     if page_name == "login":
         return render(request, 'my_app/login.html')
     elif page_name in ["home", "index", ""]:
@@ -82,7 +83,6 @@ def tictactoe(request):
     return render(request, 'my_app/tictactoe.html')
 
 def login(request):
-    logger.info('login core')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -101,27 +101,26 @@ def logout(request):
     return redirect('/?page=login')
 
 def register(request):
-    logger.info('📢 register() appelée')
-    logger.info(f'📝 Méthode: {request.method}')
-
     if request.method == 'POST':
         logger.info('📨 Formulaire POST reçu')
         form = CustomUserCreationForm(request.POST)
         
         if form.is_valid():
-            logger.info('✅ Formulaire valide, création de l\'utilisateur...')
             form.save()
             return redirect('/?page=login')
         else:
             logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
-        logger.info('🛑 Requête GET, affichage du formulaire')
-        form = CustomUserCreationForm()  # ✅ Crée un formulaire vierge
+        form = CustomUserCreationForm()
 
-    return render(request, 'my_app/register.html', {'form': form})  # ✅ Affiche bien le formulaire
-
+    return render(request, 'my_app/register.html', {'form': form})
 
 
+def custom404(request, exception):
+    return render(request, 'my_app/404.html', status=404)
+
+def test_csrf(request):
+    return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
 
 
 def profile(request):
@@ -134,7 +133,13 @@ def profile(request):
         })
     else:
         return HttpResponse(status=405)
-    
+
+from django.utils.translation import get_language
+
+def test_language(request):
+    logger.info(f"Langue actuelle : {get_language()}")
+    return HttpResponse(f"Langue actuelle : {get_language()}")
+
 
 @login_required
 @csrf_exempt

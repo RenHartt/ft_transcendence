@@ -221,7 +221,6 @@ function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     gameState.gameRunning = false;
 
-    console.log("🛑 Arrêter le jeu Pong");
     let canvas = document.getElementById("pongCanvas");
     let stopGameButton = document.getElementById("stopGameButton");
     let pongScore = document.getElementById("pong-score");
