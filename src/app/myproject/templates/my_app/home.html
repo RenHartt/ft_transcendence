@@ -45,6 +45,7 @@
             <select name="language" id="language">
                 <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
                 <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
+                <option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Espanol</option>
             </select>
             <button type="submit">{% trans "Change language" %}</button>
         </form>

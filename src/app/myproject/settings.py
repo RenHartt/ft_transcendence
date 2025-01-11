@@ -32,6 +32,7 @@ USE_TZ = True
 LANGUAGES = [
     ('en', _('English')),
     ('fr', _('Français')),
+    ('es', _('Español')),
 ]
 ALLOWED_HOSTS = ['*']
 LANGUAGE_COOKIE_NAME = 'django_language'
@@ -163,7 +164,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
-logger.info(f"Langue actuelle : {get_language()}")
 LOCALE_PATHS = [
     BASE_DIR / "myproject/locale", 
 ]
