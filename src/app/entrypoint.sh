@@ -9,7 +9,6 @@ echo "Applying database migrations..."
 while ! python manage.py migrate --noinput 2>&1; do
   sleep 0.1
 done
-export DJANGO_SETTINGS_MODULE=myproject.settings
 
 echo "Database migrations applied"
 
@@ -29,6 +28,8 @@ if not User.objects.filter(username=username).exists():
     print(f"Superuser '{username}' created successfully!")
 END
 echo "Superuser created"
-
+export DJANGO_SETTINGS_MODULE=myproject.settings
+django-admin makemessages -l fr
+django-admin compilemessages
 echo "Starting Django server..."
 exec "$@"
