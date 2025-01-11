@@ -43,10 +43,10 @@
             </header>
         
             <nav class="poulet">
+                <a href="javascript:void(0)" class="menu" onclick="showHistory()">History</a>
                 <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
                 <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
                 <a href="javascript:void(0)" class="menu" onclick="showPong()">Pong</a>
-
                 <button class="login-button menu" id="logout">Logout</button>
             </nav>
             <nav class="burger hidden">
@@ -55,6 +55,10 @@
                     <option value="Tic Tac Toe">Tic Tac Toe</option>
                 </select>
             </nav>
+
+            <div id="history-constainer" class="hidden editProfileForm">
+                <h2>History</h2>
+            </div>
 
             <div id="profile-container" class="hidden">
                 <h2>Profile</h2>
@@ -173,6 +177,7 @@
         <script src="{% static 'tictactoe.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script src="{% static 'pong.js' %}"></script>
+        <script src="{% static 'history.js' %}"></script>
         <script>
             const csrf = "{{ csrf_token }}";
             const staticurl = "{% static '' %}";

@@ -84,7 +84,8 @@ function showTicTacToe() {
     const profileContainer   = document.getElementById('profile-container');
     const profileEditForm    = document.getElementById('profile-edit-form');
     const changePasswordForm = document.getElementById('change-password-form');
-    const friendrequest      = document.getElementById('friend-request-form'); 
+    const friendrequest      = document.getElementById('friend-request-form');
+    const history             = document.getElementById('history-constainer');
 
     if (overlay && modal) {
         overlay.classList.add('active');
@@ -94,6 +95,7 @@ function showTicTacToe() {
     if (profileEditForm) profileEditForm.classList.add('hidden');
     if (changePasswordForm) changePasswordForm.classList.add('hidden');
     if (friendrequest) friendrequest.classList.add('hidden');
+    if (history) history.classList.add('hidden');
 
     console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);

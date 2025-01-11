@@ -7,6 +7,7 @@ function showProfile() {
     const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
     const pongWrapper = document.getElementById('pong-wrapper');
     const addFriendForm = document.getElementById("friend-request-form");
+    const history = document.getElementById('history-constainer');
 
     if (gameState.gameRunning) {
         stopGame();
@@ -26,10 +27,10 @@ function showProfile() {
         profileEditForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
-        addFriendForm.classList.add('hidden'); 
+        addFriendForm.classList.add('hidden');
+        history.classList.add('hidden');
     }
 }
-
 
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
