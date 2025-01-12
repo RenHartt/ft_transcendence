@@ -12,7 +12,7 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             email=email,
-            username=username or "",  # Empêche None
+            username=username or "",
             first_name=extra_fields.pop('first_name', ''),
             last_name=extra_fields.pop('last_name', ''),
             pp_link=extra_fields.pop('pp_link', "https://example.com/default-avatar.jpg"),
@@ -40,8 +40,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(blank=True, null=True, unique=True)  # <- Rendre email optionnel
-    username = models.CharField(max_length=150, blank=False, unique=True)  # <- Obligatoire
+    email = models.EmailField(blank=True, null=True, unique=True) 
+    username = models.CharField(max_length=150, blank=False, unique=True)
     first_name = models.CharField(max_length=30, blank=True)  
     last_name = models.CharField(max_length=30, blank=True)  
     pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")  
@@ -52,8 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'username'  # <- On utilise `username` au lieu de `email`
-    REQUIRED_FIELDS = []  # <- On enlève `email` des champs requis
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []  
 
     class Meta:
         verbose_name = 'User'

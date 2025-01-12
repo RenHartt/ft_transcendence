@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-11 18:39+0000\n"
+"PO-Revision-Date: 2025-01-11 18:39+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Español <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: myproject/settings.py:33
+msgid "English"
+msgstr "Inglés"
+
+#: myproject/settings.py:34
+msgid "Français"
+msgstr "Francés"
+
+#: myproject/settings.py:35
+msgid "Español"
+msgstr "Español"
+
+#: myproject/templates/my_app/home.html:9
+msgid "Home Page"
+msgstr "Página de inicio"
+
+#: myproject/templates/my_app/home.html:20
+#: myproject/templates/my_app/home.html:49
+msgid "Change language"
+msgstr "Cambiar idioma"
+
+#: myproject/templates/my_app/home.html:24
+msgid "Password:"
+msgstr "Contraseña:"
+
+#: myproject/templates/my_app/home.html:44
+msgid "Select Language:"
+msgstr "Seleccionar idioma:"
+
+#: myproject/templates/my_app/home.html:59
+#: myproject/templates/my_app/home.html:67
+msgid "Tic Tac Toe"
+msgstr "Tres en raya"
+
+#: myproject/templates/my_app/home.html:62
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: myproject/templates/my_app/home.html:76
+#: myproject/templates/my_app/home.html:107
+msgid "Email:"
+msgstr "Correo electrónico:"
+
+#: myproject/templates/my_app/home.html:77
+#: myproject/templates/my_app/home.html:101
+msgid "First Name:"
+msgstr "Nombre:"
+
+#: myproject/templates/my_app/home.html:78
+#: myproject/templates/my_app/home.html:104
+msgid "Last Name:"
+msgstr "Apellido:"
+
+#: myproject/templates/my_app/home.html:80
+msgid "Friends"
+msgstr "Amigos"
+
+#: myproject/templates/my_app/home.html:86
+msgid "Friend Requests"
+msgstr "Solicitudes de amistad"
+
+#: myproject/templates/my_app/home.html:93
+msgid "Edit Profile"
+msgstr "Editar perfil"
+
+#: myproject/templates/my_app/home.html:94
+msgid "Add Friend"
+msgstr "Agregar amigo"
+
+#: myproject/templates/my_app/home.html:109
+msgid "Image:"
+msgstr "Imagen:"
+
+#: myproject/templates/my_app/home.html:111
+#: myproject/templates/my_app/home.html:118
+msgid "Change Password"
+msgstr "Cambiar contraseña"
+
+#: myproject/templates/my_app/home.html:112
+#: myproject/templates/my_app/home.html:129
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: myproject/templates/my_app/home.html:113
+#: myproject/templates/my_app/home.html:130
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: myproject/templates/my_app/home.html:120
+msgid "Old Password:"
+msgstr "Contraseña anterior:"
+
+#: myproject/templates/my_app/home.html:123
+msgid "New Password:"
+msgstr "Nueva contraseña:"
+
+#: myproject/templates/my_app/home.html:126
+msgid "Confirm Password:"
+msgstr "Confirmar contraseña:"
+
+#: myproject/templates/my_app/home.html:137
+msgid "Username:"
+msgstr "Nombre de usuario:"
+
+#: myproject/templates/my_app/home.html:139
+msgid "Send Request"
+msgstr "Enviar solicitud"
+
+#: myproject/templates/my_app/home.html:149
+msgid "Two Players"
+msgstr "Dos jugadores"
+
+#: myproject/templates/my_app/home.html:151
+msgid "Stop Game"
+msgstr "Detener juego"
+
+#: myproject/templates/my_app/home.html:152
+#: myproject/templates/my_app/home.html:154
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: myproject/templates/my_app/home.html:155
+msgid "Paddle Color:"
+msgstr "Color de la paleta:"
+
+#: myproject/templates/my_app/home.html:158
+msgid "Ball Color:"
+msgstr "Color de la pelota:"
+
+#: myproject/templates/my_app/home.html:161
+msgid "Ball Speed:"
+msgstr "Velocidad de la pelota:"
+
+#: myproject/templates/my_app/home.html:164
+#: myproject/templates/my_app/home.html:176
+msgid "Close"
+msgstr "Cerrar"
+
+#: myproject/templates/my_app/home.html:169
+msgid "2024 Page de cramptes. Tous droits non-réservés."
+msgstr "2024 Página de cramptes. Todos los derechos no reservados."
+
+#: myproject/templates/my_app/home.html:173
+msgid "Tic-Tac-Toe"
+msgstr "Tres en raya"
+
+#: myproject/templates/my_app/home.html:180
+msgid "Vous devez être connecté pour accéder à cette page."
+msgstr "Debes estar conectado para acceder a esta página."
+
+#: myproject/templates/my_app/home.html:181
+msgid "Se connecter"
+msgstr "Iniciar sesión"

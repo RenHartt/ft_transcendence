@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-12 17:40+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: myproject/settings.py:33
+msgid "English"
+msgstr ""
+
+#: myproject/settings.py:34
+msgid "Français"
+msgstr ""
+
+#: myproject/settings.py:35
+msgid "Español"
+msgstr ""
+
+#: myproject/templates/my_app/home.html:9
+msgid "Home Page"
+msgstr "Page d'accueil"
+
+#: myproject/templates/my_app/home.html:20
+#: myproject/templates/my_app/home.html:50
+msgid "Change language"
+msgstr "Changer de langue"
+
+#: myproject/templates/my_app/home.html:24
+msgid "Password:"
+msgstr "Mot de passe :"
+
+#: myproject/templates/my_app/home.html:44
+msgid "Select Language:"
+msgstr "Sélectionner la langue"
+
+#: myproject/templates/my_app/home.html:60
+#: myproject/templates/my_app/home.html:68
+msgid "Tic Tac Toe"
+msgstr "Morpion"
+
+#: myproject/templates/my_app/home.html:63
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: myproject/templates/my_app/home.html:99
+msgid "First Name:"
+msgstr "Prénom :"
+
+#: myproject/templates/my_app/home.html:102
+msgid "Last Name:"
+msgstr "Nom de famille :"
+
+#: myproject/templates/my_app/home.html:105
+msgid "Email:"
+msgstr "Email :"
+
+#: myproject/templates/my_app/home.html:107
+msgid "Image:"
+msgstr ""
+
+#: myproject/templates/my_app/home.html:109
+#: myproject/templates/my_app/home.html:116
+msgid "Change Password"
+msgstr "Changer le mot de passe"
+
+#: myproject/templates/my_app/home.html:110
+#: myproject/templates/my_app/home.html:127
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+#: myproject/templates/my_app/home.html:111
+#: myproject/templates/my_app/home.html:128
+#: myproject/templates/my_app/home.html:138
+msgid "Cancel"
+msgstr "Annuler"
+
+#: myproject/templates/my_app/home.html:118
+msgid "Old Password:"
+msgstr "Ancien mot de passe :"
+
+#: myproject/templates/my_app/home.html:121
+msgid "New Password:"
+msgstr "Nouveau mot de passe :"
+
+#: myproject/templates/my_app/home.html:124
+msgid "Confirm Password:"
+msgstr "Confirmer le mot de passe :"
+
+#: myproject/templates/my_app/home.html:135
+msgid "Username:"
+msgstr "Nom d'utilisateur :"
+
+#: myproject/templates/my_app/home.html:137
+msgid "Send Request"
+msgstr "Envoyer une demande"
+
+#: myproject/templates/my_app/home.html:147
+msgid "Two Players"
+msgstr "Deux joueurs"
+
+#: myproject/templates/my_app/home.html:149
+msgid "Stop Game"
+msgstr "Arreter le jeu"
+
+#: myproject/templates/my_app/home.html:150
+#: myproject/templates/my_app/home.html:152
+msgid "Settings"
+msgstr "Paramètres"
+
+#: myproject/templates/my_app/home.html:153
+msgid "Paddle Color:"
+msgstr "Couleur de la raquette :"
+
+#: myproject/templates/my_app/home.html:156
+msgid "Ball Color:"
+msgstr "Couleur de la balle :"
+
+#: myproject/templates/my_app/home.html:159
+msgid "Ball Speed:"
+msgstr "Vitesse de la balle :"
+
+#: myproject/templates/my_app/home.html:162
+#: myproject/templates/my_app/home.html:174
+msgid "Close"
+msgstr "Fermer"
+
+#: myproject/templates/my_app/home.html:167
+msgid "2024 Page de cramptes. Tous droits non-réservés."
+msgstr "2024 Page de cramptes. Tous droits non-réservés."
+
+#: myproject/templates/my_app/home.html:171
+msgid "Tic-Tac-Toe"
+msgstr "Morpion"
+
+#: myproject/templates/my_app/home.html:178
+msgid "Vous devez être connecté pour accéder à cette page."
+msgstr ""
+
+#: myproject/templates/my_app/home.html:179
+msgid "Se connecter"
+msgstr ""
+
+#~ msgid "Friends"
+#~ msgstr "Amis"
+
+#~ msgid "Friend Requests"
+#~ msgstr "Demandes d'amis"
+
+#~ msgid "Edit Profile"
+#~ msgstr "Editer le profile"
+
+#~ msgid "Add Friend"
+#~ msgstr "Ajouter un ami"
+
+#~ msgid "Sign Up"
+#~ msgstr "S'inscrire"
+
+#~ msgid "Log In"
+#~ msgstr "Se connecter"
+
+#~ msgid "You must be logged in to access this page."
+#~ msgstr "Vous devez être connecté pour accéder à cette page."

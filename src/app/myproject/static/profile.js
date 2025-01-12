@@ -32,6 +32,7 @@ function showProfile() {
 }
 
 function loadProfile() {
+    console.log('Loading profile data...');
     fetch('/api/profile', {
         method: 'GET',
         credentials: 'include',
@@ -109,6 +110,7 @@ function editProfile() {
         const lastName = document.getElementById('edit-last-name').value;
         const password = document.getElementById('edit-password');
         const confirmPassword = document.getElementById('edit-confirm-password');
+        console.log("Email:", email, "First Name:", firstName, "Last Name:", lastName, "Password:", password, "Confirm Password:", confirmPassword);
         if (password !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
             return;
@@ -140,6 +142,7 @@ function editProfile() {
                 profileContainer.classList.remove('hidden');
             })
             .catch(error => {
+                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors de la mise à jour du profil.");
             });
     });
@@ -149,7 +152,10 @@ function editProfile() {
         profileContainer.classList.remove('hidden');
     });
 
+    
+
     document.getElementById('edit-password-button').addEventListener('click', () => {
+        console.log("🛠 Affichage du formulaire de changement de mot de passe");
         const changePasswordForm = document.getElementById('change-password-form');
         if (!changePasswordForm) {
             return;
@@ -169,6 +175,7 @@ function editProfile() {
     });
 
     document.getElementById('cancelEditButton').addEventListener('click', () => {
+        console.log("🔄 Annulation de l'édition du profil");
         const profileEditForm = document.getElementById('profile-edit-form');
         const profileContainer = document.getElementById('profile-container');
         if (!profileEditForm || !profileContainer) {
@@ -179,6 +186,7 @@ function editProfile() {
     });
 
     document.getElementById('savePasswordButton').addEventListener('click', () => {
+        console.log("🚀 Enregistrement du nouveau mot de passe");
         const oldPassword = document.getElementById('old-password').value;
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
@@ -212,6 +220,7 @@ function editProfile() {
                 document.getElementById('profile-edit-form').classList.remove('hidden');
             })
             .catch(error => {
+                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
     });
@@ -226,6 +235,7 @@ function addFriend() {
     const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
     if (!profileContainer || !addFriendForm || !csrfToken) {
+        console.error("Des éléments nécessaires sont manquants.");
         return;
     }
 
@@ -249,6 +259,7 @@ function addFriend() {
             body: JSON.stringify({ username: friendUsername }),
         })
         .then(response => {
+            console.log("Réponse du serveur :", response);
             if (!response.ok) {
                 return response.json().then(data => {
                     throw new Error(data.error || "Erreur lors de l'ajout de l'ami.");
@@ -262,6 +273,7 @@ function addFriend() {
             profileContainer.classList.remove('hidden');
         })
         .catch(error => {
+            console.error("Erreur :", error);
             alert(error.message || "Une erreur s'est produite lors de la requête.");
         });
     });

@@ -2,24 +2,26 @@
 <html lang="en">
     <head>
         {% load static %}
+        {% load i18n %}
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-        <title>Home Page</title>
+        <title>{% trans "Home Page" %}</title>
         <link rel="stylesheet" href="{% static 'css/index.css' %}">
     </head>
 
     <body>
+
         <section id="login" class="pages">
             <header>
                 <h1>Login</h1>
             </header>
             <form method="post" action="?page=login">
-                {% csrf_token %}
+                <button type="submit">{% trans "Change language" %}</button>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required><br><br>
         
-                <label for="password">Password:</label>
+                <label for="password">{%trans "Password:"%}</label>
                 <input type="password" id="password" name="password" required><br><br>
                 {% if error %}
                     <p class="error">{{ error }}</p>
@@ -37,6 +39,17 @@
         </section>
         <section id="home" class="pages hidden">
         {% if user.is_authenticated %}
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <label for="language">{% trans "Select Language:" %}</label>
+            <select name="language" id="language">
+                <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
+                <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
+                <option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Espanol</option>
+            </select>
+            <button type="submit">{% trans "Change language" %}</button>
+        </form>
+        
             <header>
                 <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
                 <h1>__attribute__</h1>
@@ -44,15 +57,15 @@
         
             <nav class="poulet">
                 <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
-                <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">Tic Tac Toe</a>            
+                <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a>            
                 <a href="javascript:void(0)" class="menu" onclick="showPong()">Pong</a>
 
-                <button class="login-button menu" id="logout">Logout</button>
+                <button class="login-button menu" id="logout">{%trans "Logout"%}</button>
             </nav>
             <nav class="burger hidden">
                 <select name="games" id="games" class="menu">
                     <option value="games" selected disabled>Games</option>
-                    <option value="Tic Tac Toe">Tic Tac Toe</option>
+                    <option value="Tic Tac Toe">{%trans "Tic Tac Toe"%}</option>
                 </select>
             </nav>
 
@@ -77,94 +90,93 @@
             
                 <button id="addFriendButton" onclick="addFriend()">Add Friend</button>
                 <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
-            </div>            
-
-            <div id="friend-request-form" class="editProfileForm hidden">
-                <h2>Add Friend</h2>
-                <form id="addFriendForm" method="post">
-                    {% csrf_token %}
-                    <label for="friend-username">Username:</label>
-                    <input type="text" id="friend-username" name="username" required><br><br>
-                    <button type="button" id="sendFriendRequestButton">Send Request</button>
-                    <button type="button" id="cancelFriendRequestButton">Cancel</button>
-                </form>
-            </div>
+            </div>      
             
             <div id="profile-edit-form" class="editProfileForm hidden">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm" class="editProfileForm">
                     {% csrf_token %}
-                    <label for="edit-first-name">First Name:</label>
+                    <label for="edit-first-name">{%trans "First Name:"%}</label>
                     <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
                     
-                    <label for="edit-last-name">Last Name:</label>
+                    <label for="edit-last-name">{%trans "Last Name:"%}</label>
                     <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
                     
-                    <label for="edit-email">Email:</label>
+                    <label for="edit-email">{%trans "Email:"%}</label>
                     <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
-                    <label for="edit-image">Image:</label>
+                    <label for="edit-image">{%trans "Image:"%}</label>
                     <input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
-                    <button type="button" id="edit-password-button">Change Password</button>
-                    <button type="button" id="saveProfileButton">Save Changes</button>
-                    <button type="button" id="cancelEditButton">Cancel</button>
+                    <button type="button" id="edit-password-button">{%trans "Change Password"%}</button>
+                    <button type="button" id="saveProfileButton">{%trans "Save Changes"%}</button>
+                    <button type="button" id="cancelEditButton">{%trans "Cancel"%}</button>
                 </form>
             </div>
 
             <div id="change-password-form" class="editProfileForm hidden">
-                <h2>Change Password</h2>
+                <h2>{%trans "Change Password"%}</h2>
                 <form id="changePasswordForm">
-                    <label for="old-password">Old Password:</label>
+                    <label for="old-password">{%trans "Old Password:"%}</label>
                     <input type="password" id="old-password" name="old_password" required><br><br>
             
-                    <label for="new-password">New Password:</label>
+                    <label for="new-password">{%trans "New Password:"%}</label>
                     <input type="password" id="new-password" name="new_password" required><br><br>
             
-                    <label for="confirm-password">Confirm Password:</label>
+                    <label for="confirm-password">{%trans "Confirm Password:"%}</label>
                     <input type="password" id="confirm-password" name="confirm_password" required><br><br>
             
-                    <button type="button" id="savePasswordButton">Save Changes</button>
-                    <button type="button" id="cancelPasswordButton">Cancel</button>
+                    <button type="button" id="savePasswordButton">{%trans "Save Changes"%}</button>
+                    <button type="button" id="cancelPasswordButton">{%trans "Cancel"%}</button>
                 </form>
             </div>
 
+            <div id="friend-request-form" class="editProfileForm hidden">
+                <h2>Add Friend</h2>
+                <form id="addFriendForm">
+                    <label for="friend-username">{%trans "Username:"%}</label>
+                    <input type="text" id="friend-username" name="username" required><br><br>
+                    <button type="button" id="sendFriendRequestButton">{%trans "Send Request"%}</button>
+                    <button type="button" id="cancelFriendRequestButton">{%trans "Cancel"%}</button>
+                </form>
+            </div>
+            
             <div id="pong-wrapper" class="hidden editProfileForm">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
                 
                 <div id="pong-container"></div>
                 <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
-                    Two Players
+                    {%trans "Two Players"%}
                 </button>
-                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">Stop Game</button>
-                <button class="PongButton" id="pong-settings-badge" onclick="togglePongSettings()">Settings</button>
+                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">{%trans "Stop Game"%}</button>
+                <button class="PongButton" id="pong-settings-badge" onclick="togglePongSettings()">{%trans "Settings"%}</button>
                 <div id="pong-settings-popup" class="hidden">
-                    <h3>Settings</h3>
-                    <label for="paddleColor">Paddle Color:</label>
+                    <h3>{%trans "Settings"%}</h3>
+                    <label for="paddleColor">{%trans "Paddle Color:"%}</label>
                     <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
                     
-                    <label for="ballColor">Ball Color:</label>
+                    <label for="ballColor">{%trans "Ball Color:"%}</label>
                     <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
                     
-                    <label for="ballSpeed">Ball Speed:</label>
+                    <label for="ballSpeed">{%trans "Ball Speed:"%}</label>
                     <input type="range" id="ballSpeed" min="1" max="10  " value="5" onchange="updateBallSpeed(this.value)">
 
-                    <button onclick="togglePongSettings()">Close</button>
+                    <button onclick="togglePongSettings()">{%trans "Close"%}</button>
                 </div>
             </div>  
 
             <footer>
-                <p>&copy; 2024 Page de cramptes. Tous droits non-réservés.</p>
+                <p>&copy; {%trans "2024 Page de cramptes. Tous droits non-réservés."%}</p>
             </footer>
             <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
             <div id="tic-tac-toe-modal">
-                <h1>Tic-Tac-Toe</h1>
+                <h1>{%trans "Tic-Tac-Toe"%}</h1>
                 <div class="board" id="board"></div>
                 <div class="winner" id="winner"></div>
-                <button id="close-btn" onclick="hideTicTacToe()">Fermer</button>
+                <button id="close-btn" onclick="hideTicTacToe()">{%trans "Close"%}</button>
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
         {% else %}
-            <p>Vous devez être connecté pour accéder à cette page.</p>
-            <a href="?page=login">Se connecter</a>
+            <p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
+            <a href="?page=login">{% trans "Se connecter" %}</a>
         {% endif %}
         </section>
         <script src="{% static 'profile.js' %}"></script>

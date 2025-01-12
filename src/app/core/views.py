@@ -24,6 +24,10 @@ from django.db import models
 
 logger = logging.getLogger('core')
 
+#logger handlers
+#logger.addHandler(logging.StreamHandler())
+#exemple : logger.info('Hello, world!')
+
 def index(request):
     page = request.GET.get('page', 'home') 
 
@@ -39,7 +43,6 @@ def index(request):
             else:
                 messages.error(request, 'Invalid username or password')
         return render(request, 'my_app/login.html') 
-
     elif page == 'home':
         if not request.user.is_authenticated:
             return redirect('/?page=login')  
@@ -57,7 +60,7 @@ def index(request):
         return render(request, 'my_app/tictactoe.html')
 
     else:
-        return HttpResponseNotFound("Page not found")
+        return render(request, 'my_app/404.html')   
 
 
 @never_cache
@@ -81,7 +84,6 @@ def tictactoe(request):
     return render(request, 'my_app/tictactoe.html')
 
 def login(request):
-    logger.info('login core')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -100,22 +102,28 @@ def logout(request):
     return redirect('/?page=login')
 
 def register(request):
-
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         
         if form.is_valid():
-            logger.info('✅ Formulaire valide, création de l\'utilisateur...')
             form.save()
             return redirect('/?page=login')
         else:
             logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
         form = CustomUserCreationForm()  # ✅ Crée un formulaire vierge
+        form = CustomUserCreationForm()
 
-    return render(request, 'my_app/register.html', {'form': form})  # ✅ Affiche bien le formulaire
+    return render(request, 'my_app/register.html', {'form': form})
 
-@login_required
+
+def custom404(request, exception):
+    return render(request, 'my_app/404.html', status=404)
+
+def test_csrf(request):
+    return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
+
+
 def profile(request):
     if request.method == 'GET':
         pending_requests = Friendship.objects.filter(receiver=request.user, is_accepted=False).values(
@@ -136,7 +144,13 @@ def profile(request):
     else:
         return HttpResponse(status=405)
 
-    
+from django.utils.translation import get_language
+
+def test_language(request):
+    logger.info(f"Langue actuelle : {get_language()}")
+    return HttpResponse(f"Langue actuelle : {get_language()}")
+
+
 @login_required
 @csrf_exempt
 def update_profile(request):
@@ -254,4 +268,18 @@ def friend_list(request):
 @login_required
 def friend_requests(request):
     pending_requests = Friendship.objects.filter(receiver=request.user, is_accepted=False)
+    return render('index')
+
+@login_required
+def handleFriendRequest(request, request_id):
+    friendship = get_object_or_404(Friendship, id=request_id, receiver=request.user)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'accept':
+            friendship.is_accepted = True
+            friendship.save()
+            return redirect('friend_requests')
+        elif action == 'decline':
+            friendship.delete()
+            return redirect('friend_requests')
     return render('index')

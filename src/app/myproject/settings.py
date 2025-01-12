@@ -14,6 +14,7 @@ from pathlib import Path
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 import logging
+from django.utils.translation import get_language
 
 logger = logging.getLogger('myproject')
 
@@ -21,9 +22,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
 DEBUG = True
+LANGUAGE_CODE = 'en'  # Langue par défaut
+# Activation de l'internationalisation
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
+# Liste des langues supportées
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('Français')),
+    ('es', _('Español')),
+]
 ALLOWED_HOSTS = ['*']
-
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 31536000 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,  # Désactive les logs par défaut de Django
@@ -73,6 +86,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -120,7 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -131,9 +144,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'myproject/static']
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 SITE_ID = 1
 
 LOGIN_URL = '/login/'
@@ -156,5 +167,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
+LOCALE_PATHS = [
+    BASE_DIR / "myproject/locale", 
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
