@@ -56,32 +56,40 @@
                 </select>
             </nav>
 
-            <div id="profile-container" class="hidden">
+            <div id="profile-container">
                 <h2>Profile</h2>
                 <img src="{{ user.pp_link }}" alt="Profile Picture" 
-                style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
-                           <p>Username: {{ user.username }}</p>
-                <p>Email: {{ user.email }}</p>
-                <p>First Name: {{ user.first_name }}</p>
-                <p>Last Name: {{ user.last_name }}</p>
-
-                <h2>Friends</h2>
-                <ul id="friends-list" >
-                    {% for friend in friends %}
-                        <li>{{ friend.username }}</li>
-                    {% endfor %}
+                     style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
+                <p>Username: <span id="profile-username">{{ user.username }}</span></p>
+                <p>Email: <span id="profile-email">{{ user.email }}</span></p>
+                <p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
+                <p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
+            
+                <h3>Friends</h3>
+                <ul id="friends-list">
+                    <li>Loading friends...</li>
                 </ul>
-                <h2>Friend Requests</h2>
-                <ul id="friend-requests">
-                    {% for request in friend_requests %}
-                        <li>{{ request.username }}</li>
-                    {% endfor %}
+            
+                <h3>Pending Friend Requests</h3>
+                <ul id="friend-requests-list">
+                    <li>Loading friend requests...</li>
                 </ul>
-
-                <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+            
                 <button id="addFriendButton" onclick="addFriend()">Add Friend</button>
-            </div>
+                <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+            </div>            
 
+            <div id="friend-request-form" class="editProfileForm hidden">
+                <h2>Add Friend</h2>
+                <form id="addFriendForm" method="post">
+                    {% csrf_token %}
+                    <label for="friend-username">Username:</label>
+                    <input type="text" id="friend-username" name="username" required><br><br>
+                    <button type="button" id="sendFriendRequestButton">Send Request</button>
+                    <button type="button" id="cancelFriendRequestButton">Cancel</button>
+                </form>
+            </div>
+            
             <div id="profile-edit-form" class="editProfileForm hidden">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm" class="editProfileForm">
@@ -119,16 +127,6 @@
                 </form>
             </div>
 
-            <div id="friend-request-form" class="editProfileForm hidden">
-                <h2>Add Friend</h2>
-                <form id="addFriendForm">
-                    <label for="friend-username">Username:</label>
-                    <input type="text" id="friend-username" name="username" required><br><br>
-                    <button type="button" id="sendFriendRequestButton">Send Request</button>
-                    <button type="button" id="cancelFriendRequestButton">Cancel</button>
-                </form>
-            </div>
-            
             <div id="pong-wrapper" class="hidden editProfileForm">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
                 

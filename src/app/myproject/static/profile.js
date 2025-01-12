@@ -1,4 +1,3 @@
-
 function showProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
@@ -28,8 +27,71 @@ function showProfile() {
         profileContainer.classList.remove('hidden');
         addFriendForm.classList.add('hidden'); 
     }
+
+    loadProfile();
 }
 
+function loadProfile() {
+    fetch('/api/profile', {
+        method: 'GET',
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch profile data');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Profile data:', data);
+
+        document.getElementById('profile-username').textContent = data.username;
+        document.getElementById('profile-email').textContent = data.email || 'N/A';
+        document.getElementById('profile-first-name').textContent = data.first_name || 'N/A';
+        document.getElementById('profile-last-name').textContent = data.last_name || 'N/A';
+
+        const friendsList = document.getElementById('friends-list');
+        friendsList.innerHTML = '';
+        if (data.friends.length > 0) {
+            data.friends.forEach(friend => {
+                const li = document.createElement('li');
+                friend.requester__username === data.username ?
+                    li.innerHTML = `<strong>${friend.receiver__username}</strong>` :
+                    li.innerHTML = `<strong>${friend.requester__username}</strong>`;
+                friendsList.appendChild(li);
+            });
+        } else {
+            friendsList.innerHTML = '<li>No friends yet.</li>';
+        }
+
+        const friendRequestsList = document.getElementById('friend-requests-list');
+        friendRequestsList.innerHTML = '';
+        if (data.pending_requests.length > 0) {
+            data.pending_requests.forEach(request => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${request.requester__username}</strong>
+                    <button class="accept-btn" data-request-id="${request.id}">Accept</button>
+                    <button class="decline-btn" data-request-id="${request.id}">Decline</button>
+                `;
+                friendRequestsList.appendChild(li);
+            });
+        } else {
+            friendRequestsList.innerHTML = '<li>No pending friend requests.</li>';
+        }
+
+        document.querySelectorAll('.accept-btn').forEach(button => {
+            button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, true));
+        });
+
+        document.querySelectorAll('.decline-btn').forEach(button => {
+            button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, false));
+        });
+    })
+    .catch(error => {
+        console.error('Error loading profile:', error);
+    });
+}
 
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
@@ -47,7 +109,6 @@ function editProfile() {
         const lastName = document.getElementById('edit-last-name').value;
         const password = document.getElementById('edit-password');
         const confirmPassword = document.getElementById('edit-confirm-password');
-        console.log("Email:", email, "First Name:", firstName, "Last Name:", lastName, "Password:", password, "Confirm Password:", confirmPassword);
         if (password !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
             return;
@@ -79,7 +140,6 @@ function editProfile() {
                 profileContainer.classList.remove('hidden');
             })
             .catch(error => {
-                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors de la mise à jour du profil.");
             });
     });
@@ -89,10 +149,7 @@ function editProfile() {
         profileContainer.classList.remove('hidden');
     });
 
-    
-
     document.getElementById('edit-password-button').addEventListener('click', () => {
-        console.log("🛠 Affichage du formulaire de changement de mot de passe");
         const changePasswordForm = document.getElementById('change-password-form');
         if (!changePasswordForm) {
             return;
@@ -112,7 +169,6 @@ function editProfile() {
     });
 
     document.getElementById('cancelEditButton').addEventListener('click', () => {
-        console.log("🔄 Annulation de l'édition du profil");
         const profileEditForm = document.getElementById('profile-edit-form');
         const profileContainer = document.getElementById('profile-container');
         if (!profileEditForm || !profileContainer) {
@@ -123,7 +179,6 @@ function editProfile() {
     });
 
     document.getElementById('savePasswordButton').addEventListener('click', () => {
-        console.log("🚀 Enregistrement du nouveau mot de passe");
         const oldPassword = document.getElementById('old-password').value;
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
@@ -157,7 +212,6 @@ function editProfile() {
                 document.getElementById('profile-edit-form').classList.remove('hidden');
             })
             .catch(error => {
-                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
     });
@@ -166,49 +220,82 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const overlay = document.getElementById('overlay');
-    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
-    const pongWrapper = document.getElementById('pong-wrapper');
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); // CSRF token
+    const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
+    const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    if (!profileContainer || !addFriendForm) return;
-    if (gameState.gameRunning) {
-        stopGame();
+    if (!profileContainer || !addFriendForm || !csrfToken) {
+        return;
     }
-    if (gameActive) {
-        hideTicTacToe();
-    }
-    overlay.classList.remove('active');
-    ticTacToeModal.classList.remove('active');
-    pongWrapper.style.display = 'none';
-    profileEditForm.classList.add('hidden');
-    changePasswordForm.classList.add('hidden');
+
     profileContainer.classList.add('hidden');
     addFriendForm.classList.remove('hidden');
 
-    document.getElementById('sendFriendRequestButton').addEventListener('click', () => {
-        const friendUsername = document.getElementById('friend-username').value;
-        fetch('/api/add-friend', {
+    sendFriendRequestButton.addEventListener('click', () => {
+        const friendUsername = document.getElementById('friend-username')?.value;
+        if (!friendUsername) {
+            alert("Veuillez entrer un nom d'utilisateur.");
+            return;
+        }
+
+        fetch('/api/send-friend-request/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrf,
+                'X-CSRFToken': csrfToken,
             },
+            credentials: 'include',
             body: JSON.stringify({ username: friendUsername }),
         })
-        .then(response => response.ok ? response.json() : Promise.reject('Erreur'))
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || "Erreur lors de l'ajout de l'ami.");
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-            alert("Ami ajouté avec succès.");
+            alert(data.message || "Ami ajouté avec succès.");
             addFriendForm.classList.add('hidden');
             profileContainer.classList.remove('hidden');
         })
-        .catch(error => alert("Une erreur s'est produite."));
-        console.log("Username:", friendUsername);
+        .catch(error => {
+            alert(error.message || "Une erreur s'est produite lors de la requête.");
+        });
     });
 
-    document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {
+    cancelFriendRequestButton.addEventListener('click', () => {
         addFriendForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
+    });
+}
+
+function handleFriendRequest(requestId, accept) {
+    const url = accept
+        ? `/api/accept-friend-request/${requestId}/`
+        : `/api/decline-friend-request/${requestId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+        },
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to handle friend request');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message || 'Action successful');
+        loadProfile();
+    })
+    .catch(error => {
+        console.error('Error handling friend request:', error);
+        alert('Failed to handle friend request');
     });
 }

@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    
     'core',
 ]
 
@@ -142,6 +143,8 @@ LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+
 SOCIAL_AUTH_42_KEY = 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70'
 SOCIAL_AUTH_42_SECRET = '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'
 SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
@@ -153,6 +156,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
