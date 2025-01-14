@@ -33,8 +33,6 @@ function showProfile() {
     loadProfile();
 }
 
-<<<<<<< HEAD
-=======
 function loadProfile() {
     console.log('Loading profile data...');
     fetch('/api/profile', {
@@ -109,7 +107,6 @@ function loadProfile() {
     });
 }
 
->>>>>>> main
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
