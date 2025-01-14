@@ -283,3 +283,13 @@ def handleFriendRequest(request, request_id):
             friendship.delete()
             return redirect('friend_requests')
     return render('index')
+
+@login_required
+def remove_friend(request, friend_id):
+    if request.method == 'POST':
+        logger.info(f"Suppression de l'ami {friend_id}")
+        friendship = get_object_or_404(Friendship, id=friend_id, is_accepted=True)
+        friendship.delete()
+        return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
+
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)

@@ -55,10 +55,15 @@ function loadProfile() {
         friendsList.innerHTML = '';
         if (data.friends.length > 0) {
             data.friends.forEach(friend => {
+                const isRequester = friend.requester__username === data.username; // Vérifie si l'utilisateur est le demandeur
+                    const friendName = isRequester
+                        ? friend.receiver__username // Si demandeur, l'ami est le destinataire
+                        : friend.requester__username; // Sinon, l'ami est le demandeur
                 const li = document.createElement('li');
-                friend.requester__username === data.username ?
-                    li.innerHTML = `<strong>${friend.receiver__username}</strong>` :
-                    li.innerHTML = `<strong>${friend.requester__username}</strong>`;
+                li.innerHTML = `
+                    <strong>${friendName}</strong>
+                    <button class="remove-btn" data-friend-id="${friend.id}">Remove</button>
+                    `;
                 friendsList.appendChild(li);
             });
         } else {
@@ -87,6 +92,10 @@ function loadProfile() {
 
         document.querySelectorAll('.decline-btn').forEach(button => {
             button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, false));
+        });
+
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', () => remove_friend(button.dataset.friendId));
         });
     })
     .catch(error => {
@@ -309,5 +318,28 @@ function handleFriendRequest(requestId, accept) {
     .catch(error => {
         console.error('Error handling friend request:', error);
         alert('Failed to handle friend request');
+    });
+}
+
+function remove_friend(friendId) {
+    fetch(`/api/remove-friend/${friendId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+        },
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to remove friend');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message || 'Friend removed');
+        loadProfile();
+    })
+    .catch(error => {
+        alert('Failed to remove friend');
     });
 }
