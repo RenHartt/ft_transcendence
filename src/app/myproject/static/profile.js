@@ -55,12 +55,14 @@ function loadProfile() {
         friendsList.innerHTML = '';
         if (data.friends.length > 0) {
             data.friends.forEach(friend => {
-                const isRequester = friend.requester__username === data.username; // Vérifie si l'utilisateur est le demandeur
+                const isRequester = friend.requester__username === data.username;
                     const friendName = isRequester
-                        ? friend.receiver__username // Si demandeur, l'ami est le destinataire
-                        : friend.requester__username; // Sinon, l'ami est le demandeur
-                const li = document.createElement('li');
+                        ? friend.receiver__username
+                        : friend.requester__username;
+                    const friendStatus = friend.is_online ? '🟢' : '🔴';
+                    const li = document.createElement('li');
                 li.innerHTML = `
+                    <span class="status">${friendStatus}</span>
                     <strong>${friendName}</strong>
                     <button class="remove-btn" data-friend-id="${friend.id}">Remove</button>
                     `;

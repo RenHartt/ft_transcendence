@@ -21,6 +21,9 @@ from .models import Friendship
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db import models
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.core.cache import cache
 
 logger = logging.getLogger('core')
 
@@ -140,6 +143,7 @@ def profile(request):
             'last_name': request.user.last_name,
             'pending_requests': list(pending_requests),
             'friends': list(friends),
+            'is_online': cache.get(f"user_{request.user.id}_status"),
         })
     else:
         return HttpResponse(status=405)
@@ -293,3 +297,11 @@ def remove_friend(request, friend_id):
         return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, user, **kwargs):
+    cache.set(f"user_{user.id}_status", "online", 60*5)
+
+@receiver(user_logged_out)
+def on_user_logged_out(sender, request, user, **kwargs):
+    cache.delete(f"user_{user.id}_status")
