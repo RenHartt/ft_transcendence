@@ -72,7 +72,6 @@ function replayGame() {
     createBoard(staticUrls);
 }
 
-
 function showTicTacToe() {
     if (gameState.gameRunning) {
         stopGame();
@@ -98,7 +97,6 @@ function showTicTacToe() {
     console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);
 }
-
 
 function hideTicTacToe() {
     gameActive = false;

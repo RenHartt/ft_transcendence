@@ -31,6 +31,20 @@ function showProfile() {
     loadProfile();
 }
 
+var templates = {};
+templates.friendElement = document.createElement('li');
+templates.friendElement.innerHTML = `
+    <span class="profile-status"></span>
+    <strong></strong>
+    <button class="remove-btn" data-friend-id="">Remove</button>
+`;
+templates.friendRequestElement = document.createElement('li');
+templates.friendRequestElement.innerHTML = `
+    <strong></strong>
+    <button class="accept-btn" data-request-id="">Accept</button>
+    <button class="decline-btn" data-request-id="">Decline</button>
+`;
+
 function loadProfile() {
     console.log('Loading profile data...');
     fetch('/api/profile', {
@@ -44,28 +58,23 @@ function loadProfile() {
         return response.json();
     })
     .then(data => {
-        console.log('Profile data:', data);
-
         document.getElementById('profile-username').textContent = data.username;
         document.getElementById('profile-email').textContent = data.email || 'N/A';
         document.getElementById('profile-first-name').textContent = data.first_name || 'N/A';
         document.getElementById('profile-last-name').textContent = data.last_name || 'N/A';
-
+        const isLoggedUser = data.is_logged_in;
+        console.log("isLoggedUser:", isLoggedUser);
         const friendsList = document.getElementById('friends-list');
         friendsList.innerHTML = '';
         if (data.friends.length > 0) {
             data.friends.forEach(friend => {
                 const isRequester = friend.requester__username === data.username;
-                    const friendName = isRequester
-                        ? friend.receiver__username
-                        : friend.requester__username;
-                    const friendStatus = friend.is_online ? '🟢' : '🔴';
-                    const li = document.createElement('li');
-                li.innerHTML = `
-                    <span class="status">${friendStatus}</span>
-                    <strong>${friendName}</strong>
-                    <button class="remove-btn" data-friend-id="${friend.id}">Remove</button>
-                    `;
+                const friendName = isRequester ? friend.receiver__username : friend.requester__username;
+                const friendStatus = isRequester ? friend.receiver__is_logged_in : friend.requester__is_logged_in;
+                const li = templates.friendElement.cloneNode(true);
+                li.querySelector('.profile-status').innerText = friendStatus ? '🟢' : '🔴';
+                li.querySelector('strong').innerText = friendName;
+                li.querySelector('.remove-btn').dataset.friendId = friend.id;
                 friendsList.appendChild(li);
             });
         } else {
@@ -76,12 +85,10 @@ function loadProfile() {
         friendRequestsList.innerHTML = '';
         if (data.pending_requests.length > 0) {
             data.pending_requests.forEach(request => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <strong>${request.requester__username}</strong>
-                    <button class="accept-btn" data-request-id="${request.id}">Accept</button>
-                    <button class="decline-btn" data-request-id="${request.id}">Decline</button>
-                `;
+                const li = templates.friendRequestElement.cloneNode(true);
+                li.querySelector('strong').innerText = request.requester__username;
+                li.querySelector('.accept-btn').dataset.requestId = request.id;
+                li.querySelector('.decline-btn').dataset.requestId = request.id;
                 friendRequestsList.appendChild(li);
             });
         } else {
@@ -163,10 +170,7 @@ function editProfile() {
         profileContainer.classList.remove('hidden');
     });
 
-    
-
     document.getElementById('edit-password-button').addEventListener('click', () => {
-        console.log("🛠 Affichage du formulaire de changement de mot de passe");
         const changePasswordForm = document.getElementById('change-password-form');
         if (!changePasswordForm) {
             return;
@@ -186,7 +190,6 @@ function editProfile() {
     });
 
     document.getElementById('cancelEditButton').addEventListener('click', () => {
-        console.log("🔄 Annulation de l'édition du profil");
         const profileEditForm = document.getElementById('profile-edit-form');
         const profileContainer = document.getElementById('profile-container');
         if (!profileEditForm || !profileContainer) {
@@ -197,7 +200,6 @@ function editProfile() {
     });
 
     document.getElementById('savePasswordButton').addEventListener('click', () => {
-        console.log("🚀 Enregistrement du nouveau mot de passe");
         const oldPassword = document.getElementById('old-password').value;
         const newPassword = document.getElementById('new-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;

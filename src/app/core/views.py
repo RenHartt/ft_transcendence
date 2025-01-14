@@ -27,10 +27,6 @@ from django.core.cache import cache
 
 logger = logging.getLogger('core')
 
-#logger handlers
-#logger.addHandler(logging.StreamHandler())
-#exemple : logger.info('Hello, world!')
-
 def index(request):
     page = request.GET.get('page', 'home') 
 
@@ -64,7 +60,6 @@ def index(request):
 
     else:
         return render(request, 'my_app/404.html')   
-
 
 @never_cache
 def load_page(request, page_name):
@@ -114,11 +109,10 @@ def register(request):
         else:
             logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
-        form = CustomUserCreationForm()  # ✅ Crée un formulaire vierge
+        form = CustomUserCreationForm()
         form = CustomUserCreationForm()
 
     return render(request, 'my_app/register.html', {'form': form})
-
 
 def custom404(request, exception):
     return render(request, 'my_app/404.html', status=404)
@@ -129,21 +123,30 @@ def test_csrf(request):
 
 def profile(request):
     if request.method == 'GET':
-        pending_requests = Friendship.objects.filter(receiver=request.user, is_accepted=False).values(
-            'id', 'requester__username', 'requester__first_name', 'requester__last_name'
-        )
+        pending_requests = Friendship.objects.filter(
+            receiver=request.user, is_accepted=False
+            ).values(
+            'id',
+            'requester__username',
+            )
         friends = Friendship.objects.filter(
             (models.Q(requester=request.user) | models.Q(receiver=request.user)) & models.Q(is_accepted=True)
-        ).values('id', 'requester__username', 'receiver__username')
+        ).values(
+            'id',
+            'requester__username',
+            'receiver__username',
+            'requester__is_logged_in',
+            'receiver__is_logged_in',
+            )
 
         return JsonResponse({
             'username': request.user.username,
             'email': request.user.email,
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
+            'is_logged_in': request.user.is_logged_in,
             'pending_requests': list(pending_requests),
             'friends': list(friends),
-            'is_online': cache.get(f"user_{request.user.id}_status"),
         })
     else:
         return HttpResponse(status=405)
@@ -153,7 +156,6 @@ from django.utils.translation import get_language
 def test_language(request):
     logger.info(f"Langue actuelle : {get_language()}")
     return HttpResponse(f"Langue actuelle : {get_language()}")
-
 
 @login_required
 @csrf_exempt
@@ -199,7 +201,6 @@ def change_password(request):
 @csrf_exempt 
 @login_required 
 def save_profile(request):
-    """Mise à jour du profil utilisateur"""
     if request.method == 'POST':
         user = request.user 
 
@@ -297,11 +298,3 @@ def remove_friend(request, friend_id):
         return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
-
-@receiver(user_logged_in)
-def on_user_logged_in(sender, request, user, **kwargs):
-    cache.set(f"user_{user.id}_status", "online", 60*5)
-
-@receiver(user_logged_out)
-def on_user_logged_out(sender, request, user, **kwargs):
-    cache.delete(f"user_{user.id}_status")
