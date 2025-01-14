@@ -1,4 +1,3 @@
-
 function showProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
@@ -30,8 +29,87 @@ function showProfile() {
         addFriendForm.classList.add('hidden');
         history.classList.add('hidden');
     }
+
+    loadProfile();
 }
 
+<<<<<<< HEAD
+=======
+function loadProfile() {
+    console.log('Loading profile data...');
+    fetch('/api/profile', {
+        method: 'GET',
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch profile data');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Profile data:', data);
+
+        document.getElementById('profile-username').textContent = data.username;
+        document.getElementById('profile-email').textContent = data.email || 'N/A';
+        document.getElementById('profile-first-name').textContent = data.first_name || 'N/A';
+        document.getElementById('profile-last-name').textContent = data.last_name || 'N/A';
+
+        const friendsList = document.getElementById('friends-list');
+        friendsList.innerHTML = '';
+        if (data.friends.length > 0) {
+            data.friends.forEach(friend => {
+                const isRequester = friend.requester__username === data.username;
+                    const friendName = isRequester
+                        ? friend.receiver__username
+                        : friend.requester__username;
+                    const friendStatus = friend.is_online ? '🟢' : '🔴';
+                    const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="status">${friendStatus}</span>
+                    <strong>${friendName}</strong>
+                    <button class="remove-btn" data-friend-id="${friend.id}">Remove</button>
+                    `;
+                friendsList.appendChild(li);
+            });
+        } else {
+            friendsList.innerHTML = '<li>No friends yet.</li>';
+        }
+
+        const friendRequestsList = document.getElementById('friend-requests-list');
+        friendRequestsList.innerHTML = '';
+        if (data.pending_requests.length > 0) {
+            data.pending_requests.forEach(request => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${request.requester__username}</strong>
+                    <button class="accept-btn" data-request-id="${request.id}">Accept</button>
+                    <button class="decline-btn" data-request-id="${request.id}">Decline</button>
+                `;
+                friendRequestsList.appendChild(li);
+            });
+        } else {
+            friendRequestsList.innerHTML = '<li>No pending friend requests.</li>';
+        }
+
+        document.querySelectorAll('.accept-btn').forEach(button => {
+            button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, true));
+        });
+
+        document.querySelectorAll('.decline-btn').forEach(button => {
+            button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, false));
+        });
+
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', () => remove_friend(button.dataset.friendId));
+        });
+    })
+    .catch(error => {
+        console.error('Error loading profile:', error);
+    });
+}
+
+>>>>>>> main
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
@@ -167,49 +245,108 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const overlay = document.getElementById('overlay');
-    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
-    const pongWrapper = document.getElementById('pong-wrapper');
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); // CSRF token
+    const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
+    const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    if (!profileContainer || !addFriendForm) return;
-    if (gameState.gameRunning) {
-        stopGame();
+    if (!profileContainer || !addFriendForm || !csrfToken) {
+        console.error("Des éléments nécessaires sont manquants.");
+        return;
     }
-    if (gameActive) {
-        hideTicTacToe();
-    }
-    overlay.classList.remove('active');
-    ticTacToeModal.classList.remove('active');
-    pongWrapper.style.display = 'none';
-    profileEditForm.classList.add('hidden');
-    changePasswordForm.classList.add('hidden');
+
     profileContainer.classList.add('hidden');
     addFriendForm.classList.remove('hidden');
 
-    document.getElementById('sendFriendRequestButton').addEventListener('click', () => {
-        const friendUsername = document.getElementById('friend-username').value;
-        fetch('/api/add-friend', {
+    sendFriendRequestButton.addEventListener('click', () => {
+        const friendUsername = document.getElementById('friend-username')?.value;
+        if (!friendUsername) {
+            alert("Veuillez entrer un nom d'utilisateur.");
+            return;
+        }
+
+        fetch('/api/send-friend-request/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrf,
+                'X-CSRFToken': csrfToken,
             },
+            credentials: 'include',
             body: JSON.stringify({ username: friendUsername }),
         })
-        .then(response => response.ok ? response.json() : Promise.reject('Erreur'))
+        .then(response => {
+            console.log("Réponse du serveur :", response);
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || "Erreur lors de l'ajout de l'ami.");
+                });
+            }
+            return response.json();
+        })
         .then(data => {
-            alert("Ami ajouté avec succès.");
+            alert(data.message || "Ami ajouté avec succès.");
             addFriendForm.classList.add('hidden');
             profileContainer.classList.remove('hidden');
         })
-        .catch(error => alert("Une erreur s'est produite."));
-        console.log("Username:", friendUsername);
+        .catch(error => {
+            console.error("Erreur :", error);
+            alert(error.message || "Une erreur s'est produite lors de la requête.");
+        });
     });
 
-    document.getElementById('cancelFriendRequestButton').addEventListener('click', () => {
+    cancelFriendRequestButton.addEventListener('click', () => {
         addFriendForm.classList.add('hidden');
         profileContainer.classList.remove('hidden');
+    });
+}
+
+function handleFriendRequest(requestId, accept) {
+    const url = accept
+        ? `/api/accept-friend-request/${requestId}/`
+        : `/api/decline-friend-request/${requestId}/`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+        },
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to handle friend request');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message || 'Action successful');
+        loadProfile();
+    })
+    .catch(error => {
+        console.error('Error handling friend request:', error);
+        alert('Failed to handle friend request');
+    });
+}
+
+function remove_friend(friendId) {
+    fetch(`/api/remove-friend/${friendId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrf,
+        },
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to remove friend');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message || 'Friend removed');
+        loadProfile();
+    })
+    .catch(error => {
+        alert('Failed to remove friend');
     });
 }

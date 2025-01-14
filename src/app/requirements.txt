@@ -3,3 +3,5 @@ psycopg2-binary>=2.9
 django-allauth
 python-decouple
 social-auth-app-django>=5.0.0
+polib
+django-modeltranslation

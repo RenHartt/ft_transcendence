@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, User
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     def _create_user(self, username=None, email=None, password=None, **extra_fields):
@@ -12,7 +12,7 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             email=email,
-            username=username or "",  # Empêche None
+            username=username or "",
             first_name=extra_fields.pop('first_name', ''),
             last_name=extra_fields.pop('last_name', ''),
             pp_link=extra_fields.pop('pp_link', "https://example.com/default-avatar.jpg"),
@@ -40,8 +40,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(blank=True, null=True, unique=True)  # <- Rendre email optionnel
-    username = models.CharField(max_length=150, blank=False, unique=True)  # <- Obligatoire
+    email = models.EmailField(blank=True, null=True, unique=True) 
+    username = models.CharField(max_length=150, blank=False, unique=True)
     first_name = models.CharField(max_length=30, blank=True)  
     last_name = models.CharField(max_length=30, blank=True)  
     pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")  
@@ -52,8 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'username'  # <- On utilise `username` au lieu de `email`
-    REQUIRED_FIELDS = []  # <- On enlève `email` des champs requis
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []  
 
     class Meta:
         verbose_name = 'User'
@@ -65,15 +65,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name or self.username
 
-
-
 class Friendship(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friends')
-    friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friend_of')
+    requester = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        related_name="friendship_requests_sent",
+        on_delete=models.CASCADE
+    )
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        related_name="friendship_requests_received",
+        on_delete=models.CASCADE
+    )
+    is_accepted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'friend')
-
-    def __str__(self):
-        return f"{self.user.username} is friends with {self.friend.username}"
+        unique_together = ('requester', 'receiver')

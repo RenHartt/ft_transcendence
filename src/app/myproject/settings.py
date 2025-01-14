@@ -14,6 +14,7 @@ from pathlib import Path
 from decouple import config
 from django.utils.translation import gettext_lazy as _
 import logging
+from django.utils.translation import get_language
 
 logger = logging.getLogger('myproject')
 
@@ -21,9 +22,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
 DEBUG = True
+LANGUAGE_CODE = 'en'  # Langue par défaut
+# Activation de l'internationalisation
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
+# Liste des langues supportées
+LANGUAGES = [
+    ('en', _('English')),
+    ('fr', _('Français')),
+    ('es', _('Español')),
+]
 ALLOWED_HOSTS = ['*']
-
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 31536000 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,  # Désactive les logs par défaut de Django
@@ -60,6 +73,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    
     'core',
 ]
 
@@ -72,6 +86,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -119,7 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -130,9 +144,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'myproject/static']
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 SITE_ID = 1
 
 LOGIN_URL = '/login/'
@@ -142,6 +154,8 @@ LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+
 SOCIAL_AUTH_42_KEY = 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70'
 SOCIAL_AUTH_42_SECRET = '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'
 SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
@@ -153,6 +167,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'core.User'
-
+LOCALE_PATHS = [
+    BASE_DIR / "myproject/locale", 
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
