@@ -1,196 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        {% load static %}
-        {% load i18n %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-        <title>{% trans "Home Page" %}</title>
-        <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    </head>
+	<head>
+		{% load static %}
+		{% load i18n %}
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+		<title>{% trans "Home Page" %}</title>
+		<link rel="stylesheet" href="{% static 'css/index.css' %}">
+	</head>
 
-    <body>
+	<body>
 
-        <section id="login" class="pages">
-            <header>
-                <h1>Login</h1>
-            </header>
-            <form method="post" action="?page=login">
-                <button type="submit">{% trans "Change language" %}</button>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br><br>
-        
-                <label for="password">{%trans "Password:"%}</label>
-                <input type="password" id="password" name="password" required><br><br>
-                {% if error %}
-                    <p class="error">{{ error }}</p>
-                {% endif %}
-                <button type="submit">Log In</button>
-            </form>
-            
-            <p>Or</p>
-            <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
-                <img src="{% static 'images/42.png' %}" alt="42 Logo">
-                Log In with 42
-            </a>
-            
-            <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
-        </section>
-        <section id="home" class="pages hidden">
-        {% if user.is_authenticated %}
-        <form action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <label for="language">{% trans "Select Language:" %}</label>
-            <select name="language" id="language">
-                <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
-                <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
-                <option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Espanol</option>
-            </select>
-            <button type="submit">{% trans "Change language" %}</button>
-        </form>
-        
-            <header>
-                <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
-                <h1>__attribute__</h1>
-            </header>
-        
-            <nav class="poulet">
-                <a href="javascript:void(0)" class="menu" onclick="showProfile()">Profile</a>
-                <a href="javascript:void(0)" class="menu" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a>            
-                <a href="javascript:void(0)" class="menu" onclick="showPong()">Pong</a>
+		<section id="login" class="pages">
+			<header>
+				<h1>Login</h1>
+			</header>
+			<form method="post" action="?page=login">
+				<button type="submit">{% trans "Change language" %}</button>
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required><br><br>
 
-                <button class="login-button menu" id="logout">{%trans "Logout"%}</button>
-            </nav>
-            <nav class="burger hidden">
-                <select name="games" id="games" class="menu">
-                    <option value="games" selected disabled>Games</option>
-                    <option value="Tic Tac Toe">{%trans "Tic Tac Toe"%}</option>
-                </select>
-            </nav>
+				<label for="password">{%trans "Password:"%}</label>
+				<input type="password" id="password" name="password" required><br><br>
+				{% if error %}
+				<p class="error">{{ error }}</p>
+				{% endif %}
+				<button type="submit">Log In</button>
+			</form>
 
-            <div id="profile-container">
-                <h2>Profile</h2>
-                <img src="{{ user.pp_link }}" alt="Profile Picture" 
-                     style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
-                <p>Username: <span id="profile-username">{{ user.username }}</span></p>
-                <p>Email: <span id="profile-email">{{ user.email }}</span></p>
-                <p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
-                <p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
-            
-                <h3>Friends</h3>
-                <ul id="friends-list">
-                    <li>Loading friends...</li>
-                </ul>
-            
-                <h3>Pending Friend Requests</h3>
-                <ul id="friend-requests-list">
-                    <li>Loading friend requests...</li>
-                </ul>
-            
-                <button id="addFriendButton" onclick="addFriend()">Add Friend</button>
-                <button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
-            </div>      
-            
-            <div id="profile-edit-form" class="editProfileForm hidden">
-                <h2>Edit Profile</h2>
-                <form id="editProfileForm" class="editProfileForm">
-                    {% csrf_token %}
-                    <label for="edit-first-name">{%trans "First Name:"%}</label>
-                    <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
-                    
-                    <label for="edit-last-name">{%trans "Last Name:"%}</label>
-                    <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
-                    
-                    <label for="edit-email">{%trans "Email:"%}</label>
-                    <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
-                    <label for="edit-image">{%trans "Image:"%}</label>
-                    <input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
-                    <button type="button" id="edit-password-button">{%trans "Change Password"%}</button>
-                    <button type="button" id="saveProfileButton">{%trans "Save Changes"%}</button>
-                    <button type="button" id="cancelEditButton">{%trans "Cancel"%}</button>
-                </form>
-            </div>
+			<p>Or</p>
+			<a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+				<img src="{% static 'images/42.png' %}" alt="42 Logo">
+				Log In with 42
+			</a>
 
-            <div id="change-password-form" class="editProfileForm hidden">
-                <h2>{%trans "Change Password"%}</h2>
-                <form id="changePasswordForm">
-                    <label for="old-password">{%trans "Old Password:"%}</label>
-                    <input type="password" id="old-password" name="old_password" required><br><br>
-            
-                    <label for="new-password">{%trans "New Password:"%}</label>
-                    <input type="password" id="new-password" name="new_password" required><br><br>
-            
-                    <label for="confirm-password">{%trans "Confirm Password:"%}</label>
-                    <input type="password" id="confirm-password" name="confirm_password" required><br><br>
-            
-                    <button type="button" id="savePasswordButton">{%trans "Save Changes"%}</button>
-                    <button type="button" id="cancelPasswordButton">{%trans "Cancel"%}</button>
-                </form>
-            </div>
+			<p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
+		</section>
+		<section id="home" class="pages hidden">
+			{% if user.is_authenticated %}
+			<header>
+				<h1 class="login_h1">
+					<img class="profile-img" id="menu-photo" src="{{ user.pp_link }}" alt="Profile Picture">
+					Login
+				</h1>
+				<title>Burger Menu</title>
+				</head>
+				<body>
+					<nav class="menu" id="menu">
+						<ul>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+						</ul>
+					</nav>
+					</div>
 
-            <div id="friend-request-form" class="editProfileForm hidden">
-                <h2>Add Friend</h2>
-                <form id="addFriendForm">
-                    <label for="friend-username">{%trans "Username:"%}</label>
-                    <input type="text" id="friend-username" name="username" required><br><br>
-                    <button type="button" id="sendFriendRequestButton">{%trans "Send Request"%}</button>
-                    <button type="button" id="cancelFriendRequestButton">{%trans "Cancel"%}</button>
-                </form>
-            </div>
-            
-            <div id="pong-wrapper" class="hidden editProfileForm">
-                <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
-                
-                <div id="pong-container"></div>
-                <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
-                    {%trans "Two Players"%}
-                </button>
-                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">{%trans "Stop Game"%}</button>
-                <button class="PongButton" id="pong-settings-badge" onclick="togglePongSettings()">{%trans "Settings"%}</button>
-                <div id="pong-settings-popup" class="hidden">
-                    <h3>{%trans "Settings"%}</h3>
-                    <label for="paddleColor">{%trans "Paddle Color:"%}</label>
-                    <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
-                    
-                    <label for="ballColor">{%trans "Ball Color:"%}</label>
-                    <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
-                    
-                    <label for="ballSpeed">{%trans "Ball Speed:"%}</label>
-                    <input type="range" id="ballSpeed" min="1" max="10  " value="5" onchange="updateBallSpeed(this.value)">
+					<script>
+						const menuPhoto = document.getElementById('menu-photo');
+						const menu = document.getElementById('menu');
 
-                    <button onclick="togglePongSettings()">{%trans "Close"%}</button>
-                </div>
-            </div>  
+						menuPhoto.addEventListener('click', () => {
+							menu.classList.toggle('menu-open');
+							menuPhoto.classList.toggle('photo-rotated');
+						});
+					</script>
 
-            <footer>
-                <p>&copy; {%trans "2024 Page de cramptes. Tous droits non-réservés."%}</p>
-            </footer>
-            <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
-            <div id="tic-tac-toe-modal">
-                <h1>{%trans "Tic-Tac-Toe"%}</h1>
-                <div class="board" id="board"></div>
-                <div class="winner" id="winner"></div>
-                <button id="close-btn" onclick="hideTicTacToe()">{%trans "Close"%}</button>
-                <button id="replay-btn" onclick="replayGame()">Rejouer</button>
-            </div>
-        {% else %}
-            <p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
-            <a href="?page=login">{% trans "Se connecter" %}</a>
-        {% endif %}
-        </section>
-        <script src="{% static 'profile.js' %}"></script>
-        <script src="{% static 'tictactoe.js' %}"></script>
-        <script src="{% static 'redirect.js' %}"></script>
-        <script src="{% static 'pong.js' %}"></script>
-        <script>
-            const csrf = "{{ csrf_token }}";
-            const staticurl = "{% static '' %}";
-            const staticUrls = {
-                x: staticurl + "images/llvm.png",  
-                o: staticurl + "images/gnu.png"  
-            };
+					<h2>Login</h2>
+				</body>
+				<footer>
+					<p>&copy; {%trans "2024 Page de cramptes. Tous droits non-réservés."%}</p>
+				</footer>
+				{% else %}
+				<p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
+				<a href="?page=login">{% trans "Se connecter" %}</a>
+				{% endif %}
+		</section>
+		<script src="{% static 'profile.js' %}"></script>
+		<script src="{% static 'tictactoe.js' %}"></script>
+		<script src="{% static 'redirect.js' %}"></script>
+		<script src="{% static 'pong.js' %}"></script>
+		<script>
+			const csrf = "{{ csrf_token }}";
+			const staticurl = "{% static '' %}";
+			const staticUrls = {
+				x: staticurl + "images/llvm.png",  
+				o: staticurl + "images/gnu.png"  
+			};
 
-        </script>
-    </body>
+		</script>
+	</body>
 </html>
