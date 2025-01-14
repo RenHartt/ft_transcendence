@@ -8,6 +8,7 @@ logger = logging.getLogger('myproject')
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('settings/', views.settings_page, name='settings'),
     path('tictactoe/', views.tictactoe, name='tictactoe'),
     path('logout/', views.logout, name='logout'), 
     path('register/', views.register, name='register'),

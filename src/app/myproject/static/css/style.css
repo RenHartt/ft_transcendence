@@ -8,10 +8,6 @@ body {
     overflow-x: hidden;
 }
 
-a {
-    text-decoration: none;
-    color: black;
-}
 
 section.pages {
     width: 100vw;

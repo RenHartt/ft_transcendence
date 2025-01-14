@@ -305,3 +305,9 @@ def on_user_logged_in(sender, request, user, **kwargs):
 @receiver(user_logged_out)
 def on_user_logged_out(sender, request, user, **kwargs):
     cache.delete(f"user_{user.id}_status")
+
+
+@login_required
+def settings_page(request):
+    return render(request, 'my_app/settings.html')
+

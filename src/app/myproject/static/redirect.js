@@ -1,3 +1,52 @@
+const menuPhoto = document.getElementById('menu-photo');
+const menu = document.getElementById('menu');
+
+menuPhoto.addEventListener('click', () => {
+	console.log("aaaaaa")
+	menu.classList.toggle('menu-open');
+	menuPhoto.classList.toggle('photo-rotated');
+});
+
+function loadPage(page) {
+    const contentElement = document.getElementById('content'); // Main container
+
+    fetch(`/${page}/`) // Adjust the URL as needed
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load page: ${page}`);
+            }
+            return response.text(); // Use text() to handle HTML responses
+        })
+        .then(html => {
+            contentElement.innerHTML = html; // Inject HTML directly
+        })
+        .catch(error => {
+            console.error('Error loading page:', error);
+        });
+}
+
+function navigate(page) {
+	menu.classList.remove('menu-open');
+  history.pushState({ page }, '', `?page=${page}`); // Update URL
+  loadPage(page); // Load the page content
+}
+
+window.addEventListener('popstate', (event) => {
+  if (event.state && event.state.page) {
+    loadPage(event.state.page);
+  } else {
+    // Default if no state
+    loadPage('home');
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const page = params.get('page') || 'home';
+  loadPage(page);
+});
+
+
 function showPageFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const page = urlParams.get('page') || 'home';

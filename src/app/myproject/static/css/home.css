@@ -87,10 +87,6 @@ footer {
     color: white;
 }
 
-/* Responsive */
-@media (max-width: 576px) {
-    /* Add any mobile-specific styles here if desired */
-}
 
 body {
     margin: 0;
@@ -120,4 +116,37 @@ body {
 .menu-open {
     left: 0;
 	z-index: 10000;
+}
+
+.menu a {
+	font-size: 32px;
+	z-index: 10000;
+}
+
+.menu li {
+	text-align: left;
+	color: blue;
+	margin: 20px auto;
+}
+
+.menu li::marker {
+	font-size: 24px;
+}
+
+.menu ul {
+	margin-top: 50px;
+}
+
+.logout {
+    color: red;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    /* Add any mobile-specific styles here if desired */
 }

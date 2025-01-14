@@ -42,26 +42,35 @@
 			<header>
 				<h1 class="login_h1">
 					<img class="profile-img" id="menu-photo" src="{{ user.pp_link }}" alt="Profile Picture">
-					__attribute__
+					Login
 				</h1>
+				<title>Burger Menu</title>
 				</head>
 				<body>
 					<nav class="menu" id="menu">
 						<ul>
-							<li><a href="javascript:void(0)" onclick="navigate('home')" >Home</a></li>
-							<li><a href="javascript:void(0)" onclick="navigate('profile')" >Profile</a></li>
-							<li><a href="javascript:void(0)" onclick="navigate('settings')" >Settings</a></li>
-							<li><a href="javascript:void(0)" onclick="navigate('friends')" >Friends</a></li>
-							<li><a href="javascript:void(0)" onclick="navigate('pong')" >Pong</a></li>
-							<li><a href="javascript:void(0)" onclick="navigate('tictactoe')" >TicTacToe</a></li>
+							<a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="javascript:void(0)" onclick="showTicTacToe()">{%trans "Tic Tac Toe"%}</a></li>
+							<li><a href="#">About</a></li>
+							<li><a href="#">Services</a></li>
+							<li><a href="#">Contact</a></li>
 						</ul>
-						<a href="javascript:void(0)" class="logout" onclick="logout()">Logout</a>
 					</nav>
+					</div>
 
-					 <main id="content">
-						 <p>prout</p>
-					 </main>
+					<script>
+						const menuPhoto = document.getElementById('menu-photo');
+						const menu = document.getElementById('menu');
 
+						menuPhoto.addEventListener('click', () => {
+							menu.classList.toggle('menu-open');
+							menuPhoto.classList.toggle('photo-rotated');
+						});
+					</script>
+
+					<h2>Login</h2>
 				</body>
 				<footer>
 					<p>&copy; {%trans "2024 Page de cramptes. Tous droits non-réservés."%}</p>
@@ -71,7 +80,10 @@
 				<a href="?page=login">{% trans "Se connecter" %}</a>
 				{% endif %}
 		</section>
+		<script src="{% static 'profile.js' %}"></script>
+		<script src="{% static 'tictactoe.js' %}"></script>
 		<script src="{% static 'redirect.js' %}"></script>
+		<script src="{% static 'pong.js' %}"></script>
 		<script>
 			const csrf = "{{ csrf_token }}";
 			const staticurl = "{% static '' %}";
