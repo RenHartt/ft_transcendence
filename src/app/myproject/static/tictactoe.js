@@ -94,7 +94,6 @@ function showTicTacToe() {
     if (changePasswordForm) changePasswordForm.classList.add('hidden');
     if (friendrequest) friendrequest.classList.add('hidden');
 
-    console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);
 }
 

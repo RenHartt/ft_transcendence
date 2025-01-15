@@ -58,7 +58,6 @@ function startPongGame() {
     console.log(canvas)
     gameState.gameRunning = true;
 
-
     let ctx = canvas.getContext("2d");
     pongContainer.appendChild(canvas);
     let playerScore = 0;

@@ -7,12 +7,8 @@ function showProfile() {
     const pongWrapper = document.getElementById('pong-wrapper');
     const addFriendForm = document.getElementById("friend-request-form");
 
-    if (gameState.gameRunning) {
-        stopGame();
-    }
-    if (gameActive) {
-        hideTicTacToe();
-    }
+    if (gameState.gameRunning) { stopGame(); }
+    if (gameActive) { hideTicTacToe(); }
 
     if (!profileContainer) return;
 
@@ -46,7 +42,6 @@ templates.friendRequestElement.innerHTML = `
 `;
 
 function loadProfile() {
-    console.log('Loading profile data...');
     fetch('/api/profile', {
         method: 'GET',
         credentials: 'include',
@@ -98,11 +93,9 @@ function loadProfile() {
         document.querySelectorAll('.accept-btn').forEach(button => {
             button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, true));
         });
-
         document.querySelectorAll('.decline-btn').forEach(button => {
             button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, false));
         });
-
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', () => remove_friend(button.dataset.friendId));
         });
@@ -160,7 +153,6 @@ function editProfile() {
                 profileContainer.classList.remove('hidden');
             })
             .catch(error => {
-                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors de la mise à jour du profil.");
             });
     });
@@ -233,7 +225,6 @@ function editProfile() {
                 document.getElementById('profile-edit-form').classList.remove('hidden');
             })
             .catch(error => {
-                console.error("Erreur :", error);
                 alert("Une erreur s'est produite lors du changement de mot de passe.");
             });
     });
@@ -248,7 +239,6 @@ function addFriend() {
     const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
     if (!profileContainer || !addFriendForm || !csrfToken) {
-        console.error("Des éléments nécessaires sont manquants.");
         return;
     }
 
@@ -272,7 +262,6 @@ function addFriend() {
             body: JSON.stringify({ username: friendUsername }),
         })
         .then(response => {
-            console.log("Réponse du serveur :", response);
             if (!response.ok) {
                 return response.json().then(data => {
                     throw new Error(data.error || "Erreur lors de l'ajout de l'ami.");
@@ -286,7 +275,6 @@ function addFriend() {
             profileContainer.classList.remove('hidden');
         })
         .catch(error => {
-            console.error("Erreur :", error);
             alert(error.message || "Une erreur s'est produite lors de la requête.");
         });
     });

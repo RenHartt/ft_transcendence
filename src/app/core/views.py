@@ -8,7 +8,6 @@ from django.utils.translation import gettext as _
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
-User = get_user_model()
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 import logging
@@ -24,7 +23,9 @@ from django.db import models
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.core.cache import cache
+from django.utils.translation import get_language
 
+User = get_user_model()
 logger = logging.getLogger('core')
 
 def index(request):
@@ -35,7 +36,6 @@ def index(request):
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
-
             if user is not None:
                 auth_login(request, user)
                 return redirect('/?page=home')  
@@ -54,10 +54,8 @@ def index(request):
                 form.save()
                 return redirect('/?page=login')
         return render(request, 'my_app/register.html', {'form': form})  
-
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
-
     else:
         return render(request, 'my_app/404.html')   
 
@@ -86,7 +84,6 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             auth_login(request, user)
             return redirect('/?page=home')  
@@ -102,7 +99,6 @@ def logout(request):
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        
         if form.is_valid():
             form.save()
             return redirect('/?page=login')
@@ -110,8 +106,6 @@ def register(request):
             logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
         form = CustomUserCreationForm()
-        form = CustomUserCreationForm()
-
     return render(request, 'my_app/register.html', {'form': form})
 
 def custom404(request, exception):
@@ -119,7 +113,6 @@ def custom404(request, exception):
 
 def test_csrf(request):
     return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
-
 
 def profile(request):
     if request.method == 'GET':
@@ -150,8 +143,6 @@ def profile(request):
         })
     else:
         return HttpResponse(status=405)
-
-from django.utils.translation import get_language
 
 def test_language(request):
     logger.info(f"Langue actuelle : {get_language()}")
@@ -202,15 +193,14 @@ def change_password(request):
 @login_required 
 def save_profile(request):
     if request.method == 'POST':
+    
         user = request.user 
-
         first_name = request.POST.get('first_name', user.first_name)
         last_name = request.POST.get('last_name', user.last_name)
         email = request.POST.get('email', user.email)
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
-
         user.save()
 
         return JsonResponse({'message': 'Profil mis à jour avec succès !'})
