@@ -1,25 +1,39 @@
 const menuPhoto = document.getElementById('menu-photo');
 const menu = document.getElementById('menu');
 
-menuPhoto.addEventListener('click', () => {
-	menu.classList.toggle('menu-open');
+document.addEventListener('DOMContentLoaded', () => {
+    const menu = document.getElementById('menu');
+    const menuPhoto = document.getElementById('menu-photo');
+
+    // Toggle the menu when clicking the menu button
+    menuPhoto.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent the event from propagating to the document
+        menu.classList.toggle('menu-open');
+    });
+
+    // Close the menu when clicking outside of it
+    document.addEventListener('click', (event) => {
+        if (!menu.contains(event.target) && menu.classList.contains('menu-open')) {
+            menu.classList.remove('menu-open');
+        }
+    });
 });
 
 function loadPage(page) {
-	const contentElement = document.getElementById('content');
-
-	fetch(`/${page}/`) // Adjust the URL as needed
+	console.log(`Fetching content for: /load/${page}/`);
+	fetch(`/load/${page}/`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`Failed to load page: ${page}`);
 			}
-			return response.text(); // Use text() to handle HTML responses
+			return response.text();
 		})
 		.then(html => {
-			contentElement.innerHTML = html; // Inject HTML directly
+			document.getElementById('content').innerHTML = html;
 		})
 		.catch(error => {
 			console.error('Error loading page:', error);
+			document.getElementById('content').innerHTML = `<p style="color: red;">Error loading ${page}</p>`;
 		});
 }
 
@@ -47,7 +61,6 @@ window.addEventListener('popstate', (event) => {
 	if (event.state && event.state.page) {
 		loadPage(event.state.page);
 	} else {
-		// Default if no state
 		loadPage('home');
 	}
 });
@@ -72,33 +85,33 @@ function showPageFromURL() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+	const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
 
-    if (path) {
-        loadPage(path);
-    } else {
-        loadPage('home');
-    }
+	if (path) {
+		loadPage(path);
+	} else {
+		loadPage('home');
+	}
 
-    document.querySelectorAll('a.menu').forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const page = link.getAttribute('href').replace(/^\/+|\/+$/g, '');
-            navigate(page);
-        });
-    });
+	document.querySelectorAll('a.menu').forEach(link => {
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			const page = link.getAttribute('href').replace(/^\/+|\/+$/g, '');
+			navigate(page);
+		});
+	});
 
-    const logoutButton = document.querySelector('#logout');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', logout);
-    }
+	const logoutButton = document.querySelector('#logout');
+	if (logoutButton) {
+		logoutButton.addEventListener('click', logout);
+	}
 
-    const initialPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
-    if (initialPath) {
-        loadPage(initialPath);
-    } else {
-        loadPage('home');
-    }
+	const initialPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+	if (initialPath) {
+		loadPage(initialPath);
+	} else {
+		loadPage('home');
+	}
 });
 
 
@@ -136,10 +149,6 @@ function loadPage(page) {
 			document.getElementById('content').innerHTML = `<p style="color: red;">Error loading ${page}</p>`;
 		});
 }
-
-document.querySelector('#logout').addEventListener('click', () => {
-	logout();
-})
 
 async function logout() {
 

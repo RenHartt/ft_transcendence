@@ -323,14 +323,20 @@ def home_view(request, page=None):
     return render(request, 'my_app/base.html')
 
 
+
+# def load_page_view(request, page):
+#     try:
+#         get_template(f"my_app/page/{page}.html")
+#         return render(request, f"my_app/page/{page}.html")
+#     except TemplateDoesNotExist:
+#         raise Http404(f"The page '{page}' does not exist.")
+
 def load_page_view(request, page):
     """
     Dynamically loads a partial page. If the requested 'page'
     isn't in VALID_PAGES, fall back to 'home'.
     """
-    if page not in VALID_PAGES:
-        page = "base"  # default if invalid
-
     # Render my_app/home.html, my_app/profile.html, or my_app/settings.html
-    template_name = f"my_app/{page}.html"
+    template_name = f"my_app/page/{page}.html"
     return render(request, template_name)
+

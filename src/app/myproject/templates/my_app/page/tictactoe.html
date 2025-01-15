@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load static %}
+
+<div id="overlay" onclick="hideTicTacToe()"></div>
+<div id="tic-tac-toe-modal">
+	<h1>{%trans "Tic-Tac-Toe"%}</h1>
+	<div class="board" id="board"></div>
+	<div class="winner" id="winner"></div>
+	<button id="close-btn" onclick="hideTicTacToe()">{%trans "Close"%}</button>
+	<button id="replay-btn" onclick="replayGame()">Rejouer</button>
+</div>
+<script src="{% static 'tictactoe.js' %}"></script>
