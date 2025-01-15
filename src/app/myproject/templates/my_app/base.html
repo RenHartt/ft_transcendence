@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		{% load i18n %}
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+		<title>{% trans "Home Page" %}</title>
+		<link rel="stylesheet" href="{% static 'css/index.css' %}">
+	</head>
+
+	<body>
+
+		<section id="login" class="pages">
+			<header>
+				<h1>Login</h1>
+			</header>
+			<form method="post" action="?page=login">
+				<button type="submit">{% trans "Change language" %}</button>
+				<label for="username">Username:</label>
+				<input type="text" id="username" name="username" required><br><br>
+
+				<label for="password">{%trans "Password:"%}</label>
+				<input type="password" id="password" name="password" required><br><br>
+				{% if error %}
+				<p class="error">{{ error }}</p>
+				{% endif %}
+				<button type="submit">Log In</button>
+			</form>
+
+			<p>Or</p>
+			<a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+				<img src="{% static 'images/42.png' %}" alt="42 Logo">
+				Log In with 42
+			</a>
+
+			<p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
+		</section>
+		<section id="home" class="pages hidden">
+			{% if user.is_authenticated %}
+			<header>
+				<h1 class="login_h1">
+					<img class="profile-img" id="menu-photo" src="{{ user.pp_link }}" alt="Profile Picture">
+					__attribute__
+				</h1>
+				</head>
+				<body>
+					<nav class="menu" id="menu">
+						<ul>
+							<li><a href="javascript:void(0)" onclick="navigate('home')" >Home</a></li>
+							<li><a href="javascript:void(0)" onclick="navigate('profile')" >Profile</a></li>
+							<li><a href="javascript:void(0)" onclick="navigate('settings')" >Settings</a></li>
+							<li><a href="javascript:void(0)" onclick="navigate('friends')" >Friends</a></li>
+							<li><a href="javascript:void(0)" onclick="navigate('pong')" >Pong</a></li>
+							<li><a href="javascript:void(0)" onclick="navigate('tictactoe')" >TicTacToe</a></li>
+						</ul>
+						<a href="javascript:void(0)" class="logout" onclick="logout()">Logout</a>
+					</nav>
+
+					 <main id="content">
+						 <p>no prout</p>
+					 </main>
+
+				</body>
+				<footer>
+					<p>&copy; {%trans "2024 Page de cramptes. Tous droits non-réservés."%}</p>
+				</footer>
+				{% else %}
+				<p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
+				<a href="?page=login">{% trans "Se connecter" %}</a>
+				{% endif %}
+		</section>
+		<script src="{% static 'redirect.js' %}"></script>
+		<script>
+            const csrf = "{{ csrf_token }}";
+		</script>
+
+	</body>
+</html>

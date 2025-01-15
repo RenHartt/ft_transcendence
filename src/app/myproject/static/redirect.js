@@ -2,12 +2,11 @@ const menuPhoto = document.getElementById('menu-photo');
 const menu = document.getElementById('menu');
 
 menuPhoto.addEventListener('click', () => {
-	console.log("aaaaaa")
 	menu.classList.toggle('menu-open');
 });
 
 function loadPage(page) {
-	const contentElement = document.getElementById('content'); // Main container
+	const contentElement = document.getElementById('content');
 
 	fetch(`/${page}/`) // Adjust the URL as needed
 		.then(response => {
@@ -26,6 +25,11 @@ function loadPage(page) {
 
 function navigate(page) {
 	menu.classList.remove('menu-open');
+
+	if (page == 'home')
+		history.pushState({ page }, '', `/`);
+	else
+		history.pushState({ page }, '', `/${page}/`);
 	fetch(`/load/${page}/`)
 		.then(response => {
 			if (!response.ok) {
@@ -48,11 +52,6 @@ window.addEventListener('popstate', (event) => {
 	}
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-	const params = new URLSearchParams(window.location.search);
-	const page = params.get('page') || 'home';
-	loadPage(page);
-});
 
 
 function showPageFromURL() {
@@ -73,6 +72,38 @@ function showPageFromURL() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+
+    if (path) {
+        loadPage(path);
+    } else {
+        loadPage('home');
+    }
+
+    document.querySelectorAll('a.menu').forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const page = link.getAttribute('href').replace(/^\/+|\/+$/g, '');
+            navigate(page);
+        });
+    });
+
+    const logoutButton = document.querySelector('#logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logout);
+    }
+
+    const initialPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+    if (initialPath) {
+        loadPage(initialPath);
+    } else {
+        loadPage('home');
+    }
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
 	showPageFromURL();
 
 	document.querySelectorAll('a.menu').forEach(link => {
@@ -90,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadPage(page) {
-	fetch(`/${page}/`)
+	fetch(`/load/${page}/`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`Could not load partial: ${page}`);
