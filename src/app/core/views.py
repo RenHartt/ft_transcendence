@@ -306,3 +306,45 @@ def on_user_logged_in(sender, request, user, **kwargs):
 @receiver(user_logged_out)
 def on_user_logged_out(sender, request, user, **kwargs):
     cache.delete(f"user_{user.id}_status")
+
+def save_history(request):
+    if request.method == 'POST':
+        try:
+            # Parse the JSON body
+            data = json.loads(request.body)
+            user = data.get('user')
+            pWin = data.get('pWin')
+            p1Score = data.get('p1Score')
+            p2Score = data.get('p2Score')
+
+            logger.debug(data)
+
+            # Call the save_history function to save the data
+            history_entry = History.objects.create(
+                user=user,
+                pWin=pWin,
+                p1Score=p1Score,
+                p2Score=p2Score
+            )
+
+            # Return a success response
+            return JsonResponse({'status': 'success', 'id': history_entry.id}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+# def save_history(request):
+#     data = json.loads(request.body)
+#     user = data.get('user')
+#     pWin = data.get('pWin')
+#     p1Score = data.get('p1Score')
+#     p2Score = data.get('p2Score')
+#     history_entry = History.objects.create(
+#         user=user,
+#         pWin=pWin,
+#         p1Score=p1Score,
+#         p2Score=p2Score
+#     )
+#     return JsonResponse({'status': 'success', 'id': history_entry.id})

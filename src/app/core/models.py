@@ -74,8 +74,7 @@ class Friendship(models.Model):
         unique_together = ('requester', 'receiver')
 
 class History(models.Model):
-    p1 = models.CharField(max_length=20)
-    p2 = models.CharField(max_length=20)
+    user = models.CharField(max_length=20)
+    pWin = models.CharField(max_length=20)
     p1Score = models.IntegerField()
     p2Score = models.IntegerField()
-    pWin = models.CharField(max_length=20)

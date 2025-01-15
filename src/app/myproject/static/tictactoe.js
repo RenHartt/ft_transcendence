@@ -21,34 +21,75 @@ function createBoard() {
 
 function handleCellClick(e) {
     const index = e.target.dataset.index;
-
+    
     if (cells[index] || !gameActive) return;
-
+    
     cells[index] = currentPlayer;
-
+    
     const img = document.createElement('img');
     img.src = currentPlayer === 'LLVM' ? staticUrls.x : staticUrls.o;
     img.alt = currentPlayer;
     img.style.width = '100%';
     img.style.height = '100%';
     e.target.appendChild(img);
-
+    
     e.target.classList.add('taken'); 
-
+    
     if (checkWinner()) {
         winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
         gameActive = false;
+        saveGameHistory("oui", currentPlayer);
+        console.log(`${currentPlayer}`);
         return;
     }
 
     if (cells.every(cell => cell)) {
         winnerDisplay.textContent = "It's a draw!";
         gameActive = false;
-        on_win("Player1", "Player1", 0, 0, "Player1");
+        console.log("Draw");
         return;
     }
 
     currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
+}
+
+function saveGameHistory(user, winner) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
+
+    // const data = {
+    //     user: "user",
+    //     pWin: "winner",
+    //     p1Score: 0,
+    //     p2Score: 0
+    // };
+
+    fetch('/api/save-history/', { // Replace with your actual endpoint
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({
+            user: "user",
+            pWin: "winner",
+            p1Score: 0,
+            p2Score: 0
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(error => {
+                throw new Error(`Request failed: ${error.message}`);
+            });
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Success:', result);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
 function checkWinner() {
@@ -101,7 +142,6 @@ function showTicTacToe() {
     console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);
 }
-
 
 function hideTicTacToe() {
     gameActive = false;
