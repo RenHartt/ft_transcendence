@@ -44,6 +44,7 @@ function handleCellClick(e) {
     if (cells.every(cell => cell)) {
         winnerDisplay.textContent = "It's a draw!";
         gameActive = false;
+        on_win("Player1", "Player1", 0, 0, "Player1");
         return;
     }
 

@@ -18,6 +18,7 @@ import json
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Friendship
+from .models import History
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db import models

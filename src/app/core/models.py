@@ -4,9 +4,6 @@ from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     def _create_user(self, username=None, email=None, password=None, **extra_fields):
-        """
-        Creates and saves a User with the given email and password.
-        """
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
@@ -23,17 +20,11 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_user(self, username=None, email=None, password=None, **extra_fields):
-        """
-        Creates a regular user.
-        """
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(username, email, password, **extra_fields)
 
     def create_superuser(self, username=None, email=None, password=None, **extra_fields):
-        """
-        Creates a superuser.
-        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(username, email, password, **extra_fields)
@@ -81,3 +72,10 @@ class Friendship(models.Model):
 
     class Meta:
         unique_together = ('requester', 'receiver')
+
+class History(models.Model):
+    p1 = models.CharField(max_length=20)
+    p2 = models.CharField(max_length=20)
+    p1Score = models.IntegerField()
+    p2Score = models.IntegerField()
+    pWin = models.CharField(max_length=20)
