@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
-from django.views.i18n import set_language  # ✅ Import corrigé
+from django.views.i18n import set_language
 from . import views
 import logging
 

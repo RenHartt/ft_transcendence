@@ -14,7 +14,6 @@ function showPageFromURL() {
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     showPageFromURL(); 
 
@@ -61,4 +60,3 @@ async function logout()
     })
     .then(window.location.href = "?page=login")
 }
-

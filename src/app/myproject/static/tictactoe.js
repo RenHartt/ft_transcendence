@@ -114,7 +114,6 @@ function replayGame() {
     createBoard(staticUrls);
 }
 
-
 function showTicTacToe() {
     if (gameState.gameRunning) {
         stopGame();
@@ -139,7 +138,6 @@ function showTicTacToe() {
     if (friendrequest) friendrequest.classList.add('hidden');
     if (history) history.classList.add('hidden');
 
-    console.log("Overlay:", overlay, "Modal:", modal);
     createBoard(staticUrls);
 }
 

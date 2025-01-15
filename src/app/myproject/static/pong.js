@@ -13,7 +13,6 @@ const gameState = {
     basespeed: 4
 };
 
-
 function togglePongSettings() {
     const settingsPopup = document.getElementById('pong-settings-popup');
     const overlay = document.getElementById('pong-overlay');
@@ -33,7 +32,6 @@ function togglePongSettings() {
     }
 }
 
-
 function updatePaddleColor(color) {
     gameState.basecolor = color;
 }
@@ -48,7 +46,6 @@ function updateBallSpeed(speed) {
     }
 }
 
-
 function startPongGame() {
     let canvas = document.createElement("canvas");
     let pongContainer = document.getElementById("pong-container");
@@ -60,7 +57,6 @@ function startPongGame() {
     canvas.height = 300;
     console.log(canvas)
     gameState.gameRunning = true;
-
 
     let ctx = canvas.getContext("2d");
     pongContainer.appendChild(canvas);
@@ -100,7 +96,6 @@ function startPongGame() {
         if (e.key === "w") window.wPressed = false;
         if (e.key === "s") window.sPressed = false;
     });
-
 
     let playerHit = false; 
     let aiFrozen = false; 
@@ -157,7 +152,6 @@ function startPongGame() {
         }
     }
     
-
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -183,7 +177,6 @@ function startPongGame() {
         ctx.fillText(aiScore, (canvas.width * 3) / 4, 30);
     }
     
-
     function gameLoop() {
         if (!gameState.gameRunning) return;
         update();
@@ -215,7 +208,6 @@ function resetGame() {
     if (pongScore) pongScore.textContent = "Score: 0 - 0";
     if (stopGameButton) stopGameButton.style.display = "none";
 }
-
 
 function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -251,7 +243,6 @@ function replayGame() {
         createBoard(staticUrls);
     }
 }
-
 
 function showPong() {
     const pongWrapper         = document.getElementById('pong-wrapper');
@@ -292,8 +283,6 @@ function showPong() {
     twoPlayerButton.style.display = "block";
 }
 
-
-
 function stopGame() {
     gameState.gameRunning = false; 
 
@@ -309,6 +298,4 @@ function stopGame() {
     twoPlayerButton.style.display = "none";
     pongWrapper.style.display = "none"
     document.querySelector("#pong-container").innerHTML = '';
-
 }
-
