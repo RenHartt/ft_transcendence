@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -307,7 +308,29 @@ def on_user_logged_out(sender, request, user, **kwargs):
     cache.delete(f"user_{user.id}_status")
 
 
-@login_required
-def settings_page(request):
-    return render(request, 'my_app/settings.html')
+# @login_required
 
+
+from django.http import JsonResponse
+
+VALID_PAGES = {"home", "profile", "settings"}
+
+def home_view(request):
+    """
+    Renders the main home page, which typically includes the <main id="content">
+    for SPA-like loading.
+    """
+    return render(request, 'my_app/home.html')
+
+
+def load_page_view(request, page):
+    """
+    Dynamically loads a partial page. If the requested 'page'
+    isn't in VALID_PAGES, fall back to 'home'.
+    """
+    if page not in VALID_PAGES:
+        page = "home"  # default if invalid
+
+    # Render my_app/home.html, my_app/profile.html, or my_app/settings.html
+    template_name = f"my_app/{page}.html"
+    return render(request, template_name)

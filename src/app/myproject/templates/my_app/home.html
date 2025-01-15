@@ -72,14 +72,5 @@
 				{% endif %}
 		</section>
 		<script src="{% static 'redirect.js' %}"></script>
-		<script>
-			const csrf = "{{ csrf_token }}";
-			const staticurl = "{% static '' %}";
-			const staticUrls = {
-				x: staticurl + "images/llvm.png",  
-				o: staticurl + "images/gnu.png"  
-			};
-
-		</script>
 	</body>
 </html>
