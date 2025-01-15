@@ -287,7 +287,6 @@ def remove_friend(request, friend_id):
         friendship = get_object_or_404(Friendship, id=friend_id, is_accepted=True)
         friendship.delete()
         return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
-
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
 
 @receiver(user_logged_in)
@@ -301,41 +300,31 @@ def on_user_logged_out(sender, request, user, **kwargs):
 def save_history(request):
     if request.method == 'POST':
         try:
-            # Parse the JSON body
             data = json.loads(request.body)
             user = data.get('user')
             pWin = data.get('pWin')
             p1Score = data.get('p1Score')
             p2Score = data.get('p2Score')
 
-            logger.debug(data)
-
-            # Call the save_history function to save the data
             history_entry = History.objects.create(
                 user=user,
                 pWin=pWin,
                 p1Score=p1Score,
                 p2Score=p2Score
             )
-
-            # Return a success response
-            return JsonResponse({'status': 'success', 'id': history_entry.id}, status=200)
+            return JsonResponse({'status': 'success', 'id': history_entry.id})
 
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
-# def save_history(request):
-#     data = json.loads(request.body)
-#     user = data.get('user')
-#     pWin = data.get('pWin')
-#     p1Score = data.get('p1Score')
-#     p2Score = data.get('p2Score')
-#     history_entry = History.objects.create(
-#         user=user,
-#         pWin=pWin,
-#         p1Score=p1Score,
-#         p2Score=p2Score
-#     )
-#     return JsonResponse({'status': 'success', 'id': history_entry.id})
+def get_history(request):
+    if request.method == 'GET':
+        try:
+            history_entries = History.objects.all().values('user', 'pWin', 'p1Score', 'p2Score')
+            return JsonResponse(list(history_entries), safe=False, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

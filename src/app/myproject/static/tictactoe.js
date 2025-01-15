@@ -39,14 +39,12 @@ function handleCellClick(e) {
         winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
         gameActive = false;
         saveGameHistory("oui", currentPlayer);
-        console.log(`${currentPlayer}`);
         return;
     }
 
     if (cells.every(cell => cell)) {
         winnerDisplay.textContent = "It's a draw!";
         gameActive = false;
-        console.log("Draw");
         return;
     }
 
@@ -56,12 +54,12 @@ function handleCellClick(e) {
 function saveGameHistory(user, winner) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
 
-    // const data = {
-    //     user: "user",
-    //     pWin: "winner",
-    //     p1Score: 0,
-    //     p2Score: 0
-    // };
+    const data = {
+        user: user,
+        pWin: winner,
+        p1Score: 0,
+        p2Score: 0
+    };
 
     fetch('/api/save-history/', { // Replace with your actual endpoint
         method: 'POST',
@@ -69,12 +67,7 @@ function saveGameHistory(user, winner) {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
         },
-        body: JSON.stringify({
-            user: "user",
-            pWin: "winner",
-            p1Score: 0,
-            p2Score: 0
-        })
+        body: JSON.stringify(data)
     })
     .then(response => {
         if (!response.ok) {
