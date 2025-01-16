@@ -19,22 +19,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function loadPage(page) {
-	console.log(`Fetching content for: /load/${page}/`);
-	fetch(`/load/${page}/`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`Failed to load page: ${page}`);
-			}
-			return response.text();
-		})
-		.then(html => {
-			document.getElementById('content').innerHTML = html;
-		})
-		.catch(error => {
-			console.error('Error loading page:', error);
-			document.getElementById('content').innerHTML = `<p style="color: red;">Error loading ${page}</p>`;
-		});
+function injectHtml(page, body = document.getElementById('content')) {
+  fetch(`/load/${page}/`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to load page: ${page}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      // 1. Create a temporary container to manipulate the fetched HTML
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+
+      // 2. Extract any <script> tags
+      const scripts = tempDiv.querySelectorAll('script');
+      
+      // 3. Move HTML content (minus script tags) into the body
+      body.innerHTML = tempDiv.innerHTML.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+      
+      // 4. For each script, create a new script element and append
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        // Copy over src or inline script content
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading page:', error);
+      body.innerHTML = `<h1>Error</h1><p>Could not load the page.</p>`;
+    });
 }
 
 function navigate(page) {
@@ -44,28 +63,8 @@ function navigate(page) {
 		history.pushState({ page }, '', `/`);
 	else
 		history.pushState({ page }, '', `/${page}/`);
-	fetch(`/load/${page}/`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`Failed to load page: ${page}`);
-			}
-			return response.text();
-		})
-		.then(html => {
-			document.getElementById('content').innerHTML = html;
-		})
-		.catch(error => console.error('Error loading page:', error));
+	injectHtml(page)
 }
-
-window.addEventListener('popstate', (event) => {
-	if (event.state && event.state.page) {
-		loadPage(event.state.page);
-	} else {
-		loadPage('home');
-	}
-});
-
-
 
 function showPageFromURL() {
 	const urlParams = new URLSearchParams(window.location.search);
@@ -85,70 +84,16 @@ function showPageFromURL() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-	const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
-
-	if (path) {
-		loadPage(path);
-	} else {
-		loadPage('home');
-	}
-
-	document.querySelectorAll('a.menu').forEach(link => {
-		link.addEventListener('click', (event) => {
-			event.preventDefault();
-			const page = link.getAttribute('href').replace(/^\/+|\/+$/g, '');
-			navigate(page);
-		});
-	});
 
 	const logoutButton = document.querySelector('#logout');
 	if (logoutButton) {
 		logoutButton.addEventListener('click', logout);
 	}
 
-	const initialPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
-	if (initialPath) {
-		loadPage(initialPath);
-	} else {
-		loadPage('home');
-	}
-});
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
 	showPageFromURL();
-
-	document.querySelectorAll('a.menu').forEach(link => {
-		link.addEventListener('click', function(event) {
-			event.preventDefault();
-			const href = this.getAttribute('href');
-			const page = new URLSearchParams(href.split('?')[1]).get('page');
-
-			if (page) {
-				history.pushState(null, '', `?page=${page}`);
-				showPageFromURL();
-			}
-		});
-	});
+	const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+	navigate(path);
 });
-
-function loadPage(page) {
-	fetch(`/load/${page}/`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`Could not load partial: ${page}`);
-			}
-			return response.text();
-		})
-		.then(html => {
-			document.getElementById('content').innerHTML = html;
-		})
-		.catch(error => {
-			console.error(error);
-			document.getElementById('content').innerHTML = `<p style="color: red;">Error loading ${page}</p>`;
-		});
-}
 
 async function logout() {
 

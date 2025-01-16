@@ -1,3 +1,7 @@
+function prout() {
+	console.log("prout")
+}
+
 function showProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');

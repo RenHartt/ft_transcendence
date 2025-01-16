@@ -44,7 +44,7 @@
 					<img class="profile-img" id="menu-photo" src="{{ user.pp_link }}" alt="Profile Picture">
 					__attribute__
 				</h1>
-				</head>
+			</header>
 				<body>
 
 					<nav class="menu" id="menu">
@@ -73,6 +73,7 @@
 				{% endif %}
 		</section>
 		<script src="{% static 'redirect.js' %}"></script>
+        <!-- <script src="{% static 'profile.js' %}"></script> -->
 		<script>
             const csrf = "{{ csrf_token }}";
 		</script>

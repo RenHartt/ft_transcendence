@@ -1,11 +1,72 @@
 {% load i18n %}
 {% load static %}
 
-<h3>Friends</h3>
-<ul id="friends-list"></ul>
+<div id="profile-container" class="profile-container">
+	<h2>Profile</h2>
+	<img src="{{ user.pp_link }}" alt="Profile Picture" 
+								  style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
+	<p>Username: <span id="profile-username">{{ user.username }}</span></p>
+	<p>Email: <span id="profile-email">{{ user.email }}</span></p>
+	<p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
+	<p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
 
-<h3>Pending Friend Requests</h3>
-<ul id="friend-requests-list"></ul>
+	<h3>Friends</h3>
+	<ul id="friends-list"></ul>
 
-<button id="addFriendButton" onclick="addFriend()">Add Friend</button>
-<button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+	<h3>Pending Friend Requests</h3>
+	<ul id="friend-requests-list"></ul>
+
+	<button id="addFriendButton" onclick="addFriend()">Add Friend</button>
+	<button id="editProfileButton" onclick="editProfile()">Edit Profile</button>
+</div>      
+
+<div id="profile-edit-form" class="editProfileForm hidden">
+	<h2>Edit Profile</h2>
+	<form id="editProfileForm" class="editProfileForm">
+		{% csrf_token %}
+		<label for="edit-first-name">{% trans "First Name:" %}</label>
+		<input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
+
+		<label for="edit-last-name">{% trans "Last Name:" %}</label>
+		<input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
+
+		<label for="edit-email">{% trans "Email:" %}</label>
+		<input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
+
+		<label for="edit-image">{% trans "Image:" %}</label>
+		<input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
+
+		<button type="button" id="edit-password-button">{% trans "Change Password" %}</button>
+		<button type="button" id="saveProfileButton">{% trans "Save Changes" %}</button>
+		<button type="button" id="cancelEditButton">{% trans "Cancel" %}</button>
+	</form>
+</div>
+
+<div id="change-password-form" class="editProfileForm hidden">
+	<h2>{% trans "Change Password" %}</h2>
+	<form id="changePasswordForm">
+		<label for="old-password">{% trans "Old Password:" %}</label>
+		<input type="password" id="old-password" name="old_password" required><br><br>
+
+		<label for="new-password">{% trans "New Password:" %}</label>
+		<input type="password" id="new-password" name="new_password" required><br><br>
+
+		<label for="confirm-password">{% trans "Confirm Password:" %}</label>
+		<input type="password" id="confirm-password" name="confirm_password" required><br><br>
+
+		<button type="button" id="savePasswordButton">{% trans "Save Changes" %}</button>
+		<button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
+	</form>
+</div>
+
+<div id="friend-request-form" class="editProfileForm hidden">
+	<h2>Add Friend</h2>
+	<form id="addFriendForm">
+		<label for="friend-username">{% trans "Username:" %}</label>
+		<input type="text" id="friend-username" name="username" required><br><br>
+
+		<button type="button" id="sendFriendRequestButton">{% trans "Send Request" %}</button>
+		<button type="button" id="cancelFriendRequestButton">{% trans "Cancel" %}</button>
+	</form>
+</div>
+<script src="{% static 'profile.js' %}"></script>
