@@ -22,13 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
 DEBUG = True
-LANGUAGE_CODE = 'en'  # Langue par défaut
-# Activation de l'internationalisation
+LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Liste des langues supportées
 LANGUAGES = [
     ('en', _('English')),
     ('fr', _('Français')),
@@ -39,7 +37,7 @@ LANGUAGE_COOKIE_NAME = 'django_language'
 LANGUAGE_COOKIE_AGE = 31536000 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,  # Désactive les logs par défaut de Django
+    'disable_existing_loggers': True,
     'handlers': {
         'console': {
             'level': 'DEBUG',
@@ -47,10 +45,10 @@ LOGGING = {
         },
     },
     'loggers': {
-        'core': {  # Remplace 'core' par le nom de ton app Django
+        'core': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,  # Empêche la propagation aux loggers Django
+            'propagate': False,
         },
     },
 }
@@ -110,6 +108,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

@@ -161,4 +161,3 @@ async function logout() {
 	})
 		.then(window.location.href = "?page=login")
 }
-
