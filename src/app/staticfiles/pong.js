@@ -10,8 +10,7 @@ const gameState = {
     BallSpeedY: 3,
     gameRunning: false,
     basecolor: "#8b8989",
-    basespeed: 4,
-    generalScore: { player: 0, ai: 0 }
+    basespeed: 4
 };
 
 function togglePongSettings() {
@@ -66,29 +65,8 @@ function startPongGame() {
 
     function updateScore() {
         const pongScore = document.getElementById("pong-score");
-        if (pongScore) {
-            pongScore.textContent = `Score: ${playerScore} - ${aiScore}`;
-        }
-    
-        if (playerScore >= 5) {
-            gameState.generalScore.player++;
-            playerScore = 0; 
-            aiScore = 0;
-        } else if (aiScore >= 5) {
-            gameState.generalScore.ai++;
-            playerScore = 0; 
-            aiScore = 0;
-        }
-    
-        if (gameState.generalScore.player >= 3) {
-            alert("Le joueur a gagné la partie !");
-            resetGame();
-        } else if (gameState.generalScore.ai >= 3) {
-            alert("L'IA a gagné la partie !");
-            resetGame();
-        }
+        if (pongScore) pongScore.textContent = `Score: ${playerScore} - ${aiScore}`;
     }
-    
 
     const maxBallSpeed = gameState.basespeed
 

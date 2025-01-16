@@ -1,0 +1,152 @@
+/* ######### HEADER ########### */
+
+header img.header-logo {
+    position: absolute;
+    top: 25%;
+    right: 4vw;
+    width: 14vw;
+    max-width: 125px;
+    height: auto;
+}
+
+header {
+	margin: 40px 0px;
+}
+
+h1 {
+    width: 85vw;
+	font-size: 32px;
+	height: 0.95rem;
+}
+
+h2 {
+    width: 65vw;
+    height: 0.85rem;
+	font-size: 24px; 
+	font-family: 'Inter', sans-serif;
+}
+
+h1, h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	background: url('../images/lines.gif');
+	color: #111111;
+	gap: 5vw;
+    border: #111111;
+	margin: 10px auto;
+    padding: 0.5rem;
+    padding: 1rem;
+    border-style: solid none solid none;
+    border-width: 1px;
+}
+
+.login_h1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    width: 85vw;
+    margin: 0 auto;
+    padding: 1rem;
+    background: url('../images/lines.gif');
+    color: #111111;
+    border: #111111 solid none solid none;
+    border-width: 1px;
+    text-align: center;
+}
+
+.profile-img {
+    position: absolute;
+    left: 0;
+    margin-left: 0.5rem;
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+#footer {
+    display: flex;
+    justify-content: center; /* Centrage du contenu */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.menu-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: url('../images/lines.gif');
+    color: white;
+    overflow: hidden;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: left 0.3s ease;
+}
+
+.menu-open {
+    left: 0;
+	z-index: 10000;
+}
+
+.menu a {
+	font-size: 32px;
+	z-index: 10000;
+}
+
+.menu li {
+	text-align: left;
+	color: blue;
+	margin: 20px auto;
+}
+
+.menu li::marker {
+	font-size: 24px;
+}
+
+.menu ul {
+	margin-top: 50px;
+}
+
+.logout {
+    color: red;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    /* Add any mobile-specific styles here if desired */
+}
