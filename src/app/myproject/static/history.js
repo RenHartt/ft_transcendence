@@ -1,26 +1,29 @@
 function showHistory() {
-	const profileContainer    = document.getElementById('profile-container');
-	const profileEditForm     = document.getElementById('profile-edit-form');
-	const friendrequest       = document.getElementById('friend-request-form');
-	const changePasswordForm  = document.getElementById('change-password-form');
-	const settingsPopup       = document.getElementById('pong-settings-popup');
-	const history             = document.getElementById('history-constainer');
+    const profileContainer    = document.getElementById('profile-container');
+    const profileEditForm     = document.getElementById('profile-edit-form');
+    const friendrequest       = document.getElementById('friend-request-form');
+    const changePasswordForm  = document.getElementById('change-password-form');
+    const settingsPopup       = document.getElementById('pong-settings-popup');
+    const history             = document.getElementById('history-constainer');
 
-	if (gameState.gameRunning) {
-		stopGame();
-	}
-	if (gameActive) {
-		hideTicTacToe();
-	}
+    if (!profileContainer || !profileEditForm || !friendrequest || !changePasswordForm || !settingsPopup || !history) {
+        return;
+    }
 
-	profileContainer.classList.add('hidden');
-	profileEditForm.classList.add('hidden');
-	changePasswordForm.classList.add('hidden');
-	friendrequest.classList.add('hidden');
-	settingsPopup.classList.add('hidden');
-	history.classList.remove('hidden');
-	loadHistory();
+    if (!history.classList.contains('hidden')) {
+        history.classList.add('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        profileEditForm.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        friendrequest.classList.add('hidden');
+        settingsPopup.classList.add('hidden');
+        history.classList.remove('hidden');
+
+        loadHistory(); 
+    }
 }
+
 
 var templates = {};
 templates.historyElement = document.createElement('li');

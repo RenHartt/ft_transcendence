@@ -1,47 +1,45 @@
+
 function showProfile() {
+    console.log("showProfile() called");
+
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const changePasswordForm = document.getElementById('change-password-form');
-    const overlay = document.getElementById('overlay');
-    const ticTacToeModal = document.getElementById('tic-tac-toe-modal');
-    const pongWrapper = document.getElementById('pong-wrapper');
     const addFriendForm = document.getElementById("friend-request-form");
     const history = document.getElementById('history-constainer');
-
-    if (gameState.gameRunning) { stopGame(); }
-    if (gameActive) { hideTicTacToe(); }
 
     if (!profileContainer) return;
 
     if (!profileContainer.classList.contains('hidden')) {
         profileContainer.classList.add('hidden');
     } else {
-        overlay.classList.remove('active');
-        ticTacToeModal.classList.remove('active');
-        if (pongWrapper) pongWrapper.style.display = 'none';
         profileEditForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
-        profileContainer.classList.remove('hidden');
         addFriendForm.classList.add('hidden');
         history.classList.add('hidden');
+        profileContainer.classList.remove('hidden');
     }
 
+    if (!templates.friendElement || !templates.friendRequestElement) {
+        console.warn("Templates were lost. Reinitializing.");
+        templates.friendElement = document.createElement('li');
+        templates.friendElement.innerHTML = `
+            <span class="profile-status"></span>
+            <strong></strong>
+            <button class="remove-btn" data-friend-id="">Remove</button>
+        `;
+
+        templates.friendRequestElement = document.createElement('li');
+        templates.friendRequestElement.innerHTML = `
+            <strong></strong>
+            <button class="accept-btn" data-request-id="">Accept</button>
+            <button class="decline-btn" data-request-id="">Decline</button>
+        `;
+    }
+
+    console.log("Calling loadProfile()...");
     loadProfile();
 }
-
-var templates = {};
-templates.friendElement = document.createElement('li');
-templates.friendElement.innerHTML = `
-    <span class="profile-status"></span>
-    <strong></strong>
-    <button class="remove-btn" data-friend-id="">Remove</button>
-`;
-templates.friendRequestElement = document.createElement('li');
-templates.friendRequestElement.innerHTML = `
-    <strong></strong>
-    <button class="accept-btn" data-request-id="">Accept</button>
-    <button class="decline-btn" data-request-id="">Decline</button>
-`;
 
 function loadProfile() {
     fetch('/api/profile', {
@@ -59,15 +57,21 @@ function loadProfile() {
         document.getElementById('profile-email').textContent = data.email || 'N/A';
         document.getElementById('profile-first-name').textContent = data.first_name || 'N/A';
         document.getElementById('profile-last-name').textContent = data.last_name || 'N/A';
-        const isLoggedUser = data.is_logged_in;
-        console.log("isLoggedUser:", isLoggedUser);
+
         const friendsList = document.getElementById('friends-list');
         friendsList.innerHTML = '';
+
+        if (!templates.friendElement) {
+            console.error("templates.friendElement is still undefined. Skipping friends list rendering.");
+            return;
+        }
+
         if (data.friends.length > 0) {
             data.friends.forEach(friend => {
                 const isRequester = friend.requester__username === data.username;
                 const friendName = isRequester ? friend.receiver__username : friend.requester__username;
                 const friendStatus = isRequester ? friend.receiver__is_logged_in : friend.requester__is_logged_in;
+
                 const li = templates.friendElement.cloneNode(true);
                 li.querySelector('.profile-status').innerText = friendStatus ? '🟢' : '🔴';
                 li.querySelector('strong').innerText = friendName;
@@ -80,6 +84,12 @@ function loadProfile() {
 
         const friendRequestsList = document.getElementById('friend-requests-list');
         friendRequestsList.innerHTML = '';
+
+        if (!templates.friendRequestElement) {
+            console.error("templates.friendRequestElement is still undefined. Skipping friend requests.");
+            return;
+        }
+
         if (data.pending_requests.length > 0) {
             data.pending_requests.forEach(request => {
                 const li = templates.friendRequestElement.cloneNode(true);
@@ -95,9 +105,11 @@ function loadProfile() {
         document.querySelectorAll('.accept-btn').forEach(button => {
             button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, true));
         });
+
         document.querySelectorAll('.decline-btn').forEach(button => {
             button.addEventListener('click', () => handleFriendRequest(button.dataset.requestId, false));
         });
+
         document.querySelectorAll('.remove-btn').forEach(button => {
             button.addEventListener('click', () => remove_friend(button.dataset.friendId));
         });
@@ -107,10 +119,14 @@ function loadProfile() {
     });
 }
 
+
 function editProfile() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
-    if (!profileContainer || !profileEditForm) {
+    const addFriendForm = document.getElementById("friend-request-form");
+    const changePasswordForm = document.getElementById('change-password-form');
+
+    if (!profileContainer || !profileEditForm || !addFriendForm || !changePasswordForm) {
         return;
     }
 
@@ -123,7 +139,13 @@ function editProfile() {
         const lastName = document.getElementById('edit-last-name').value;
         const password = document.getElementById('edit-password');
         const confirmPassword = document.getElementById('edit-confirm-password');
+        const changePasswordForm = document.getElementById('change-password-form');
         console.log("Email:", email, "First Name:", firstName, "Last Name:", lastName, "Password:", password, "Confirm Password:", confirmPassword);
+        
+        if (!profileContainer || !profileEditForm) return;
+        console.log("profile.js loaded successfully!");
+
+        
         if (password !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
             return;
@@ -164,14 +186,6 @@ function editProfile() {
         profileContainer.classList.remove('hidden');
     });
 
-    document.getElementById('edit-password-button').addEventListener('click', () => {
-        const changePasswordForm = document.getElementById('change-password-form');
-        if (!changePasswordForm) {
-            return;
-        }
-        profileEditForm.classList.add('hidden');
-        changePasswordForm.classList.remove('hidden');
-    });
 
     document.getElementById('cancelPasswordButton').addEventListener('click', () => {
         const changePasswordForm = document.getElementById('change-password-form');
@@ -201,6 +215,7 @@ function editProfile() {
             alert("Veuillez remplir tous les champs.");
             return;
         }
+        console.log("Old Password:", oldPassword, "New Password:", newPassword, "Confirm Password:", confirmPassword);
         if (newPassword !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
             return;
@@ -235,14 +250,20 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
-    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); // CSRF token
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); 
     const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
     const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
     const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-    if (!profileContainer || !addFriendForm || !csrfToken) {
+    if (!profileContainer || !changePasswordForm || !addFriendForm) {
         return;
     }
+
+
+        profileContainer.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        addFriendForm.classList.add('hidden');
+
 
     profileContainer.classList.add('hidden');
     addFriendForm.classList.remove('hidden');
@@ -336,4 +357,171 @@ function remove_friend(friendId) {
     .catch(error => {
         alert('Failed to remove friend');
     });
+}
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+        const dropdown = document.querySelector(".dropdown");
+        const dropdownContent = document.querySelector(".dropdown-content");
+        
+        if (!dropdown.contains(event.target)) {
+            dropdownContent.style.display = "none";
+        } else {
+            dropdownContent.style.display = "block";
+        }
+    });
+});
+
+function showChangePassword() {
+    const changePasswordForm = document.getElementById('change-password-form');
+    const profileContainer = document.getElementById('profile-container');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const addFriendForm = document.getElementById("friend-request-form");
+
+    if (!changePasswordForm) return;
+
+    if (!changePasswordForm.classList.contains('hidden')) {
+        changePasswordForm.classList.add('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        profileEditForm.classList.add('hidden');
+        addFriendForm.classList.add('hidden');
+        changePasswordForm.classList.remove('hidden');
+        setupProfileEvents();
+    }
+}
+
+
+function showAddFriend() {
+    const addFriendForm = document.getElementById('friend-request-form');
+    const profileContainer = document.getElementById('profile-container');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+
+    if (!addFriendForm || !profileContainer || !profileEditForm) return;
+
+    if (!addFriendForm.classList.contains('hidden')) {
+        addFriendForm.classList.add('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        profileEditForm.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        addFriendForm.classList.remove('hidden');
+    }
+}
+
+function ShowEditProfile() {
+    const profileContainer = document.getElementById('profile-container');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const addFriendForm = document.getElementById("friend-request-form");
+
+    if (!profileContainer || !profileEditForm || !changePasswordForm || !addFriendForm) {
+        return;
+    }
+
+    if (!profileEditForm.classList.contains('hidden')) {
+        profileEditForm.classList.add('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        addFriendForm.classList.add('hidden');
+        profileEditForm.classList.remove('hidden');
+    }
+}
+function savePassword() {
+    const oldPassword = document.getElementById('old-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (newPassword !== confirmPassword) {
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+    }
+
+    fetch('/api/change-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrf,
+        },
+        body: JSON.stringify({
+            old_password: oldPassword,
+            new_password: newPassword
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors du changement de mot de passe");
+        }
+        return response.json();
+    })
+    .then(() => {
+        alert("Mot de passe mis à jour !");
+        showProfile();
+    })
+    .catch(error => {
+        alert("Une erreur s'est produite lors du changement de mot de passe.");
+    });
+}
+
+function saveProfile() {
+    const email = document.getElementById('edit-email').value;
+    const firstName = document.getElementById('edit-first-name').value;
+    const lastName = document.getElementById('edit-last-name').value;
+
+    fetch('/api/update-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrf,
+        },
+        body: JSON.stringify({
+            email: email,
+            first_name: firstName,
+            last_name: lastName
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur lors de la mise à jour du profil');
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('profile-email').textContent = data.email;
+        document.getElementById('profile-first-name').textContent = data.first_name;
+        document.getElementById('profile-last-name').textContent = data.last_name;
+        showProfile(); 
+    })
+    .catch(error => {
+        alert("Une erreur s'est produite lors de la mise à jour du profil.");
+    });
+}
+
+
+function setupProfileEvents() {
+    const saveProfileButton = document.getElementById('saveProfileButton');
+    const cancelEditButton = document.getElementById('cancelEditButton');
+    const savePasswordButton = document.getElementById('savePasswordButton');
+    const cancelPasswordButton = document.getElementById('cancelPasswordButton');
+
+    if (saveProfileButton && !saveProfileButton.dataset.listener) {
+        saveProfileButton.dataset.listener = "true";
+        saveProfileButton.addEventListener('click', saveProfile);
+    }
+
+    if (cancelEditButton && !cancelEditButton.dataset.listener) {
+        cancelEditButton.dataset.listener = "true";
+        cancelEditButton.addEventListener('click', showProfile);
+    }
+
+    if (savePasswordButton && !savePasswordButton.dataset.listener) {
+        savePasswordButton.dataset.listener = "true";
+        savePasswordButton.addEventListener('click', savePassword);
+    }
+
+    if (cancelPasswordButton && !cancelPasswordButton.dataset.listener) {
+        cancelPasswordButton.dataset.listener = "true";
+        cancelPasswordButton.addEventListener('click', showProfile);
+    }
 }

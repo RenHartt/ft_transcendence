@@ -7,16 +7,17 @@ Mandatory part (25%):
     -Security ✅ (need to be tested)
 
 Modules:
-    Major (40/70):
+    Major (20/70):
         -Framework as a backend ✅ (10)
         -Standard user management ✅ (10)
         {
             -Secure subscribe ✅
             -Secure login ✅
             -Update informations ✅
-            -Upload Avatar and a default one (Need to be complete)✅
-            -Add friend ad see there status (Need to be complete)✅
-            -Match history (Need to be done) ⚠️
+            -Upload Avatar and a default one (Need to be complete)🚧
+            -Add friend ad see there status (Need to be complete)🚧
+            -Display stats (Need to be done)❌
+            -Match history (Need to be done)❌
         }
         -A remote authentication (42auth) ✅ (10)
         -Multiple player ✅
@@ -26,14 +27,14 @@ Modules:
         -Add another game ✅ (10)
         {
             -Tic tac toe ✅
+            -User history (Need to be done)❌
             -Matchmaking (Need to be done)❌
+            -History and matchmaking storing (Need to be done)❌
             -Performances and responsive ✅
         }
         -AI Opponent ✅ (10)
 
-
-
-    Minor (25/25 points):
+    Minor (20/25 points):
         -Database Postgre ✅ (5)
         -Game Customization ✅ (5)
         {
@@ -43,11 +44,15 @@ Modules:
             -Consistance betwwen both games (to be done in a complete section)🚧
         }
         -Support all device (Mobile first) ✅ (5)
+        {
+            -need a little refactor over the CSS🚧
+        }
         -Browser Compatibility ✅ (5)
         -Multiple lamnguages support ✅ (5)
 
 
-TOTAL for current: 92,25/120 (76.8% of the project at the moment)
+TOTAL for current: 75/120 (62.5% of the project at the moment)
+
 
 Front reco:
     RIGHT BURGER MENU
