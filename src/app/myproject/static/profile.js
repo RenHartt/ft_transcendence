@@ -390,44 +390,6 @@ function showChangePassword() {
     }
 }
 
-
-function showAddFriend() {
-    const addFriendForm = document.getElementById('friend-request-form');
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-
-    if (!addFriendForm || !profileContainer || !profileEditForm) return;
-
-    if (!addFriendForm.classList.contains('hidden')) {
-        addFriendForm.classList.add('hidden');
-    } else {
-        profileContainer.classList.add('hidden');
-        profileEditForm.classList.add('hidden');
-        changePasswordForm.classList.add('hidden');
-        addFriendForm.classList.remove('hidden');
-    }
-}
-
-function ShowEditProfile() {
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const addFriendForm = document.getElementById("friend-request-form");
-
-    if (!profileContainer || !profileEditForm || !changePasswordForm || !addFriendForm) {
-        return;
-    }
-
-    if (!profileEditForm.classList.contains('hidden')) {
-        profileEditForm.classList.add('hidden');
-    } else {
-        profileContainer.classList.add('hidden');
-        changePasswordForm.classList.add('hidden');
-        addFriendForm.classList.add('hidden');
-        profileEditForm.classList.remove('hidden');
-    }
-}
 function savePassword() {
     const oldPassword = document.getElementById('old-password').value;
     const newPassword = document.getElementById('new-password').value;
