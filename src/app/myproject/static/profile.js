@@ -130,8 +130,14 @@ function editProfile() {
         return;
     }
 
-    profileContainer.classList.add('hidden');
-    profileEditForm.classList.remove('hidden');
+    if (!profileEditForm.classList.contains('hidden')) {
+        profileEditForm.classList.add('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        addFriendForm.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        profileEditForm.classList.remove('hidden');
+    }
 
     document.getElementById('saveProfileButton').addEventListener('click', () => {
         const email = document.getElementById('edit-email').value;
@@ -250,9 +256,13 @@ function editProfile() {
 function addFriend() {
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
-    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); 
+    const changePasswordForm = document.getElementById('change-password-form');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const history = document.getElementById('history-constainer');
+
     const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
     const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); 
     const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
     if (!profileContainer || !changePasswordForm || !addFriendForm) {
@@ -260,13 +270,15 @@ function addFriend() {
     }
 
 
-        profileContainer.classList.add('hidden');
-        changePasswordForm.classList.add('hidden');
+    if (!addFriendForm.classList.contains('hidden')) {
         addFriendForm.classList.add('hidden');
-
-
-    profileContainer.classList.add('hidden');
-    addFriendForm.classList.remove('hidden');
+    } else {
+        profileContainer.classList.add('hidden');
+        addFriendForm.classList.remove('hidden');
+        changePasswordForm.classList.add('hidden');
+        profileEditForm.classList.add('hidden');
+        history.classList.add('hidden');
+    }
 
     sendFriendRequestButton.addEventListener('click', () => {
         const friendUsername = document.getElementById('friend-username')?.value;
@@ -358,18 +370,6 @@ function remove_friend(friendId) {
         alert('Failed to remove friend');
     });
 }
-document.addEventListener("DOMContentLoaded", function () {
-    document.addEventListener("click", function (event) {
-        const dropdown = document.querySelector(".dropdown");
-        const dropdownContent = document.querySelector(".dropdown-content");
-        
-        if (!dropdown.contains(event.target)) {
-            dropdownContent.style.display = "none";
-        } else {
-            dropdownContent.style.display = "block";
-        }
-    });
-});
 
 function showChangePassword() {
     const changePasswordForm = document.getElementById('change-password-form');
