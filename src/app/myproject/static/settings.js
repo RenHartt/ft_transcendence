@@ -24,6 +24,11 @@ function showSettings() {
 function showGameSettings() {
     const gameSettingsContainer = document.getElementById('game-settings-container');
     const settingsContainer = document.getElementById('settings-container');
+    const profileContainer = document.getElementById('profile-container');
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const addFriendForm = document.getElementById("friend-request-form");
+    const historyContainer = document.getElementById('history-container');
 
     if (!gameSettingsContainer || !settingsContainer) {
         return;
@@ -34,6 +39,11 @@ function showGameSettings() {
     } else {
         settingsContainer.classList.add('hidden');
         gameSettingsContainer.classList.remove('hidden');
+        profileContainer.classList.add('hidden');
+        profileEditForm.classList.add('hidden');
+        changePasswordForm.classList.add('hidden');
+        addFriendForm.classList.add('hidden');
+        historyContainer.classList.add('hidden');
     }
 }
 

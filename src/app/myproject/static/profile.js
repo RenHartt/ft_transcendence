@@ -7,6 +7,8 @@ function showProfile() {
     const changePasswordForm = document.getElementById('change-password-form');
     const addFriendForm = document.getElementById("friend-request-form");
     const history = document.getElementById('history-constainer');
+    const settingsContainer = document.getElementById('settings-container');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
 
     if (!profileContainer) return;
 
@@ -18,6 +20,8 @@ function showProfile() {
         addFriendForm.classList.add('hidden');
         history.classList.add('hidden');
         profileContainer.classList.remove('hidden');
+        settingsContainer.classList.add('hidden');
+        gameSettingsContainer.classList.add('hidden');
     }
 
     if (!templates.friendElement || !templates.friendRequestElement) {
@@ -125,6 +129,8 @@ function editProfile() {
     const profileEditForm = document.getElementById('profile-edit-form');
     const addFriendForm = document.getElementById("friend-request-form");
     const changePasswordForm = document.getElementById('change-password-form');
+    const settingsContainer = document.getElementById('settings-container');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
 
     if (!profileContainer || !profileEditForm || !addFriendForm || !changePasswordForm) {
         return;
@@ -137,6 +143,8 @@ function editProfile() {
         addFriendForm.classList.add('hidden');
         changePasswordForm.classList.add('hidden');
         profileEditForm.classList.remove('hidden');
+        settingsContainer.classList.add('hidden');
+        gameSettingsContainer.classList.add('hidden');
     }
 
     document.getElementById('saveProfileButton').addEventListener('click', () => {
@@ -259,6 +267,8 @@ function addFriend() {
     const changePasswordForm = document.getElementById('change-password-form');
     const profileEditForm = document.getElementById('profile-edit-form');
     const history = document.getElementById('history-constainer');
+    const settingsContainer = document.getElementById('settings-container');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
 
     const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
     const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
@@ -278,6 +288,8 @@ function addFriend() {
         changePasswordForm.classList.add('hidden');
         profileEditForm.classList.add('hidden');
         history.classList.add('hidden');
+        settingsContainer.classList.add('hidden');
+        gameSettingsContainer.classList.add('hidden');
     }
 
     sendFriendRequestButton.addEventListener('click', () => {
@@ -376,6 +388,8 @@ function showChangePassword() {
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const addFriendForm = document.getElementById("friend-request-form");
+    const settingsContainer = document.getElementById('settings-container');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
 
     if (!changePasswordForm) return;
 
@@ -386,6 +400,8 @@ function showChangePassword() {
         profileEditForm.classList.add('hidden');
         addFriendForm.classList.add('hidden');
         changePasswordForm.classList.remove('hidden');
+        settingsContainer.classList.add('hidden');
+        gameSettingsContainer.classList.add('hidden');
         setupProfileEvents();
     }
 }
