@@ -1,4 +1,8 @@
 function showSettings() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const changePasswordForm = document.getElementById('change-password-form');
@@ -24,14 +28,14 @@ function showSettings() {
 
 
 function showGameSettings() {
+    if (gameState.gameRunning)
+        stopGame();     
+    if (gameActive)
+        hideTicTacToe();
     const gameSettingsContainer = document.getElementById('game-settings-container');
     const settingsContainer = document.getElementById('settings-container');
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const addFriendForm = document.getElementById("friend-request-form");
-    const historyContainer = document.getElementById('history-container');
-
+    if (gameState.gameRunning)
+        stopGame();
     if (!gameSettingsContainer || !settingsContainer) {
         return;
     }

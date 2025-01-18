@@ -5,7 +5,8 @@ function showHistory() {
     const changePasswordForm  = document.getElementById('change-password-form');
     const settingsPopup       = document.getElementById('pong-settings-popup');
     const history             = document.getElementById('history-constainer');
-
+	if (gameActive)
+		hideTicTacToe();
     if (!profileContainer || !profileEditForm || !friendrequest || !changePasswordForm || !settingsPopup || !history) {
         return;
     }
