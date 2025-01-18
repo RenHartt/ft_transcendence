@@ -28,13 +28,13 @@
                 {% endif %}
                 <button type="submit">Log In</button>
             </form>
-            
+
             <p>Or</p>
             <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
                 <img src="{% static 'images/42.png' %}" alt="42 Logo">
                 Log In with 42
             </a>
-            
+
             <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
         </section>
 
@@ -45,7 +45,7 @@
                 <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
                 <h1>__attribute__</h1>
             </header>
-        
+
             <nav class="poulet">
                 <div class="dropdown">
                     <a href="javascript:void(0)" class="menu profile-dropdown">Profile</a>
@@ -173,7 +173,8 @@
                 </button>
                 <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">{% trans "Stop Game" %}</button>
                 </div>
-            </div>  
+            </div>
+
             <div id="game-settings-container" class="hidden editProfileForm">
                 <h2>{% trans "Game Settings" %}</h2>
                 

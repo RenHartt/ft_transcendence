@@ -19,8 +19,8 @@ function showHistory() {
         friendrequest.classList.add('hidden');
         settingsPopup.classList.add('hidden');
         history.classList.remove('hidden');
-
-        loadHistory(); 
+		consoleq.log("loading history");
+        loadHistory();
     }
 }
 

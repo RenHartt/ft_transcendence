@@ -48,15 +48,3 @@ function showGameSettings() {
         historyContainer.classList.add('hidden');
     }
 }
-
-function hideGameSettings() {
-    const gameSettingsContainer = document.getElementById('game-settings-container');
-    const settingsContainer = document.getElementById('settings-container');
-
-    if (!gameSettingsContainer || !settingsContainer) {
-        return;
-    }
-
-    gameSettingsContainer.classList.add('hidden');
-    settingsContainer.classList.remove('hidden');
-}

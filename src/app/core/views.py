@@ -194,7 +194,6 @@ def change_password(request):
 @login_required 
 def save_profile(request):
     if request.method == 'POST':
-    
         user = request.user 
         first_name = request.POST.get('first_name', user.first_name)
         last_name = request.POST.get('last_name', user.last_name)
