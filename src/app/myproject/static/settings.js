@@ -4,6 +4,7 @@ function showSettings() {
     const changePasswordForm = document.getElementById('change-password-form');
     const addFriendForm = document.getElementById("friend-request-form");
     const settingsContainer = document.getElementById('settings-container');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
 
     if (!settingsContainer || !profileContainer || !profileEditForm || !changePasswordForm || !addFriendForm) {
         return;
@@ -17,6 +18,7 @@ function showSettings() {
         changePasswordForm.classList.add('hidden');
         addFriendForm.classList.add('hidden');
         settingsContainer.classList.remove('hidden');
+        gameSettingsContainer.classList.add('hidden');
     }
 }
 
