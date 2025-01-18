@@ -1,5 +1,9 @@
 
 function showProfile() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     console.log("showProfile() called");
 
     const profileContainer = document.getElementById('profile-container');
@@ -46,6 +50,10 @@ function showProfile() {
 }
 
 function loadProfile() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     fetch('/api/profile', {
         method: 'GET',
         credentials: 'include',
@@ -125,6 +133,10 @@ function loadProfile() {
 
 
 function editProfile() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const addFriendForm = document.getElementById("friend-request-form");
@@ -262,6 +274,10 @@ function editProfile() {
 }
 
 function addFriend() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
     const changePasswordForm = document.getElementById('change-password-form');
@@ -384,6 +400,10 @@ function remove_friend(friendId) {
 }
 
 function showChangePassword() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     const changePasswordForm = document.getElementById('change-password-form');
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
@@ -478,6 +498,10 @@ function saveProfile() {
 
 
 function setupProfileEvents() {
+    if (gameState.gameRunning)
+        stopGame(); 
+    if (gameActive)
+        hideTicTacToe();
     const saveProfileButton = document.getElementById('saveProfileButton');
     const cancelEditButton = document.getElementById('cancelEditButton');
     const savePasswordButton = document.getElementById('savePasswordButton');

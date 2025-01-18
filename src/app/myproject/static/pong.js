@@ -279,6 +279,7 @@ function showPong() {
     const twoPlayerButton     = document.getElementById('twoPlayerButton');
     const friendrequest       = document.getElementById('friend-request-form');
     const history             = document.getElementById('history-constainer');
+    const settingsContainer   = document.getElementById('settings-container');
 
     if (!pongWrapper) return;
 
@@ -294,7 +295,7 @@ function showPong() {
     changePasswordForm.classList.add('hidden');
     friendrequest.classList.add('hidden'); 
     history.classList.add('hidden');
-
+    settingsContainer.classList.add('hidden');
     overlay.classList.remove('active');
     ticTacToeModal.classList.remove('active');
     
