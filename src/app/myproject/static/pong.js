@@ -286,7 +286,8 @@ function showPong() {
     const friendrequest       = document.getElementById('friend-request-form');
     const history             = document.getElementById('history-constainer');
     const settingsContainer   = document.getElementById('settings-container');
-    const startButton         = document.getElementById('startGameButton');
+    const gameSettingsContainer = document.getElementById('game-settings-container');
+
     if (!pongWrapper) return;
 
     if (pongWrapper.style.display === "block") {
@@ -305,6 +306,7 @@ function showPong() {
     settingsContainer.classList.add('hidden');
     overlay.classList.remove('active');
     ticTacToeModal.classList.remove('active');
+    gameSettingsContainer.classList.add('hidden');
     
     startPongGame();
     pongWrapper.style.display = "block";
