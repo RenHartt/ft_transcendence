@@ -325,10 +325,10 @@ function startGame() {
     function drawCountdown(number) {
         ctx.clearRect(0, 0, pongCanvas.width, pongCanvas.height);
     
-        ctx.fillStyle = "rgba(42, 42, 42, 0.7)"; 
+        ctx.fillStyle = "#FFFFFF";  // Fond blanc
         ctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
     
-        ctx.fillStyle = "#00000"; 
+        ctx.fillStyle = "#000000"; 
         ctx.font = "bold 60px Arial"; 
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
