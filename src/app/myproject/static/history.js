@@ -12,7 +12,7 @@ function showHistory() {
     }
 
     if (!history.classList.contains('hidden')) {
-        history.classList.add('hidden');
+        history.classList.remove('hidden');
     } else {
         profileContainer.classList.add('hidden');
         profileEditForm.classList.add('hidden');
@@ -28,9 +28,7 @@ function showHistory() {
 
 var templates = {};
 templates.historyElement = document.createElement('li');
-templates.historyElement.innerHTML = `
-<p><\p>
-`;
+templates.historyElement.innerHTML = `<p><\p>`;
 
 function loadHistory() {
 	fetch('api/get-history/', {

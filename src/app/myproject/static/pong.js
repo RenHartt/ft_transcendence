@@ -133,19 +133,23 @@ function startPongGame() {
             playerHit = true;
         }
     
+        let reactionDelay = Math.random() < 0.17;
+        let aimError = (Math.random() - 0.5) * 30;
+        let speedVariation = 0.25 + Math.random();
+    
         if (window.twoPlayers) {
             if (window.upPressed && aiY > 0) aiY -= paddleSpeed;
             if (window.downPressed && aiY < canvas.height - paddleHeight) aiY += paddleSpeed;
-        } else if (playerHit && !aiFrozen) { 
+        } else if (!aiFrozen && !reactionDelay && playerHit) {
             let aiCenter = aiY + paddleHeight / 2;
-            if (aiCenter < ballY - 10) aiY += paddleSpeed * 0.7;
-            if (aiCenter > ballY + 10) aiY -= paddleSpeed * 0.7;
+            if (aiCenter < ballY + aimError) aiY += paddleSpeed * speedVariation * 0.7;
+            if (aiCenter > ballY + aimError) aiY -= paddleSpeed * speedVariation * 0.7;
         }
     
         ballX += gameState.BallSpeedX;
         ballY += gameState.BallSpeedY;
     
-        if (ballY <= 0 || ballY >= canvas.height - ballSize)gameState.BallSpeedY *= -1;
+        if (ballY <= 0 || ballY >= canvas.height - ballSize) gameState.BallSpeedY *= -1;
     
         if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
             gameState.BallSpeedX *= -1;
@@ -156,16 +160,17 @@ function startPongGame() {
         if (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
             gameState.BallSpeedX *= -1;
             aiFrozen = true;
-            playerHit = false; 
+            playerHit = false;
         }
     
         if (ballX <= 0) {
             aiScore++;
             updateScore();
             resetBall();
-            playerHit = false; 
+            playerHit = false;
             aiFrozen = false;
         }
+    
         if (ballX >= canvas.width) {
             playerScore++;
             updateScore();
@@ -174,6 +179,7 @@ function startPongGame() {
             aiFrozen = false;
         }
     }
+
     
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
