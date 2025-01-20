@@ -1,12 +1,14 @@
 function showHistory() {
 	const history = document.getElementById('history-container');
+	if (!history) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!history) return;
 	hideProfile(history);
 	hideSettings(history);
+
 	if (!history.classList.contains('hidden'))
 		history.classList.add('hidden');
 	else {

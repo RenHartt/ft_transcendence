@@ -1,10 +1,11 @@
 function showSettings() {
 	const settingsContainer = document.getElementById('settings-container');
+	if (!settingsContainer) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!settingsContainer) return;
 	hideProfile(settingsContainer);
 	hideSettings(settingsContainer);
 
@@ -16,11 +17,12 @@ function showSettings() {
 
 function showGameSettings() {
 	const gameSettingsContainer = document.getElementById('game-settings-container');
+	if (!gameSettingsContainer) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!gameSettingsContainer) return;
 	hideProfile(gameSettingsContainer);
 	hideSettings(gameSettingsContainer);
 

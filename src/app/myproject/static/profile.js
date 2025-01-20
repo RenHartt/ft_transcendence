@@ -1,13 +1,15 @@
 
 function showProfile() {
 	const profileContainer = document.getElementById('profile-container');
+	if (!profileContainer) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!profileContainer) return;
 	hideProfile(profileContainer);
 	hideSettings(profileContainer);
+
 	if (!profileContainer.classList.contains('hidden'))
 		profileContainer.classList.add('hidden');
 	else
@@ -136,13 +138,15 @@ function loadProfile() {
 
 function editProfile() {
 	const profileEditForm = document.getElementById('profile-edit-form');
+	if (!profileEditForm) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!profileEditForm) return;
 	hideProfile(profileEditForm);
 	hideSettings(profileEditForm);
+
 	if (!profileEditForm.classList.contains('hidden'))
 		profileEditForm.classList.add('hidden');
 	else
@@ -264,11 +268,12 @@ function editProfile() {
 
 function addFriend() {
 	const addFriendForm = document.getElementById('friend-request-form');  
+	if (!addFriendForm) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!addFriendForm) return;
 	hideProfile(addFriendForm);
 	hideSettings(addFriendForm);
 
@@ -375,11 +380,12 @@ function remove_friend(friendId) {
 
 function showChangePassword() {
 	const changePasswordForm = document.getElementById('change-password-form');
+	if (!changePasswordForm) return;
+
 	if (gameState.gameRunning)
 		stopGame();
 	if (gameActive)
 		hideTicTacToe();
-	if (!changePasswordForm) return;
 	hideProfile(changePasswordForm);
 	hideSettings(changePasswordForm);
 
