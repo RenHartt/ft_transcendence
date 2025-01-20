@@ -1,61 +1,43 @@
 function showSettings() {
-    if (gameState.gameRunning)
-        stopGame(); 
-    if (gameActive)
-        hideTicTacToe();
+	const settingsContainer = document.getElementById('settings-container');
+	if (!settingsContainer) return;
 
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const addFriendForm = document.getElementById("friend-request-form");
-    const settingsContainer = document.getElementById('settings-container');
-    const gameSettingsContainer = document.getElementById('game-settings-container');
-    const historyContainer = document.getElementById('history-container');
+	if (gameState.gameRunning)
+		stopGame();
+	if (gameActive)
+		hideTicTacToe();
+	hideProfile(settingsContainer);
+	hideSettings(settingsContainer);
 
-    if (!settingsContainer || !profileContainer || !profileEditForm || !changePasswordForm || !addFriendForm) {
-        return;
-    }
-
-    if (!settingsContainer.classList.contains('hidden')) {
-        settingsContainer.classList.add('hidden');
-    } else {
-        profileContainer.classList.add('hidden');
-        profileEditForm.classList.add('hidden');
-        changePasswordForm.classList.add('hidden');
-        addFriendForm.classList.add('hidden');
-        settingsContainer.classList.remove('hidden');
-        gameSettingsContainer.classList.add('hidden');
-        historyContainer.classList.add('hidden');
-    }
+	if (!settingsContainer.classList.contains('hidden'))
+		settingsContainer.classList.add('hidden');
+	else
+		settingsContainer.classList.remove('hidden');
 }
 
 function showGameSettings() {
-    if (gameState.gameRunning)
-        stopGame();     
-    if (gameActive)
-        hideTicTacToe();
+	const gameSettingsContainer = document.getElementById('game-settings-container');
+	if (!gameSettingsContainer) return;
 
-    const gameSettingsContainer = document.getElementById('game-settings-container');
-    const settingsContainer = document.getElementById('settings-container');
-    const profileContainer = document.getElementById('profile-container');
-    const profileEditForm = document.getElementById('profile-edit-form');
-    const changePasswordForm = document.getElementById('change-password-form');
-    const addFriendForm = document.getElementById("friend-request-form");
-    const historyContainer = document.getElementById('history-container');
+	if (gameState.gameRunning)
+		stopGame();
+	if (gameActive)
+		hideTicTacToe();
+	hideProfile(gameSettingsContainer);
+	hideSettings(gameSettingsContainer);
 
-    if (!gameSettingsContainer || !settingsContainer) {
-        return;
-    }
+	if (!gameSettingsContainer.classList.contains('hidden'))
+		gameSettingsContainer.classList.add('hidden');
+	else
+		gameSettingsContainer.classList.remove('hidden');
+}
 
-    if (!gameSettingsContainer.classList.contains('hidden')) {
-        gameSettingsContainer.classList.add('hidden');
-    } else {
-        settingsContainer.classList.add('hidden');
-        gameSettingsContainer.classList.remove('hidden');
-        profileContainer.classList.add('hidden');
-        profileEditForm.classList.add('hidden');
-        changePasswordForm.classList.add('hidden');
-        addFriendForm.classList.add('hidden');
-        historyContainer.classList.add('hidden');
-    }
+function hideSettings(act) {
+	const settingsContainer = document.getElementById('settings-container');
+	const gameSettingsContainer = document.getElementById('game-settings-container');
+
+	if (act != settingsContainer)
+		settingsContainer.classList.add('hidden');
+	if (act != gameSettingsContainer)
+		gameSettingsContainer.classList.add('hidden');
 }
