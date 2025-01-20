@@ -139,6 +139,7 @@
                     <button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
                 </form>
             </div>
+            
             <div id="settings-container" class="hidden editProfileForm">
                 <h2>{% trans "Settings" %}</h2>
                 <form action="{% url 'set_language' %}" method="post">
@@ -190,7 +191,7 @@
             
                 <button onclick="hideGameSettings()">{% trans "Close" %}</button>
             </div>
-            
+
             <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
             <div id="tic-tac-toe-modal">
                 <h1>{% trans "Tic-Tac-Toe" %}</h1>
@@ -203,13 +204,13 @@
             <footer>
                 <p>&copy; {% trans "2024 Page de cramptes. Tous droits non-réservés." %}</p>
             </footer>
-            
+
             {% else %}
             <p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
             <a href="?page=login">{% trans "Se connecter" %}</a>
             {% endif %}
         </section>
-        
+
         <script src="{% static 'cookie-banner.js' %}"></script>
         <script src="{% static 'redirect.js' %}"></script>
         <script src="{% static 'profile.js' %}"></script>

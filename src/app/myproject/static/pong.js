@@ -90,7 +90,6 @@ function startPongGame() {
         }
     }
     
-
     const maxBallSpeed = gameState.basespeed
 
     const paddleWidth = 8, paddleHeight = 60;
@@ -179,7 +178,6 @@ function startPongGame() {
             aiFrozen = false;
         }
     }
-
     
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -217,7 +215,6 @@ function startPongGame() {
         animationFrameId = requestAnimationFrame(gameLoop);
     }
     
-
     gameState.gameRunning = true;
     updateScore();
     gameLoop();
@@ -256,7 +253,6 @@ function resetGame() {
     }, 500);
 }
 
-
 function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
     gameState.gameRunning = false;
@@ -294,19 +290,19 @@ function replayGame() {
 }
 
 function showPong() {
-    const pongWrapper         = document.getElementById('pong-wrapper');
-    const pongContainer       = document.getElementById('pong-container');
-    const profileContainer    = document.getElementById('profile-container');
-    const profileEditForm     = document.getElementById('profile-edit-form');
-    const changePasswordForm  = document.getElementById('change-password-form');
-    const overlay             = document.getElementById('overlay');
-    const ticTacToeModal      = document.getElementById('tic-tac-toe-modal');
-    const stopGameButton      = document.getElementById('stopGameButton');
-    const pongScore           = document.getElementById('pong-score');
-    const twoPlayerButton     = document.getElementById('twoPlayerButton');
-    const friendrequest       = document.getElementById('friend-request-form');
-    const history             = document.getElementById('history-constainer');
-    const settingsContainer   = document.getElementById('settings-container');
+    const pongWrapper           = document.getElementById('pong-wrapper');
+    const pongContainer         = document.getElementById('pong-container');
+    const profileContainer      = document.getElementById('profile-container');
+    const profileEditForm       = document.getElementById('profile-edit-form');
+    const changePasswordForm    = document.getElementById('change-password-form');
+    const overlay               = document.getElementById('overlay');
+    const ticTacToeModal        = document.getElementById('tic-tac-toe-modal');
+    const stopGameButton        = document.getElementById('stopGameButton');
+    const pongScore             = document.getElementById('pong-score');
+    const twoPlayerButton       = document.getElementById('twoPlayerButton');
+    const friendrequest         = document.getElementById('friend-request-form');
+    const history               = document.getElementById('history-constainer');
+    const settingsContainer     = document.getElementById('settings-container');
     const gameSettingsContainer = document.getElementById('game-settings-container');
 
     if (!pongWrapper) return;
@@ -409,4 +405,3 @@ function stopGame() {
 
     document.querySelector("#pong-container").innerHTML = '';
 }
-
