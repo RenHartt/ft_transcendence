@@ -203,7 +203,7 @@ function startPongGame() {
     function gameLoop() {
         if (!gameState.gameRunning) return;
         
-        if (gameState.startGame) {  // Le jeu ne démarre que si le bouton a été cliqué
+        if (gameState.startGame) {
             update();
             draw();
         }
@@ -220,22 +220,36 @@ function startPongGame() {
 
 function resetGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    
     gameState.gameRunning = false;
+    gameState.startGame = false;
     gameState.BallSpeedX = 4;
     gameState.BallSpeedY = 3;
     gameState.basecolor = "#8b8989";
     gameState.basespeed = 4;
+    gameState.generalScore.player = 0;
+    gameState.generalScore.ai = 0;
+
     let canvas = document.getElementById("pongCanvas");
     let pongContainer = document.getElementById("pong-container");
     let pongScore = document.getElementById("pong-score");
     let stopGameButton = document.getElementById("stopGameButton");
+    let startGameButton = document.getElementById("startGameButton");
 
     if (canvas) {
         pongContainer.removeChild(canvas);
     }
     if (pongScore) pongScore.textContent = "Score: 0 - 0";
     if (stopGameButton) stopGameButton.style.display = "none";
+    if (startGameButton) startGameButton.style.display = "block";
+
+    document.querySelector("#pong-container").innerHTML = '';
+
+    setTimeout(() => {
+        showPong();
+    }, 500);
 }
+
 
 function stopGame() {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -347,7 +361,6 @@ function startGame() {
                     setTimeout(() => {
                         gameState.startGame = true;
                         gameState.gameRunning = true;
-                        gameLoop();
                     }, 1000);
                 } else {
                     setTimeout(() => {
@@ -370,7 +383,7 @@ function stopGame() {
     gameState.gameRunning = false; 
     gameState.startGame = false; 
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
+    gameState.aiScore = 0;
     const pongCanvas = document.getElementById('pongCanvas');
     const stopGameButton = document.getElementById('stopGameButton');
     const pongScore = document.getElementById('pong-score');
