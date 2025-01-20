@@ -45,7 +45,6 @@ function showProfile() {
         `;
     }
 
-    console.log("Calling loadProfile()...");
     loadProfile();
 }
 
@@ -54,6 +53,7 @@ function loadProfile() {
         stopGame(); 
     if (gameActive)
         hideTicTacToe();
+
     fetch('/api/profile', {
         method: 'GET',
         credentials: 'include',
@@ -137,6 +137,7 @@ function editProfile() {
         stopGame(); 
     if (gameActive)
         hideTicTacToe();
+
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
     const addFriendForm = document.getElementById("friend-request-form");
@@ -166,11 +167,8 @@ function editProfile() {
         const password = document.getElementById('edit-password');
         const confirmPassword = document.getElementById('edit-confirm-password');
         const changePasswordForm = document.getElementById('change-password-form');
-        console.log("Email:", email, "First Name:", firstName, "Last Name:", lastName, "Password:", password, "Confirm Password:", confirmPassword);
         
         if (!profileContainer || !profileEditForm) return;
-        console.log("profile.js loaded successfully!");
-
         
         if (password !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas.");
@@ -278,6 +276,7 @@ function addFriend() {
         stopGame(); 
     if (gameActive)
         hideTicTacToe();
+
     const profileContainer = document.getElementById('profile-container');
     const addFriendForm = document.getElementById('friend-request-form');  
     const changePasswordForm = document.getElementById('change-password-form');
@@ -294,7 +293,6 @@ function addFriend() {
     if (!profileContainer || !changePasswordForm || !addFriendForm) {
         return;
     }
-
 
     if (!addFriendForm.classList.contains('hidden')) {
         addFriendForm.classList.add('hidden');
@@ -404,6 +402,7 @@ function showChangePassword() {
         stopGame(); 
     if (gameActive)
         hideTicTacToe();
+
     const changePasswordForm = document.getElementById('change-password-form');
     const profileContainer = document.getElementById('profile-container');
     const profileEditForm = document.getElementById('profile-edit-form');
@@ -502,6 +501,7 @@ function setupProfileEvents() {
         stopGame(); 
     if (gameActive)
         hideTicTacToe();
+    
     const saveProfileButton = document.getElementById('saveProfileButton');
     const cancelEditButton = document.getElementById('cancelEditButton');
     const savePasswordButton = document.getElementById('savePasswordButton');
