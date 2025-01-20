@@ -108,29 +108,19 @@ function replayGame() {
 }
 
 function showTicTacToe() {
-	if (gameState.gameRunning) {
-		stopGame();
-	}
-
 	gameActive = true;
 	const overlay            = document.getElementById('overlay');
 	const modal              = document.getElementById('tic-tac-toe-modal');
-	const profileContainer   = document.getElementById('profile-container');
-	const profileEditForm    = document.getElementById('profile-edit-form');
-	const changePasswordForm = document.getElementById('change-password-form');
-	const friendrequest      = document.getElementById('friend-request-form');
-	const history             = document.getElementById('history-constainer');
+	if (gameState.gameRunning)
+		stopGame();
+	if (!history) return;
+	hideProfile(history);
+	hideSettings(history);
 
 	if (overlay && modal) {
 		overlay.classList.add('active');
 		modal.classList.add('active');
 	}
-	if (profileContainer) profileContainer.classList.add('hidden');
-	if (profileEditForm) profileEditForm.classList.add('hidden');
-	if (changePasswordForm) changePasswordForm.classList.add('hidden');
-	if (friendrequest) friendrequest.classList.add('hidden');
-	if (history) history.classList.add('hidden');
-
 	createBoard(staticUrls);
 }
 

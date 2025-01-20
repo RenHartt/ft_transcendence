@@ -269,19 +269,16 @@ function replayGame() {
 function showPong() {
 	const pongWrapper         = document.getElementById('pong-wrapper');
 	const pongContainer       = document.getElementById('pong-container');
-	const profileContainer    = document.getElementById('profile-container');
-	const profileEditForm     = document.getElementById('profile-edit-form');
-	const changePasswordForm  = document.getElementById('change-password-form');
-	const overlay             = document.getElementById('overlay');
-	const ticTacToeModal      = document.getElementById('tic-tac-toe-modal');
 	const stopGameButton      = document.getElementById('stopGameButton');
 	const pongScore           = document.getElementById('pong-score');
 	const twoPlayerButton     = document.getElementById('twoPlayerButton');
-	const friendrequest       = document.getElementById('friend-request-form');
-	const history             = document.getElementById('history-constainer');
-	const settingsContainer   = document.getElementById('settings-container');
-
+	if (gameState.gameRunning)
+		stopGame();
+	if (gameActive)
+		hideTicTacToe();	
 	if (!pongWrapper) return;
+	hideProfile(history);
+	hideSettings(history);
 
 	if (pongWrapper.style.display === "block") {
 		stopGame();                   
@@ -289,15 +286,6 @@ function showPong() {
 		pongWrapper.style.display = "none";
 		return;
 	}
-
-	profileContainer.classList.add('hidden');
-	profileEditForm.classList.add('hidden');
-	changePasswordForm.classList.add('hidden');
-	friendrequest.classList.add('hidden'); 
-	history.classList.add('hidden');
-	settingsContainer.classList.add('hidden');
-	overlay.classList.remove('active');
-	ticTacToeModal.classList.remove('active');
 	
 	startPongGame();
 	pongWrapper.style.display = "block";
