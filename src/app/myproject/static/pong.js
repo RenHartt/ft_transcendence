@@ -273,16 +273,17 @@ function replayGame() {
 }
 
 function showPong() {
-	const pongWrapper         = document.getElementById('pong-wrapper');
-	const pongContainer       = document.getElementById('pong-container');
-	const stopGameButton      = document.getElementById('stopGameButton');
-	const pongScore           = document.getElementById('pong-score');
-	const twoPlayerButton     = document.getElementById('twoPlayerButton');
+	const pongWrapper = document.getElementById('pong-wrapper');
+	const pongContainer = document.getElementById('pong-container');
+	const stopGameButton = document.getElementById('stopGameButton');
+	const pongScore = document.getElementById('pong-score');
+	const twoPlayerButton = document.getElementById('twoPlayerButton');
+    if (!pongWrapper || !pongContainer || !stopGameButton || !pongScore || !twoPlayerButton) return;
+
 	if (gameActive)
 		hideTicTacToe();
-	if (!pongWrapper) return;
-	hideProfile(history);
-	hideSettings(history);
+	hideProfile(pongWrapper);
+	hideSettings(pongWrapper);
 
     if (pongWrapper.style.display === "block") {
         stopGame();                   
