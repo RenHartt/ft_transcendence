@@ -314,10 +314,57 @@ function showPong() {
 }
 
 function startGame() {
-    gameState.startGame = true;  
-    const startButton = document.getElementById('startGameButton');
-    if (startButton) startButton.style.display = "none";
+    gameState.startGame = false; 
+    const startGameButton = document.getElementById('startGameButton');
+    if (startGameButton) startGameButton.style.display = "none"; 
+
+    const pongCanvas = document.getElementById('pongCanvas');
+    if (!pongCanvas) return;
+    const ctx = pongCanvas.getContext("2d");
+
+    function drawCountdown(number) {
+        ctx.clearRect(0, 0, pongCanvas.width, pongCanvas.height);
+    
+        ctx.fillStyle = "rgba(42, 42, 42, 0.7)"; 
+        ctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
+    
+        ctx.fillStyle = "#00000"; 
+        ctx.font = "bold 60px Arial"; 
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(number, pongCanvas.width / 2, pongCanvas.height / 2);
+    }
+    
+    function startCountdown() {
+        let countdown = 3; 
+    
+        function runCountdown() {
+            if (countdown >= 0) {
+                drawCountdown(countdown > 0 ? countdown : "GO!");
+                console.log("Affichage: ", countdown);
+    
+                if (countdown === 0) {
+                    setTimeout(() => {
+                        gameState.startGame = true;
+                        gameState.gameRunning = true;
+                        gameLoop();
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        countdown--;
+                        runCountdown();
+                    }, 1000);
+                }
+            }
+        }
+
+        runCountdown(); 
+    }
+
+    startCountdown();
 }
+
+
 
 function stopGame() {
     gameState.gameRunning = false; 
