@@ -27,7 +27,7 @@ function showGameSettings() {
 	if (!gameSettingsContainer.classList.contains('hidden'))
 		gameSettingsContainer.classList.add('hidden');
 	else
-	gameSettingsContainer.classList.remove('hidden');
+		gameSettingsContainer.classList.remove('hidden');
 }
 
 function hideSettings(act) {

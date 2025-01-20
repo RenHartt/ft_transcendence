@@ -108,12 +108,11 @@ function replayGame() {
 }
 
 function showTicTacToe() {
+	const overlay = document.getElementById('overlay');
+	const modal = document.getElementById('tic-tac-toe-modal');
 	gameActive = true;
-	const overlay            = document.getElementById('overlay');
-	const modal              = document.getElementById('tic-tac-toe-modal');
 	if (gameState.gameRunning)
 		stopGame();
-	if (!history) return;
 	hideProfile(history);
 	hideSettings(history);
 

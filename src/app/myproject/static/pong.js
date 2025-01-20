@@ -11,7 +11,8 @@ const gameState = {
 	gameRunning: false,
 	basecolor: "#8b8989",
 	basespeed: 4,
-	generalScore: { player: 0, ai: 0 }
+	generalScore: { player: 0, ai: 0 },
+	start: false
 };
 
 function togglePongSettings() {
@@ -119,92 +120,97 @@ function startPongGame() {
 		if (e.key === "s") window.sPressed = false;
 	});
 
-	let playerHit = false; 
-	let aiFrozen = false; 
-	
-	function update() {
-		if (!gameState.gameRunning) return;
-	
-		if (window.wPressed && playerY > 0) playerY -= paddleSpeed;
-		if (window.sPressed && playerY < canvas.height - paddleHeight) playerY += paddleSpeed;
-	
-		if (gameState.BallSpeedX > 0) {
-			playerHit = true;
-		}
-	
-		if (window.twoPlayers) {
-			if (window.upPressed && aiY > 0) aiY -= paddleSpeed;
-			if (window.downPressed && aiY < canvas.height - paddleHeight) aiY += paddleSpeed;
-		} else if (playerHit && !aiFrozen) { 
-			let aiCenter = aiY + paddleHeight / 2;
-			if (aiCenter < ballY - 10) aiY += paddleSpeed * 0.7;
-			if (aiCenter > ballY + 10) aiY -= paddleSpeed * 0.7;
-		}
-	
-		ballX += gameState.BallSpeedX;
-		ballY += gameState.BallSpeedY;
-	
-		if (ballY <= 0 || ballY >= canvas.height - ballSize)gameState.BallSpeedY *= -1;
-	
-		if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
-			gameState.BallSpeedX *= -1;
-			playerHit = true;
-			aiFrozen = false;
-		}
-	
-		if (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
-			gameState.BallSpeedX *= -1;
-			aiFrozen = true;
-			playerHit = false; 
-		}
-	
-		if (ballX <= 0) {
-			aiScore++;
-			updateScore();
-			resetBall();
-			playerHit = false; 
-			aiFrozen = false;
-		}
-		if (ballX >= canvas.width) {
-			playerScore++;
-			updateScore();
-			resetBall();
-			playerHit = false;
-			aiFrozen = false;
-		}
-	}
-	
-	function draw() {
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-	
-		ctx.fillStyle = gameState.basecolor
-		
-		ctx.beginPath();
-		ctx.roundRect(0, playerY, paddleWidth, paddleHeight, 4);
-		ctx.fill();
-		ctx.closePath();
-		
-		ctx.beginPath();
-		ctx.roundRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight, 4);
-		ctx.fill();
-		ctx.closePath();
-	
-		ctx.beginPath();
-		ctx.arc(ballX + ballSize / 2, ballY + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
-		ctx.fill();
-		ctx.closePath();
-	
-		ctx.font = "20px Arial";
-		ctx.fillText(playerScore, canvas.width / 4, 30);
-		ctx.fillText(aiScore, (canvas.width * 3) / 4, 30);
-	}
-	
-	function gameLoop() {
-		if (!gameState.gameRunning) return;
-		update();
-		draw();
-		animationFrameId = requestAnimationFrame(gameLoop);
-	}
+    let playerHit = false; 
+    let aiFrozen = false; 
+    
+    function update() {
+        if (!gameState.gameRunning) return;
+    
+        if (window.wPressed && playerY > 0) playerY -= paddleSpeed;
+        if (window.sPressed && playerY < canvas.height - paddleHeight) playerY += paddleSpeed;
+    
+        if (gameState.BallSpeedX > 0) {
+            playerHit = true;
+        }
+    
+        if (window.twoPlayers) {
+            if (window.upPressed && aiY > 0) aiY -= paddleSpeed;
+            if (window.downPressed && aiY < canvas.height - paddleHeight) aiY += paddleSpeed;
+        } else if (playerHit && !aiFrozen) { 
+            let aiCenter = aiY + paddleHeight / 2;
+            if (aiCenter < ballY - 10) aiY += paddleSpeed * 0.7;
+            if (aiCenter > ballY + 10) aiY -= paddleSpeed * 0.7;
+        }
+    
+        ballX += gameState.BallSpeedX;
+        ballY += gameState.BallSpeedY;
+    
+        if (ballY <= 0 || ballY >= canvas.height - ballSize)gameState.BallSpeedY *= -1;
+    
+        if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
+            gameState.BallSpeedX *= -1;
+            playerHit = true;
+            aiFrozen = false;
+        }
+    
+        if (ballX >= canvas.width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
+            gameState.BallSpeedX *= -1;
+            aiFrozen = true;
+            playerHit = false; 
+        }
+    
+        if (ballX <= 0) {
+            aiScore++;
+            updateScore();
+            resetBall();
+            playerHit = false; 
+            aiFrozen = false;
+        }
+        if (ballX >= canvas.width) {
+            playerScore++;
+            updateScore();
+            resetBall();
+            playerHit = false;
+            aiFrozen = false;
+        }
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        ctx.fillStyle = gameState.basecolor
+        
+        ctx.beginPath();
+        ctx.roundRect(0, playerY, paddleWidth, paddleHeight, 4);
+        ctx.fill();
+        ctx.closePath();
+        
+        ctx.beginPath();
+        ctx.roundRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight, 4);
+        ctx.fill();
+        ctx.closePath();
+    
+        ctx.beginPath();
+        ctx.arc(ballX + ballSize / 2, ballY + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+    
+        ctx.font = "20px Arial";
+        ctx.fillText(playerScore, canvas.width / 4, 30);
+        ctx.fillText(aiScore, (canvas.width * 3) / 4, 30);
+    }
+    
+    function gameLoop() {
+        if (!gameState.gameRunning) return;
+        
+        if (gameState.startGame) {  // Le jeu ne démarre que si le bouton a été cliqué
+            update();
+            draw();
+        }
+    
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
+    
 
 	gameState.gameRunning = true;
 	updateScore();
@@ -272,41 +278,98 @@ function showPong() {
 	const stopGameButton      = document.getElementById('stopGameButton');
 	const pongScore           = document.getElementById('pong-score');
 	const twoPlayerButton     = document.getElementById('twoPlayerButton');
-	if (gameState.gameRunning)
-		stopGame();
 	if (gameActive)
-		hideTicTacToe();	
+		hideTicTacToe();
 	if (!pongWrapper) return;
 	hideProfile(history);
 	hideSettings(history);
 
-	if (pongWrapper.style.display === "block") {
-		stopGame();                   
-		pongContainer.innerHTML = '';  
-		pongWrapper.style.display = "none";
-		return;
-	}
-	
-	startPongGame();
-	pongWrapper.style.display = "block";
-	stopGameButton.style.display = "block";
-	pongScore.style.display = "block";
-	twoPlayerButton.style.display = "block";
+    if (pongWrapper.style.display === "block") {
+        stopGame();                   
+        pongContainer.innerHTML = '';  
+        pongWrapper.style.display = "none";
+        return;
+    }
+    gameState.startGame = false; 
+    startPongGame();
+    pongWrapper.style.display = "block";
+    stopGameButton.style.display = "block";
+    pongScore.style.display = "block";
+    twoPlayerButton.style.display = "block";
 }
+
+function startGame() {
+    gameState.startGame = false; 
+    const startGameButton = document.getElementById('startGameButton');
+    if (startGameButton) startGameButton.style.display = "none"; 
+
+    const pongCanvas = document.getElementById('pongCanvas');
+    if (!pongCanvas) return;
+    const ctx = pongCanvas.getContext("2d");
+
+    function drawCountdown(number) {
+        ctx.clearRect(0, 0, pongCanvas.width, pongCanvas.height);
+    
+        ctx.fillStyle = "#FFFFFF";  // Fond blanc
+        ctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
+    
+        ctx.fillStyle = "#000000"; 
+        ctx.font = "bold 60px Arial"; 
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(number, pongCanvas.width / 2, pongCanvas.height / 2);
+    }
+    
+    function startCountdown() {
+        let countdown = 3; 
+    
+        function runCountdown() {
+            if (countdown >= 0) {
+                drawCountdown(countdown > 0 ? countdown : "GO!");
+                console.log("Affichage: ", countdown);
+    
+                if (countdown === 0) {
+                    setTimeout(() => {
+                        gameState.startGame = true;
+                        gameState.gameRunning = true;
+                        gameLoop();
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        countdown--;
+                        runCountdown();
+                    }, 1000);
+                }
+            }
+        }
+
+        runCountdown(); 
+    }
+
+    startCountdown();
+}
+
+
 
 function stopGame() {
-	gameState.gameRunning = false; 
+    gameState.gameRunning = false; 
+    gameState.startGame = false; 
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
 
-	const pongCanvas = document.getElementById('pongCanvas');
-	const stopGameButton = document.getElementById('stopGameButton');
-	const pongScore = document.getElementById('pong-score');
-	const twoPlayerButton = document.getElementById('twoPlayerButton');
-	const pongWrapper = document.getElementById('pong-wrapper');
+    const pongCanvas = document.getElementById('pongCanvas');
+    const stopGameButton = document.getElementById('stopGameButton');
+    const pongScore = document.getElementById('pong-score');
+    const twoPlayerButton = document.getElementById('twoPlayerButton');
+    const pongWrapper = document.getElementById('pong-wrapper');
+    const startGameButton = document.getElementById('startGameButton');
 
-	pongCanvas.style.display = "none"; 
-	stopGameButton.style.display = "none";
-	pongScore.style.display = "none"; 
-	twoPlayerButton.style.display = "none";
-	pongWrapper.style.display = "none"
-	document.querySelector("#pong-container").innerHTML = '';
+    if (pongCanvas) pongCanvas.style.display = "none";
+    if (stopGameButton) stopGameButton.style.display = "none";
+    if (pongScore) pongScore.style.display = "none";
+    if (twoPlayerButton) twoPlayerButton.style.display = "none";
+    if (pongWrapper) pongWrapper.style.display = "none";
+    if (startGameButton) startGameButton.style.display = "block";
+
+    document.querySelector("#pong-container").innerHTML = '';
 }
+
