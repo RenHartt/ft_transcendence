@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, User
 from django.conf import settings
+from django.templatetags.static import static
+
+default_pp = static('images/dragon.png')
 
 class CustomUserManager(BaseUserManager):
     def _create_user(self, username=None, email=None, password=None, **extra_fields):
@@ -15,7 +18,7 @@ class CustomUserManager(BaseUserManager):
             username=username or "",
             first_name=extra_fields.pop('first_name', ''),
             last_name=extra_fields.pop('last_name', ''),
-            pp_link=extra_fields.pop('pp_link', "https://example.com/default-avatar.jpg"),
+            pp_link=extra_fields.pop('pp_link', default_pp),
             **extra_fields
         )
         user.set_password(password)
@@ -44,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, blank=False, unique=True)
     first_name = models.CharField(max_length=30, blank=True)  
     last_name = models.CharField(max_length=30, blank=True)  
-    pp_link = models.URLField(blank=True, default="https://example.com/default-avatar.jpg")  
+    pp_link = models.URLField(blank=True, default=default_pp)  
     name = models.CharField(max_length=255, blank=True, default='')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
