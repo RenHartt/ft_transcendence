@@ -79,7 +79,7 @@ class Friendship(models.Model):
 
 class History(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
+        settings.AUTH_USER_MODEL,
         related_name="histories",
         on_delete=models.CASCADE
     )

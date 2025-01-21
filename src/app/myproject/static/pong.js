@@ -84,10 +84,11 @@ function startPongGame() {
 	
 		if (gameState.generalScore.player >= 3) {
 			alert("Le joueur a gagné la partie !");
-            saveGameHistory("Pong", profileContainer[0]);
+            saveGameHistory("Player1", "Pong", gameState.generalScore.player, gameState.generalScore.ai);
 			resetGame();
 		} else if (gameState.generalScore.ai >= 3) {
 			alert("L'IA a gagné la partie !");
+            saveGameHistory("Player2", "Pong", gameState.generalScore.player, gameState.generalScore.ai);
 			resetGame();
 		}
 	}
