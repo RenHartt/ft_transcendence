@@ -8,7 +8,6 @@ from django.utils.translation import gettext as _
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
-User = get_user_model()
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 import logging
@@ -18,15 +17,17 @@ import json
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Friendship
+from .models import History
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db import models
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+from django.core.cache import cache
+from django.utils.translation import get_language
 
+User = get_user_model()
 logger = logging.getLogger('core')
-
-#logger handlers
-#logger.addHandler(logging.StreamHandler())
-#exemple : logger.info('Hello, world!')
 
 def index(request):
     page = request.GET.get('page', 'home') 
@@ -36,7 +37,6 @@ def index(request):
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
-
             if user is not None:
                 auth_login(request, user)
                 return redirect('/?page=home')  
@@ -55,13 +55,10 @@ def index(request):
                 form.save()
                 return redirect('/?page=login')
         return render(request, 'my_app/register.html', {'form': form})  
-
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
-
     else:
         return render(request, 'my_app/404.html')   
-
 
 @never_cache
 def load_page(request, page_name):
@@ -88,7 +85,6 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             auth_login(request, user)
             return redirect('/?page=home')  
@@ -104,18 +100,14 @@ def logout(request):
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        
         if form.is_valid():
             form.save()
             return redirect('/?page=login')
         else:
             logger.warning(f'❌ Formulaire invalide: {form.errors}')
     else:
-        form = CustomUserCreationForm()  # ✅ Crée un formulaire vierge
         form = CustomUserCreationForm()
-
     return render(request, 'my_app/register.html', {'form': form})
-
 
 def custom404(request, exception):
     return render(request, 'my_app/404.html', status=404)
@@ -123,33 +115,39 @@ def custom404(request, exception):
 def test_csrf(request):
     return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
 
-
 def profile(request):
     if request.method == 'GET':
-        pending_requests = Friendship.objects.filter(receiver=request.user, is_accepted=False).values(
-            'id', 'requester__username', 'requester__first_name', 'requester__last_name'
-        )
+        pending_requests = Friendship.objects.filter(
+            receiver=request.user, is_accepted=False
+            ).values(
+            'id',
+            'requester__username',
+            )
         friends = Friendship.objects.filter(
             (models.Q(requester=request.user) | models.Q(receiver=request.user)) & models.Q(is_accepted=True)
-        ).values('id', 'requester__username', 'receiver__username')
+        ).values(
+            'id',
+            'requester__username',
+            'receiver__username',
+            'requester__is_logged_in',
+            'receiver__is_logged_in',
+            )
 
         return JsonResponse({
             'username': request.user.username,
             'email': request.user.email,
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
+            'is_logged_in': request.user.is_logged_in,
             'pending_requests': list(pending_requests),
             'friends': list(friends),
         })
     else:
         return HttpResponse(status=405)
 
-from django.utils.translation import get_language
-
 def test_language(request):
     logger.info(f"Langue actuelle : {get_language()}")
     return HttpResponse(f"Langue actuelle : {get_language()}")
-
 
 @login_required
 @csrf_exempt
@@ -195,17 +193,14 @@ def change_password(request):
 @csrf_exempt 
 @login_required 
 def save_profile(request):
-    """Mise à jour du profil utilisateur"""
     if request.method == 'POST':
         user = request.user 
-
         first_name = request.POST.get('first_name', user.first_name)
         last_name = request.POST.get('last_name', user.last_name)
         email = request.POST.get('email', user.email)
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
-
         user.save()
 
         return JsonResponse({'message': 'Profil mis à jour avec succès !'})
@@ -283,3 +278,52 @@ def handleFriendRequest(request, request_id):
             friendship.delete()
             return redirect('friend_requests')
     return render('index')
+
+@login_required
+def remove_friend(request, friend_id):
+    if request.method == 'POST':
+        logger.info(f"Suppression de l'ami {friend_id}")
+        friendship = get_object_or_404(Friendship, id=friend_id, is_accepted=True)
+        friendship.delete()
+        return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, user, **kwargs):
+    cache.set(f"user_{user.id}_status", "online", 60*5)
+
+@receiver(user_logged_out)
+def on_user_logged_out(sender, request, user, **kwargs):
+    cache.delete(f"user_{user.id}_status")
+
+def save_history(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user = data.get('user')
+            pWin = data.get('pWin')
+            p1Score = data.get('p1Score')
+            p2Score = data.get('p2Score')
+
+            history_entry = History.objects.create(
+                user=user,
+                pWin=pWin,
+                p1Score=p1Score,
+                p2Score=p2Score
+            )
+            return JsonResponse({'status': 'success', 'id': history_entry.id})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+
+def get_history(request):
+    if request.method == 'GET':
+        try:
+            history_entries = History.objects.all().values('user', 'pWin', 'p1Score', 'p2Score')
+            return JsonResponse(list(history_entries), safe=False, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)

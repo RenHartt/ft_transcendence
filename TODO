@@ -7,7 +7,7 @@ Mandatory part (25%):
     -Security ✅ (need to be tested)
 
 Modules:
-    Major (30/70):
+    Major (20/70):
         -Framework as a backend ✅ (10)
         -Standard user management ✅ (10)
         {
@@ -15,7 +15,7 @@ Modules:
             -Secure login ✅
             -Update informations ✅
             -Upload Avatar and a default one (Need to be complete)🚧
-            -Add friend ad see there status (Need to be complete)🚧
+            -Add friend and see there status (Need to be complete)🚧
             -Display stats (Need to be done)❌
             -Match history (Need to be done)❌
         }
@@ -33,8 +33,6 @@ Modules:
             -Performances and responsive ✅
         }
         -AI Opponent ✅ (10)
-        -GPDR complience ❌ (10)       
-
 
     Minor (20/25 points):
         -Database Postgre ✅ (5)
