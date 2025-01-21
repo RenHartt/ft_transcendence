@@ -86,6 +86,15 @@ class History(models.Model):
     pWin = models.CharField(max_length=20)
     p1Score = models.IntegerField()
     p2Score = models.IntegerField()
+    result = models.CharField(max_length=20, choices=[
+        ('Win', 'Win'),
+        ('Lose', 'Lose'),
+        ('Draw', 'Draw')
+    ], default='Draw')
+    game_type = models.CharField(max_length=20, choices=[
+        ('TicTacToe', 'TicTacToe'),
+        ('Pong', 'Pong')
+    ], default='Undefined')
 
     def __str__(self):
         return f"{self.user.username} - {self.pWin} - {self.p1Score} - {self.p2Score}"

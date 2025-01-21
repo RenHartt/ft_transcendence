@@ -37,23 +37,27 @@ function loadHistory() {
 		historyList.innerHTML = '';
 		if (data.length > 0) {
 			data.forEach(match => {
+				const gameType = match.game_type;
 				const user = match.user;
 				const pWin = match.pWin;
 				const p1Score = match.p1Score;
 				const p2Score = match.p2Score;
+				const result = match.result;
 
-				var str = "";
-				const li = templates.historyElement.cloneNode(true);
-				if (p1Score == 0 && p2Score == 0)
-					str = `${user} ${pWin}`;
-				else
-					str = `${user} ${pWin} ${p1Score} - ${p2Score}`;
-				li.querySelector('p').innerText = str;
+				let oppenant = "Opponent";
+				let str = '';
+				console.log(gameType);
+				if (gameType === 'TicTacToe')
+					str = `${gameType}: LLVM vs. GNU - ${result} (${p1Score} - ${p2Score})`;
+				else if (gameType === 'Pong')
+					str = `${gameType}: ${user} vs. ${oppenant} - ${result} - ${p1Score} - ${p2Score}`;
+				const li = document.createElement('li');
+				li.innerText = str;
 				historyList.appendChild(li);
 			});
 		} else {
-			const li = templates.historyElement.cloneNode(true);
-			li.querySelector('p').innerText = 'No matches played yet';
+			const li = document.createElement('li');
+			li.innerText = 'No matches played yet';
 			historyList.appendChild(li);
 		}
 	})

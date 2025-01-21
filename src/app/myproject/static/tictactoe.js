@@ -38,28 +38,30 @@ function handleCellClick(e) {
 	if (checkWinner()) {
 		winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
 		gameActive = false;
-		saveGameHistory(currentPlayer);
+		saveGameHistory(currentPlayer, 'TicTacToe');
 		return;
 	}
 
 	if (cells.every(cell => cell)) {
 		winnerDisplay.textContent = "It's a draw!";
 		gameActive = false;
-		saveGameHistory('Draw');
+		saveGameHistory('Draw', 'TicTacToe');
 		return;
 	}
 
 	currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
 }
 
-function saveGameHistory(winner) {
+function saveGameHistory(winner, gameType) {
 	const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
 	const user = document.getElementById('user-info').dataset.username;
 	const data = {
 		user: user,
 		pWin: winner,
 		p1Score: winner === 'LLVM' ? 1 : 0,
-		p2Score: winner === 'GNU' ? 1 : 0
+		p2Score: winner === 'GNU' ? 1 : 0,
+		game_type: gameType,
+		result: winner === 'Draw' ? 'Draw' : winner === 'LLVM' ? 'Win' : 'Loss'
 	};
 
 	console.log('Saving game history:', JSON.stringify(data));
