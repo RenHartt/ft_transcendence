@@ -38,35 +38,39 @@ function handleCellClick(e) {
 	if (checkWinner()) {
 		winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
 		gameActive = false;
-		saveGameHistory(currentPlayer, 'TicTacToe');
+		let p1Score = 'LLVM' === currentPlayer ? 1 : 0;
+		let p2Score = 'GNU' === currentPlayer ? 1 : 0;
+
+		saveGameHistory(currentPlayer, 'TicTacToe', p1Score, p2Score);
 		return;
 	}
 
 	if (cells.every(cell => cell)) {
 		winnerDisplay.textContent = "It's a draw!";
 		gameActive = false;
-		saveGameHistory('Draw', 'TicTacToe');
+		saveGameHistory('Draw', 'TicTacToe', 0, 0);
 		return;
 	}
 
 	currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
 }
 
-function saveGameHistory(winner, gameType) {
+function saveGameHistory(winner, gameType, p1Score, p2Score) {
 	const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
 	const user = document.getElementById('user-info').dataset.username;
+	let result = "Loss";
+	if (winner === 'Draw') result = 'Draw';
+	else if (winner === user) result = 'Win';
 	const data = {
 		user: user,
 		pWin: winner,
-		p1Score: winner === 'LLVM' ? 1 : 0,
-		p2Score: winner === 'GNU' ? 1 : 0,
+		p1Score: winner = p1Score,
+		p2Score: winner = p2Score,
 		game_type: gameType,
-		result: winner === 'Draw' ? 'Draw' : winner === 'LLVM' ? 'Win' : 'Loss'
+		result: result
 	};
 
-	console.log('Saving game history:', JSON.stringify(data));
-
-	fetch('/api/save-history/', { // Replace with your actual endpoint
+	fetch('/api/save-history/', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
