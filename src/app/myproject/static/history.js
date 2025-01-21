@@ -19,7 +19,7 @@ function showHistory() {
 
 var templates = {};
 templates.historyElement = document.createElement('li');
-templates.historyElement.innerHTML = `<p><\p>`;
+templates.historyElement.innerHTML = `<p></p>`;
 
 function loadHistory() {
 	fetch('api/get-history/', {
@@ -41,15 +41,20 @@ function loadHistory() {
 				const pWin = match.pWin;
 				const p1Score = match.p1Score;
 				const p2Score = match.p2Score;
+
 				var str = "";
 				const li = templates.historyElement.cloneNode(true);
 				if (p1Score == 0 && p2Score == 0)
-					str = user + " " + pWin;
+					str = `${user} ${pWin}`;
 				else
-					str = user + ":\t" + "LLVM " + p1Score + "\t" + "GNU " + p2Score + "\tWINNER: " + pWin;
+					str = `${user} ${pWin} ${p1Score} - ${p2Score}`;
 				li.querySelector('p').innerText = str;
 				historyList.appendChild(li);
 			});
+		} else {
+			const li = templates.historyElement.cloneNode(true);
+			li.querySelector('p').innerText = 'No matches played yet';
+			historyList.appendChild(li);
 		}
 	})
 	.catch(error => {

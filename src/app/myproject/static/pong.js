@@ -51,6 +51,7 @@ function updateBallSpeed(speed) {
 function startPongGame() {
 	let canvas = document.createElement("canvas");
 	let pongContainer = document.getElementById("pong-container");
+    const profileContainer = document.getElementById("profile-container").getAttributeNames(); 
 
 	if (animationFrameId) cancelAnimationFrame(animationFrameId);
 
@@ -83,6 +84,7 @@ function startPongGame() {
 	
 		if (gameState.generalScore.player >= 3) {
 			alert("Le joueur a gagné la partie !");
+            saveGameHistory("Pong", profileContainer[0]);
 			resetGame();
 		} else if (gameState.generalScore.ai >= 3) {
 			alert("L'IA a gagné la partie !");
@@ -323,17 +325,17 @@ function startGame() {
     gameState.startGame = false; 
     const startGameButton = document.getElementById('startGameButton');
     if (startGameButton) startGameButton.style.display = "none"; 
-
+    
     const pongCanvas = document.getElementById('pongCanvas');
     if (!pongCanvas) return;
     const ctx = pongCanvas.getContext("2d");
-
+    
     function drawCountdown(number) {
         ctx.clearRect(0, 0, pongCanvas.width, pongCanvas.height);
-    
+        
         ctx.fillStyle = "#FFFFFF";  // Fond blanc
         ctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
-    
+        
         ctx.fillStyle = "#000000"; 
         ctx.font = "bold 60px Arial"; 
         ctx.textAlign = "center";
@@ -343,12 +345,12 @@ function startGame() {
     
     function startCountdown() {
         let countdown = 3; 
-    
+        
         function runCountdown() {
             if (countdown >= 0) {
                 drawCountdown(countdown > 0 ? countdown : "GO!");
                 console.log("Affichage: ", countdown);
-    
+                
                 if (countdown === 0) {
                     setTimeout(() => {
                         gameState.startGame = true;
@@ -362,10 +364,10 @@ function startGame() {
                 }
             }
         }
-
+        
         runCountdown(); 
     }
-
+    
     startCountdown();
 }
 

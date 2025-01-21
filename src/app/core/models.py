@@ -75,7 +75,14 @@ class Friendship(models.Model):
         unique_together = ('requester', 'receiver')
 
 class History(models.Model):
-    user = models.CharField(max_length=20)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        related_name="histories",
+        on_delete=models.CASCADE
+    )
     pWin = models.CharField(max_length=20)
     p1Score = models.IntegerField()
     p2Score = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.pWin} - {self.p1Score} - {self.p2Score}"

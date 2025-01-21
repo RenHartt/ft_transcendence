@@ -46,6 +46,13 @@
                 <h1>__attribute__</h1>
             </header>
 
+            <span id="user-info"
+                  data-userid="{{ request.user.id }}"
+                  data-username="{{ request.user.username }}"
+                  style="display: none;">
+                  {{ request.user.username }}
+                </span>
+
             <nav class="poulet">
                 <div class="dropdown">
                     <a href="javascript:void(0)" class="menu profile-dropdown">Profile</a>

@@ -38,28 +38,31 @@ function handleCellClick(e) {
 	if (checkWinner()) {
 		winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
 		gameActive = false;
-		saveGameHistory("oui", currentPlayer);
+		saveGameHistory(currentPlayer);
 		return;
 	}
 
 	if (cells.every(cell => cell)) {
 		winnerDisplay.textContent = "It's a draw!";
 		gameActive = false;
+		saveGameHistory('Draw');
 		return;
 	}
 
 	currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
 }
 
-function saveGameHistory(user, winner) {
+function saveGameHistory(winner) {
 	const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
-
+	const user = document.getElementById('user-info').dataset.username;
 	const data = {
 		user: user,
 		pWin: winner,
-		p1Score: 0,
-		p2Score: 0
+		p1Score: winner === 'LLVM' ? 1 : 0,
+		p2Score: winner === 'GNU' ? 1 : 0
 	};
+
+	console.log('Saving game history:', JSON.stringify(data));
 
 	fetch('/api/save-history/', { // Replace with your actual endpoint
 		method: 'POST',
