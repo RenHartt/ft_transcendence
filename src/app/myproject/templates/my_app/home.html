@@ -5,9 +5,9 @@
         {% load i18n %}
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+        <link rel="icon" type="image/x-icon" href="{{ CDN_URL }}/images/favicon.ico">
         <title>{% trans "Home Page" %}</title>
-        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <link rel="stylesheet" href="{{ CDN_URL }}/css/index.css">
     </head>
 
     <body>
@@ -31,7 +31,7 @@
 
             <p>Or</p>
             <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
-                <img src="{% static 'images/42.png' %}" alt="42 Logo">
+                <img src="{{ CDN_URL }}/images/42.png" alt="42 Logo">
                 Log In with 42
             </a>
 
@@ -42,7 +42,7 @@
             {% if user.is_authenticated %}
     
             <header>
-                <img src="{% static 'images/dragon.png' %}" alt="Logo" class="header-logo">
+                <img src="{{ CDN_URL }}/images/dragon.png" alt="Logo" class="header-logo">
                 <h1>__attribute__</h1>
             </header>
 
@@ -218,19 +218,19 @@
             {% endif %}
         </section>
 
-        <script src="{% static 'cookie-banner.js' %}"></script>
-        <script src="{% static 'redirect.js' %}"></script>
-        <script src="{% static 'profile.js' %}"></script>
-        <script src="{% static 'tictactoe.js' %}"></script>
-        <script src="{% static 'pong.js' %}"></script>
-        <script src="{% static 'history.js' %}"></script>
-        <script src="{% static 'settings.js' %}"></script>
+        <script src="{{ CDN_URL }}/cookie-banner.js"></script>
+        <script src="{{ CDN_URL }}/redirect.js"></script>
+        <script src="{{ CDN_URL }}/profile.js"></script>
+        <script src="{{ CDN_URL }}/tictactoe.js"></script>
+        <script src="{{ CDN_URL }}/pong.js"></script>
+        <script src="{{ CDN_URL }}/history.js"></script>
+        <script src="{{ CDN_URL }}/settings.js"></script>
         <script>
             const csrf = "{{ csrf_token }}";
-            const staticurl = "{% static '' %}";
+            const staticurl = "{{ CDN_URL }}";
             const staticUrls = {
-                x: staticurl + "images/llvm.png",  
-                o: staticurl + "images/gnu.png"  
+                x: staticurl + "/images/llvm.png",  
+                o: staticurl + "/images/gnu.png"  
             };
         </script>
 

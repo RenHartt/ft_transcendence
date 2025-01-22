@@ -21,11 +21,12 @@ logger = logging.getLogger('myproject')
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
-DEBUG = True
+DEBUG = False
 LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+CDN_URL = 'http://localhost:8000/static'
 
 LANGUAGES = [
     ('en', _('English')),
@@ -99,7 +100,10 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.static',
+                'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
+                'myproject.context_processors.cdn_url',
             ],
         },
     },

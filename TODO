@@ -7,7 +7,7 @@ Mandatory part (25%):
     -Security ✅ (need to be tested)
 
 Modules:
-    Major (20/70):
+    Major (40/70):
         -Framework as a backend ✅ (10)
         -Standard user management ✅ (10)
         {
@@ -15,9 +15,9 @@ Modules:
             -Secure login ✅
             -Update informations ✅
             -Upload Avatar and a default one (Need to be complete)🚧
-            -Add friend and see there status (Need to be complete)🚧
-            -Display stats (Need to be done)❌
-            -Match history (Need to be done)❌
+            -Add friend and see there status (Need to be complete)✅
+            -Display stats (Need to be done)🚧
+            -Match history (Need to be done)✅
         }
         -A remote authentication (42auth) ✅ (10)
         -Multiple player ✅
@@ -27,9 +27,9 @@ Modules:
         -Add another game ✅ (10)
         {
             -Tic tac toe ✅
-            -User history (Need to be done)❌
-            -Matchmaking (Need to be done)❌
-            -History and matchmaking storing (Need to be done)❌
+            -User history (Need to be done)✅
+            -Matchmaking (Need to be done)🚧
+            -History and matchmaking storing (Need to be done)🚧
             -Performances and responsive ✅
         }
         -AI Opponent ✅ (10)
@@ -41,7 +41,7 @@ Modules:
             -Features for pong (Need to be done for tic tac toe)✅
             -Default ✅
             -User friendly ✅
-            -Consistance betwwen both games (to be done in a complete section)🚧
+            -Consistance betwwen both games (to be done in a complete section)✅
         }
         -Support all device (Mobile first) ✅ (5)
         {
@@ -51,12 +51,4 @@ Modules:
         -Multiple lamnguages support ✅ (5)
 
 
-TOTAL for current: 75/120 (62.5% of the project at the moment)
-
-
-Front reco:
-    RIGHT BURGER MENU
-        -Game settings in a complete section and both games can be choose in
-            the menu (games I guess)
-        -differents profile sections (easier)
-        -Logout at the same place (meh)
+TOTAL for current: 85/120 (62.5% of the project at the moment)
