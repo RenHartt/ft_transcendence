@@ -177,14 +177,22 @@
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
                 
                 <div id="pong-container"></div>
+                
                 <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
                     {% trans "Two Players" %}
                 </button>
-                <button id="startGameButton" class="startGameButton" onclick="startGame()">Start</button>
-                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">{% trans "Stop Game" %}</button>
-                </div>
+                
+                <button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Start" %}</button>
+                
+                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
+                    {% trans "Stop Game" %}
+                </button>
+            
+                <button class="PongButton" id="gameSettingsButton" onclick="toggleGameSettings()">
+                    {% trans "Game Settings" %}
+                </button>
             </div>
-
+            
             <div id="game-settings-container" class="hidden editProfileForm">
                 <h2>{% trans "Game Settings" %}</h2>
                 
@@ -196,9 +204,21 @@
                 
                 <label for="ballSpeed">{% trans "Ball Speed:" %}</label>
                 <input type="range" id="ballSpeed" min="1" max="10" value="5" onchange="updateBallSpeed(this.value)">
-            
+                
                 <button onclick="hideGameSettings()">{% trans "Close" %}</button>
             </div>
+            
+            <script>
+                function toggleGameSettings() {
+                    const settingsContainer = document.getElementById("game-settings-container");
+                    settingsContainer.classList.toggle("hidden");
+                }
+            
+                function hideGameSettings() {
+                    document.getElementById("game-settings-container").classList.add("hidden");
+                }
+            </script>
+            
 
             <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
             <div id="tic-tac-toe-modal">

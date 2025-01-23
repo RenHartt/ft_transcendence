@@ -31,7 +31,7 @@ nav.poulet {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5vw;
+    gap: 5vw;   
     padding: 1rem;
     width: 80vw;
     margin: 0 auto;
@@ -135,7 +135,7 @@ footer {
 
 #footer {
     display: flex;
-    justify-content: center; /* Centrage du contenu */
+    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 10px;
