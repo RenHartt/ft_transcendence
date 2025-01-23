@@ -78,18 +78,20 @@ p {
 
 #tic-tac-toe-modal {
     opacity: 0;
-    visibility: hidden; 
-    transform: scale(0.9); 
-    position: relative;
-    top: 0%;
-    left: 10%;
+    visibility: hidden;
+    transform: scale(0.9);
+    position: fixed;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
     background: white;
     padding: 20px;
     border-radius: 8px;
-    max-width: 600px;;
+    max-width: 600px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1;
-    transition: opacity 0.3s ease, transform 0.3s ease; 
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 #tic-tac-toe-modal.active {
@@ -121,7 +123,6 @@ p {
 }
 
 #pong-wrapper {
-    transform: translate(0%, 0%) scale(1);
     display: none;
     opacity: 1;
     flex-direction: column;
@@ -130,34 +131,40 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     margin-top: 10px;
     width: 100%;
-    max-width: 600px;  
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    transition: opacity 0.3s ease, transform 0.3s ease; 
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); 
 }
 
 #pong-wrapper.active {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1);
+    display: flex;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); 
 }
-
 
 #pong-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    max-width: 600px;
-    flex-direction: column ;
+    margin-left: auto;
+    position: relative;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
 }
 
 #pongCanvas {
     border: 1px solid #8b8989;
     border-radius: 8px;
     background: rgb(255, 253, 253);
-    width: 100%;
+    width: 95%;
     max-width: 400px;
     height: auto;
+    left: 10px;
 }
 
 #stopGameButton {
@@ -166,6 +173,23 @@ p {
     font-size: 16px;
     cursor: pointer;
 }
+
+
+#stopGameButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+#stopGameButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 
 
 #pong-settings-popup {

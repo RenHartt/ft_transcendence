@@ -22,9 +22,28 @@ button {
     background-color: #8b8989;
     border: none;
     padding: 0.5rem 1rem;
+    gap: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
     border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+    nav.poulet {
+        gap: 3vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    nav.poulet {
+        gap: 2vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    nav.poulet {
+        gap: 1vw;
+    }
 }
 
 header.HeadLog {
@@ -162,7 +181,7 @@ a.login {
 
 .tooltip-icon {
     position: absolute;
-    right: 22px; /* Place l'icône à droite */
+    right: 22px;
     top: 50%;
     transform: translateY(-50%);
     background: gray;

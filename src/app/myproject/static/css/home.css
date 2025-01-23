@@ -44,6 +44,25 @@ nav.poulet {
     color: #000000;
 }
 
+@media (max-width: 1024px) {
+    nav.poulet {
+        gap: 3vw;
+    }
+}
+
+@media (max-width: 768px) {
+    nav.poulet {
+        gap: 2vw;
+    }
+}
+
+@media (max-width: 480px) {
+    nav.poulet {
+        gap: 1vw;
+    }
+}
+
+
 nav.burger {
     display: none;
     justify-content: center;

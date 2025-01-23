@@ -16,7 +16,6 @@ function showProfile() {
 		profileContainer.classList.remove('hidden');
 
 	if (!templates.friendElement || !templates.friendRequestElement) {
-		console.warn("Templates were lost. Reinitializing.");
 		templates.friendElement = document.createElement('li');
 		templates.friendElement.innerHTML = `
 			<span class="profile-status"></span>
