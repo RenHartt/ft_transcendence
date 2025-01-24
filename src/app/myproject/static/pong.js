@@ -397,10 +397,10 @@ function stopGame() {
 }
 
 function toggleGameSettings() {
-    const settingsContainer = document.getElementById("game-settings-container");
+    const settingsContainer = document.getElementById("pong-settings-popup");
     settingsContainer.classList.toggle("hidden");
 }
 
 function hideGameSettings() {
-    document.getElementById("game-settings-container").classList.add("hidden");
+    document.getElementById("pong-settings-popup").classList.add("hidden");
 }

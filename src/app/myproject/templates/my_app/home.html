@@ -78,7 +78,6 @@
                 <a href="javascript:void(0)" class="menu profile-dropdown">Settings</a>
                 <div class="dropdown-content">
                     <a href="javascript:void(0)" onclick="showSettings()">{% trans "Change language" %}</a>
-                    <a href="javascript:void(0)" onclick="showGameSettings()">{% trans "Game Settings" %}</a>
                     <a href="javascript:void(0)"  id="logout">{% trans "Logout" %} </a>
                 </div>
             </div>
@@ -114,7 +113,6 @@
         
         <div id="profile-edit-form" class="editProfileForm hidden">
             <h2>Edit Profile</h2>
-            <form id="editProfileForm" class="editProfileForm">
                 {% csrf_token %}
                 <label for="edit-first-name">{% trans "First Name:" %}</label>
                 <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
@@ -130,7 +128,6 @@
                 
                 <button type="button" id="saveProfileButton">{% trans "Save Changes" %}</button>
                 <button type="button" id="cancelEditButton">{% trans "Cancel" %}</button>
-            </form>
         </div>
 
         <div id="change-password-form" class="editProfileForm hidden">
@@ -197,7 +194,7 @@
             </button>
         </div>
         
-        <div id="game-settings-container" class="hidden editProfileForm">
+        <div id="pong-settings-popup" class="hidden editProfileForm">
             <h2>{% trans "Game Settings" %}</h2>
             
             <label for="paddleColor">{% trans "Paddle Color:" %}</label>
@@ -207,7 +204,7 @@
             <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
             
             <label for="ballSpeed">{% trans "Ball Speed:" %}</label>
-            <input type="range" id="ballSpeed" min="1" max="10" value="5" onchange="updateBallSpeed(this.value)">
+            <input type="range" id="ballSpeed" min="2" max="8" value="5" onchange="updateBallSpeed(this.value)">
             
             <button onclick="hideGameSettings()">{% trans "Close" %}</button>
         </div>

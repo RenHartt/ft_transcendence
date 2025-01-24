@@ -16,7 +16,7 @@ function showSettings() {
 }
 
 function showGameSettings() {
-	const gameSettingsContainer = document.getElementById('game-settings-container');
+	const gameSettingsContainer = document.getElementById('pong-settings-popup');
 	if (!gameSettingsContainer) return;
 
 	if (gameState.gameRunning)
@@ -34,7 +34,7 @@ function showGameSettings() {
 
 function hideSettings(act) {
 	const settingsContainer = document.getElementById('settings-container');
-	const gameSettingsContainer = document.getElementById('game-settings-container');
+	const gameSettingsContainer = document.getElementById('pong-settings-popup');
 
 	if (act != settingsContainer)
 		settingsContainer.classList.add('hidden');
@@ -42,7 +42,7 @@ function hideSettings(act) {
 		gameSettingsContainer.classList.add('hidden');
 }
 function toggleGameSettings() {
-	const settingsContainer = document.getElementById("game-settings-container");
+	const settingsContainer = document.getElementById("pong-settings-popup");
 	settingsContainer.classList.toggle("hidden");
 }
 
