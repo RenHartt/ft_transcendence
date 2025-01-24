@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ CDN_URL }}/images/favicon.ico">
     <title>__attribute__</title>
     <link rel="stylesheet" href="http://localhost:8000/static/css/index.css">
 </head>
@@ -45,9 +48,12 @@
             Log In with     
         </a>
         
-        <footer>
-            <p>&copy 2024 Page de cramptes. Tous droits non-réservés.</p>
-        </footer>
+        <div class="bootstrap-iso">
+            <footer class="bg-dark text-center text-white p-3 fixed-bottom">
+                &copy; {% trans "2024 Page de cramptes. Tous droits non-réservés." %}
+            </footer>
+          </div>
+          
     </form>
     
     <script src="{{ CDN_URL }}/login.js"></script>
