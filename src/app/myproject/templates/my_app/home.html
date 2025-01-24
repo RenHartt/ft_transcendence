@@ -59,6 +59,7 @@
 				{{ request.user.username }}
 			</span>
 
+
 			<!-- Navigation Menu -->
 			<nav class="poulet">
 
@@ -93,9 +94,10 @@
 					<div class="dropdown-content">
 						<a href="javascript:void(0)" onclick="showSettings()">Change language</a>
 						<a href="javascript:void(0)" onclick="showGameSettings()">Game Settings</a>
+						<a href="javascript:void(0)" id=logout>{% trans "Logout" %}</a>
 					</div>
 				</div>
-				<button class="login-button menu" id="logout">{% trans "Logout" %}</button>
+				<button class="logout-button menu" id="logout">{% trans "Logout" %}</button>
 
 
 
