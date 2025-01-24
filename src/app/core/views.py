@@ -115,6 +115,7 @@ def custom404(request, exception):
 def test_csrf(request):
     return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
 
+
 def profile(request):
     if request.method == 'GET':
         pending_requests = Friendship.objects.filter(
@@ -339,3 +340,6 @@ def get_history(request):
     ]
 
     return JsonResponse(data, safe=False)
+
+
+

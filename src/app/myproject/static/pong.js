@@ -395,3 +395,12 @@ function stopGame() {
 
     document.querySelector("#pong-container").innerHTML = '';
 }
+
+function toggleGameSettings() {
+    const settingsContainer = document.getElementById("game-settings-container");
+    settingsContainer.classList.toggle("hidden");
+}
+
+function hideGameSettings() {
+    document.getElementById("game-settings-container").classList.add("hidden");
+}

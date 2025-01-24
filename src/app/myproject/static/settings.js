@@ -41,3 +41,8 @@ function hideSettings(act) {
 	if (act != gameSettingsContainer)
 		gameSettingsContainer.classList.add('hidden');
 }
+function toggleGameSettings() {
+	const settingsContainer = document.getElementById("game-settings-container");
+	settingsContainer.classList.toggle("hidden");
+}
+

@@ -1,259 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        {% load static %}
-        {% load i18n %}
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/x-icon" href="{{ CDN_URL }}/images/favicon.ico">
-        <title>{% trans "Home Page" %}</title>
-        <link rel="stylesheet" href="{{ CDN_URL }}/css/index.css">
-        
-    </head>
+<head>
+    {% load static %}
+    {% load i18n %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ CDN_URL }}/images/favicon.ico">
+    <title>{% trans "Home Page" %}</title>
+    <link rel="stylesheet" href="{{ CDN_URL }}/css/index.css">
 
-    <body>
+    <link rel="stylesheet" href="{{ CDN_URL }}/css/bootstrap-iso.css">
 
-        <section id="login" class="pages">
-            <header>
-                <h1>Login</h1>
-            </header>
-            <form method="post" action="?page=login">
-                <button type="submit">{% trans "Change language" %}</button>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br><br>
+</head>
+
+<body>
+
+    <section id="login" class="pages">
+        <header>
+            <h1>Login</h1>
+        </header>
+        <form method="post" action="?page=login">
+            <button type="submit">{% trans "Change language" %}</button>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">{% trans "Password:" %}</label>
+            <input type="password" id="password" name="password" required><br><br>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <button type="submit">Log In</button>
+        </form>
+
+        <p>Or</p>
+        <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
+            <img src="{{ CDN_URL }}/images/42.png" alt="42 Logo">
+            Log In with 42
+        </a>
+
+        <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
+    </section>
+
+    <section id="home" class="pages hidden">
+        {% if user.is_authenticated %}
+
+        <header>
+            <img src="{{ CDN_URL }}/images/dragon.png" alt="Logo" class="header-logo">
+            <h1>__attribute__</h1>
+        </header>
+
+        <span id="user-info"
+              data-userid="{{ request.user.id }}"
+              data-username="{{ request.user.username }}"
+              style="display: none;">
+              {{ request.user.username }}
+        </span>
+
+        <nav class="poulet">
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="menu profile-dropdown">Profile</a>
+                <div class="dropdown-content">
+                    <a href="javascript:void(0)" onclick="showProfile()">View Profile</a>
+                    <a href="javascript:void(0)" onclick="editProfile()">Edit Profile</a>
+                    <a href="javascript:void(0)" onclick="showChangePassword()">Change Password</a>
+                    <a href="javascript:void(0)" onclick="addFriend()">Add Friend</a>
+                    <a href="javascript:void(0)" onclick="showHistory()">History</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="menu profile-dropdown">Games</a>
+                <div class="dropdown-content">
+                    <a href="javascript:void(0)" onclick="showTicTacToe()">{% trans "Tic Tac Toe" %}</a>            
+                    <a href="javascript:void(0)" onclick="showPong()">Pong</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="menu profile-dropdown">Settings</a>
+                <div class="dropdown-content">
+                    <a href="javascript:void(0)" onclick="showSettings()">{% trans "Change language" %}</a>
+                    <a href="javascript:void(0)" onclick="showGameSettings()">{% trans "Game Settings" %}</a>
+                </div>
+            </div>
+            <button id="logout">{% trans "Logout" %}</button>
+        </nav>
+
+        <nav class="burger hidden">
+            <select name="games" id="games" class="menu">
+                <option value="games" selected disabled>Games</option>
+                <option value="Tic Tac Toe">{% trans "Tic Tac Toe" %}</option>
+            </select>
+        </nav>
+
+        <div id="history-container" class="hidden editProfileForm">
+            <h2>History</h2>
+            <ul id="history-list"></ul>
+        </div>
+
+        <div id="profile-container" class="profile-container hidden">
+            <h2>Profile</h2>
+            <img src="{{ user.pp_link }}" alt="Profile Picture" 
+                 style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
+            <p>Username: <span id="profile-username">{{ user.username }}</span></p>
+            <p>Email: <span id="profile-email">{{ user.email }}</span></p>
+            <p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
+            <p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
+            
+            <h3>Friends</h3>
+            <ul id="friends-list"></ul>
         
-                <label for="password">{% trans "Password:" %}</label>
-                <input type="password" id="password" name="password" required><br><br>
-                {% if error %}
-                    <p class="error">{{ error }}</p>
-                {% endif %}
-                <button type="submit">Log In</button>
+            <h3>Pending Friend Requests</h3>
+            <ul id="friend-requests-list"></ul>
+        </div>      
+        
+        <div id="profile-edit-form" class="editProfileForm hidden">
+            <h2>Edit Profile</h2>
+            <form id="editProfileForm" class="editProfileForm">
+                {% csrf_token %}
+                <label for="edit-first-name">{% trans "First Name:" %}</label>
+                <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
+                
+                <label for="edit-last-name">{% trans "Last Name:" %}</label>
+                <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
+                
+                <label for="edit-email">{% trans "Email:" %}</label>
+                <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
+                
+                <label for="edit-image">{% trans "Image:" %}</label>
+                <input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
+                
+                <button type="button" id="saveProfileButton">{% trans "Save Changes" %}</button>
+                <button type="button" id="cancelEditButton">{% trans "Cancel" %}</button>
             </form>
+        </div>
 
-            <p>Or</p>
-            <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
-                <img src="{{ CDN_URL }}/images/42.png" alt="42 Logo">
-                Log In with 42
-            </a>
-
-            <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
-        </section>
-
-        <section id="home" class="pages hidden">
-            {% if user.is_authenticated %}
-    
-            <header>
-                <img src="{{ CDN_URL }}/images/dragon.png" alt="Logo" class="header-logo">
-                <h1>__attribute__</h1>
-            </header>
-
-            <span id="user-info"
-                  data-userid="{{ request.user.id }}"
-                  data-username="{{ request.user.username }}"
-                  style="display: none;">
-                  {{ request.user.username }}
-                </span>
-
-            <nav class="poulet">
-                <div class="dropdown">
-                    <a href="javascript:void(0)" class="menu profile-dropdown">Profile</a>
-                    <div class="dropdown-content">
-                        <a href="javascript:void(0)" onclick="showProfile()">View Profile</a>
-                        <a href="javascript:void(0)" onclick="editProfile()">Edit Profile</a>
-                        <a href="javascript:void(0)" onclick="showChangePassword()">Change Password</a>
-                        <a href="javascript:void(0)" onclick="addFriend()">Add Friend</a>
-                        <a href="javascript:void(0)" onclick="showHistory()">History</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <a href="javascript:void(0)" class="menu profile-dropdown">Games</a>
-                    <div class="dropdown-content">
-                        <a href="javascript:void(0)"  onclick="showTicTacToe()">{% trans "Tic Tac Toe" %}</a>            
-                        <a href="javascript:void(0)"  onclick="showPong()">Pong</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <a href="javascript:void(0)" class="menu profile-dropdown">Settings</a>
-                    <div class="dropdown-content">
-                        <a href="javascript:void(0)" onclick="showSettings()">Change language</a>
-                        <a href="javascript:void(0)" onclick="showGameSettings()">Game Settings</a>
-                    </div>
-                </div>
-                <button  id="logout">{% trans "Logout" %}</button>
-            </nav>
-
-            <nav class="burger hidden">
-                <select name="games" id="games" class="menu">
-                    <option value="games" selected disabled>Games</option>
-                    <option value="Tic Tac Toe">{% trans "Tic Tac Toe" %}</option>
+        <div id="change-password-form" class="editProfileForm hidden">
+            <h2>{% trans "Change Password" %}</h2>
+            <form id="changePasswordForm">
+                <label for="old-password">{% trans "Old Password:" %}</label>
+                <input type="password" id="old-password" name="old_password" required><br><br>
+        
+                <label for="new-password">{% trans "New Password:" %}</label>
+                <input type="password" id="new-password" name="new_password" required><br><br>
+        
+                <label for="confirm-password">{% trans "Confirm Password:" %}</label>
+                <input type="password" id="confirm-password" name="confirm_password" required><br><br>
+        
+                <button type="button" id="savePasswordButton">{% trans "Save Changes" %}</button>
+                <button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
+            </form>
+        </div>
+        
+        <div id="settings-container" class="hidden editProfileForm">
+            <h2>{% trans "Settings" %}</h2>
+            <form action="{% url 'set_language' %}" method="post">
+                {% csrf_token %}
+                <label for="language">{% trans "Select Language:" %}</label>
+                <select name="language" id="language">
+                    <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
+                    <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
+                    <option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Español</option>
                 </select>
-            </nav>
+                <button type="submit">{% trans "Change language" %}</button>
+            </form>
+        </div>
+        
+        <div id="friend-request-form" class="editProfileForm hidden">
+            <h2>Add Friend</h2>
+            <form id="addFriendForm">
+                <label for="friend-username">{% trans "Username:" %}</label>
+                <input type="text" id="friend-username" name="username" required><br><br>
+                
+                <button type="button" id="sendFriendRequestButton">{% trans "Send Request" %}</button>
+                <button type="button" id="cancelFriendRequestButton">{% trans "Cancel" %}</button>
+            </form>
+        </div>
+        
+        <div id="pong-wrapper" class="hidden editProfileForm">
+            <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
+            
+            <div id="pong-container"></div>
+            
+            <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
+                {% trans "Two Players" %}
+            </button>
+            
+            <button id="startGameButton" class="startGameButton" onclick="startGame()">
+                {% trans "Start" %}
+            </button>
+            
+            <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
+                {% trans "Stop Game" %}
+            </button>
+        
+            <button class="PongButton" id="gameSettingsButton" onclick="toggleGameSettings()">
+                {% trans "Game Settings" %}
+            </button>
+        </div>
+        
+        <div id="game-settings-container" class="hidden editProfileForm">
+            <h2>{% trans "Game Settings" %}</h2>
+            
+            <label for="paddleColor">{% trans "Paddle Color:" %}</label>
+            <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
+            
+            <label for="ballColor">{% trans "Ball Color:" %}</label>
+            <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
+            
+            <label for="ballSpeed">{% trans "Ball Speed:" %}</label>
+            <input type="range" id="ballSpeed" min="1" max="10" value="5" onchange="updateBallSpeed(this.value)">
+            
+            <button onclick="hideGameSettings()">{% trans "Close" %}</button>
+        </div>
 
-            <div id="history-container" class="hidden editProfileForm">
-                <h2>History</h2>
-                <ul id="history-list"></ul>
-            </div>
+        <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
+        <div id="tic-tac-toe-modal">
+            <h1>{% trans "Tic-Tac-Toe" %}</h1>
+            <div class="board" id="board"></div>
+            <div class="winner" id="winner"></div>
+            <button id="close-btn" onclick="hideTicTacToe()">{% trans "Close" %}</button>
+            <button id="replay-btn" onclick="replayGame()">Rejouer</button>
+        </div>
 
-            <div id="profile-container" class="profile-container hidden">
-                <h2>Profile</h2>
-                <img src="{{ user.pp_link }}" alt="Profile Picture" 
-                     style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
-                <p>Username: <span id="profile-username">{{ user.username }}</span></p>
-                <p>Email: <span id="profile-email">{{ user.email }}</span></p>
-                <p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
-                <p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
-                
-                <h3>Friends</h3>
-                <ul id="friends-list"></ul>
-            
-                <h3>Pending Friend Requests</h3>
-                <ul id="friend-requests-list"></ul>
-            </div>      
-            
-            <div id="profile-edit-form" class="editProfileForm hidden">
-                <h2>Edit Profile</h2>
-                <form id="editProfileForm" class="editProfileForm">
-                    {% csrf_token %}
-                    <label for="edit-first-name">{% trans "First Name:" %}</label>
-                    <input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
-                    
-                    <label for="edit-last-name">{% trans "Last Name:" %}</label>
-                    <input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
-                    
-                    <label for="edit-email">{% trans "Email:" %}</label>
-                    <input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
-                    
-                    <label for="edit-image">{% trans "Image:" %}</label>
-                    <input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
-                    
-                    <button type="button" id="saveProfileButton">{% trans "Save Changes" %}</button>
-                    <button type="button" id="cancelEditButton">{% trans "Cancel" %}</button>
-                </form>
-            </div>
-
-            <div id="change-password-form" class="editProfileForm hidden">
-                <h2>{% trans "Change Password" %}</h2>
-                <form id="changePasswordForm">
-                    <label for="old-password">{% trans "Old Password:" %}</label>
-                    <input type="password" id="old-password" name="old_password" required><br><br>
-            
-                    <label for="new-password">{% trans "New Password:" %}</label>
-                    <input type="password" id="new-password" name="new_password" required><br><br>
-            
-                    <label for="confirm-password">{% trans "Confirm Password:" %}</label>
-                    <input type="password" id="confirm-password" name="confirm_password" required><br><br>
-            
-                    <button type="button" id="savePasswordButton">{% trans "Save Changes" %}</button>
-                    <button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
-                </form>
-            </div>
-            
-            <div id="settings-container" class="hidden editProfileForm">
-                <h2>{% trans "Settings" %}</h2>
-                <form action="{% url 'set_language' %}" method="post">
-                    {% csrf_token %}
-                    <label for="language">{% trans "Select Language:" %}</label>
-                    <select name="language" id="language">
-                        <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
-                        <option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
-                        <option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Español</option>
-                    </select>
-                    <button type="submit">{% trans "Change language" %}</button>
-                </form>
-            </div>
-            
-            <div id="friend-request-form" class="editProfileForm hidden">
-                <h2>Add Friend</h2>
-                <form id="addFriendForm">
-                    <label for="friend-username">{% trans "Username:" %}</label>
-                    <input type="text" id="friend-username" name="username" required><br><br>
-                    
-                    <button type="button" id="sendFriendRequestButton">{% trans "Send Request" %}</button>
-                    <button type="button" id="cancelFriendRequestButton">{% trans "Cancel" %}</button>
-                </form>
-            </div>
-            
-            <div id="pong-wrapper" class="hidden editProfileForm">
-                <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
-                
-                <div id="pong-container"></div>
-                
-                <button class="PongButton" id="twoPlayerButton" onclick="toggleTwoPlayers()" style="display: none;">
-                    {% trans "Two Players" %}
-                </button>
-                
-                <button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Start" %}</button>
-                
-                <button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
-                    {% trans "Stop Game" %}
-                </button>
-            
-                <button class="PongButton" id="gameSettingsButton" onclick="toggleGameSettings()">
-                    {% trans "Game Settings" %}
-                </button>
-            </div>
-            
-            <div id="game-settings-container" class="hidden editProfileForm">
-                <h2>{% trans "Game Settings" %}</h2>
-                
-                <label for="paddleColor">{% trans "Paddle Color:" %}</label>
-                <input type="color" id="paddleColor" value="#8b8989" onchange="updatePaddleColor(this.value)">
-                
-                <label for="ballColor">{% trans "Ball Color:" %}</label>
-                <input type="color" id="ballColor" value="#3498db" onchange="updateBallColor(this.value)">
-                
-                <label for="ballSpeed">{% trans "Ball Speed:" %}</label>
-                <input type="range" id="ballSpeed" min="1" max="10" value="5" onchange="updateBallSpeed(this.value)">
-                
-                <button onclick="hideGameSettings()">{% trans "Close" %}</button>
-            </div>
-            
-            <script>
-                function toggleGameSettings() {
-                    const settingsContainer = document.getElementById("game-settings-container");
-                    settingsContainer.classList.toggle("hidden");
-                }
-            
-                function hideGameSettings() {
-                    document.getElementById("game-settings-container").classList.add("hidden");
-                }
-            </script>
-            
-
-            <div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
-            <div id="tic-tac-toe-modal">
-                <h1>{% trans "Tic-Tac-Toe" %}</h1>
-                <div class="board" id="board"></div>
-                <div class="winner" id="winner"></div>
-                <button id="close-btn" onclick="hideTicTacToe()">{% trans "Close" %}</button>
-                <button id="replay-btn" onclick="replayGame()">Rejouer</button>
-            </div>
-              
-            <footer>
-                <p>&copy; {% trans "2024 Page de cramptes. Tous droits non-réservés." %}</p>
+        <div class="bootstrap-iso">
+            <footer class="bg-dark text-center text-white p-3 fixed-bottom">
+                &copy; {% trans "2024 Page de cramptes. Tous droits non-réservés." %}
             </footer>
+          </div>
 
-            {% else %}
+        {% else %}
             <p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
             <a href="?page=login">{% trans "Se connecter" %}</a>
-            {% endif %}
-        </section>
+        {% endif %}
+    </section>
 
-        <script src="{{ CDN_URL }}/cookie-banner.js"></script>
-        <script src="{{ CDN_URL }}/redirect.js"></script>
-        <script src="{{ CDN_URL }}/profile.js"></script>
-        <script src="{{ CDN_URL }}/tictactoe.js"></script>
-        <script src="{{ CDN_URL }}/pong.js"></script>
-        <script src="{{ CDN_URL }}/history.js"></script>
-        <script src="{{ CDN_URL }}/settings.js"></script>
-        <script>
-            const csrf = "{{ csrf_token }}";
-            const staticurl = "{{ CDN_URL }}";
-            const staticUrls = {
-                x: staticurl + "/images/llvm.png",  
-                o: staticurl + "/images/gnu.png"  
-            };
-        </script>
+    <script src="{{ CDN_URL }}/cookie-banner.js"></script>
+    <script src="{{ CDN_URL }}/redirect.js"></script>
+    <script src="{{ CDN_URL }}/profile.js"></script>
+    <script src="{{ CDN_URL }}/tictactoe.js"></script>
+    <script src="{{ CDN_URL }}/pong.js"></script>
+    <script src="{{ CDN_URL }}/history.js"></script>
+    <script src="{{ CDN_URL }}/settings.js"></script>
+    <script>
+        const csrf = "{{ csrf_token }}";
+        const staticurl = "{{ CDN_URL }}";
+        const staticUrls = {
+            x: staticurl + "/images/llvm.png",
+            o: staticurl + "/images/gnu.png"
+        };
+    </script>
 
-    </body>
+</body>
 </html>

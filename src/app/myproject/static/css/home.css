@@ -123,25 +123,7 @@ img {
     max-width: 100%;
     height: auto;
 }
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-}
 
-#footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-}
 
 #profile-edit-form {
     position: relative;
