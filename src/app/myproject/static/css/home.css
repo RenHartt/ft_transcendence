@@ -343,6 +343,10 @@ img {
 	overflow: hidden;
 }
 
+.dropdown-content.visible {
+	display: block;
+}
+
 .dropdown-content a {
 	color: black;
 	padding: 12px 16px;
