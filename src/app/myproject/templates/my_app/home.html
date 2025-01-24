@@ -12,6 +12,7 @@
 
     <body>
 
+        <!-- Login Section -->
         <section id="login" class="pages">
             <header>
                 <h1>Login</h1>
@@ -38,6 +39,9 @@
             <p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
         </section>
 
+
+
+        <!-- Home Section -->
         <section id="home" class="pages hidden">
             {% if user.is_authenticated %}
     
@@ -46,7 +50,12 @@
                 <h1>__attribute__</h1>
             </header>
 
+
+            <!-- Navigation Menu -->
             <nav class="poulet">
+
+
+				<!-- Profile Dropdown -->
                 <div class="dropdown">
                     <a href="javascript:void(0)" class="menu profile-dropdown">Profile</a>
                     <div class="dropdown-content">
@@ -57,6 +66,9 @@
                         <a href="javascript:void(0)" onclick="showHistory()">History</a>
                     </div>
                 </div>
+
+
+                <!-- Games Dropdown -->
                 <div class="dropdown">
                     <a href="javascript:void(0)" class="menu profile-dropdown">Games</a>
                     <div class="dropdown-content">
@@ -64,6 +76,10 @@
                         <a href="javascript:void(0)"  onclick="showPong()">Pong</a>
                     </div>
                 </div>
+
+
+
+                <!-- Settings Dropdown -->
                 <div class="dropdown">
                     <a href="javascript:void(0)" class="menu profile-dropdown">Settings</a>
                     <div class="dropdown-content">
@@ -72,7 +88,11 @@
                     </div>
                 </div>
                 <button class="login-button menu" id="logout">{% trans "Logout" %}</button>
+
+
+
             </nav>
+
 
             <nav class="burger hidden">
                 <select name="games" id="games" class="menu">
@@ -81,11 +101,17 @@
                 </select>
             </nav>
 
+
+            <!-- Histoty div -->
             <div id="history-container" class="hidden editProfileForm">
                 <h2>History</h2>
                 <ul id="history-list"></ul>
             </div>
 
+			
+
+
+            <!-- Profile Section -->
             <div id="profile-container" class="profile-container hidden">
                 <h2>Profile</h2>
                 <img src="{{ user.pp_link }}" alt="Profile Picture" 
@@ -102,6 +128,11 @@
                 <ul id="friend-requests-list"></ul>
             </div>      
             
+
+
+
+
+            <!-- Edit Profile Section -->
             <div id="profile-edit-form" class="editProfileForm hidden">
                 <h2>Edit Profile</h2>
                 <form id="editProfileForm" class="editProfileForm">
@@ -123,6 +154,9 @@
                 </form>
             </div>
 
+
+
+            <!-- Change Password Section -->
             <div id="change-password-form" class="editProfileForm hidden">
                 <h2>{% trans "Change Password" %}</h2>
                 <form id="changePasswordForm">
@@ -139,6 +173,10 @@
                     <button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
                 </form>
             </div>
+
+
+
+            <!-- Game Settings -->
             <div id="settings-container" class="hidden editProfileForm">
                 <h2>{% trans "Settings" %}</h2>
                 <form action="{% url 'set_language' %}" method="post">
@@ -153,6 +191,9 @@
                 </form>
             </div>
             
+
+
+			<!-- Friend request form -->
             <div id="friend-request-form" class="editProfileForm hidden">
                 <h2>Add Friend</h2>
                 <form id="addFriendForm">
@@ -163,7 +204,9 @@
                     <button type="button" id="cancelFriendRequestButton">{% trans "Cancel" %}</button>
                 </form>
             </div>
-            
+
+
+			<!-- Pong Game -->
             <div id="pong-wrapper" class="hidden editProfileForm">
                 <p id="pong-score" style="display: none; font-size: 20px; font-weight: bold;">Score: 0 - 0</p>
                 
@@ -176,6 +219,8 @@
                 </div>
             </div>
 
+
+			<!-- Game Settings -->
             <div id="game-settings-container" class="hidden editProfileForm">
                 <h2>{% trans "Game Settings" %}</h2>
                 
@@ -199,6 +244,9 @@
                 <button id="close-btn" onclick="hideTicTacToe()">{% trans "Close" %}</button>
                 <button id="replay-btn" onclick="replayGame()">Rejouer</button>
             </div>
+			
+
+
               
             <footer>
                 <p>&copy; {% trans "2024 Page de cramptes. Tous droits non-réservés." %}</p>
