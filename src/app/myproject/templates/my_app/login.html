@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>__attribute__</title>
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="http://localhost:8000/static/css/index.css">
 </head>
     <body>
     {% csrf_token %}
@@ -35,16 +35,21 @@
                     gap: 10px;
                     padding: 10px;
                 }
-            </style>
+                </style>
             <button type="submit" class="login">Log In</button>
             or
             <a class="login" href="{% url 'register' %}">Sign Up</a>
         </div>
         <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
-            <img src="{% static 'images/42.png' %}" alt="42 Logo">
+            <img src="{{ CDN_URL }}/images/42.png" alt="42 Logo">
             Log In with     
         </a>
+        
+        <footer>
+            <p>&copy 2024 Page de cramptes. Tous droits non-réservés.</p>
+        </footer>
     </form>
-    <script src="{% static 'login.js' %}"></script>
+    
+    <script src="{{ CDN_URL }}/login.js"></script>
 </body>
 </html>

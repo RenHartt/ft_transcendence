@@ -300,30 +300,42 @@ def save_history(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+
             user = data.get('user')
             pWin = data.get('pWin')
-            p1Score = data.get('p1Score')
-            p2Score = data.get('p2Score')
+            p1Score = data.get('p1Score', 0)
+            p2Score = data.get('p2Score', 0)
+            game_type = data.get('game_type')
+            result = data.get('result')
 
-            history_entry = History.objects.create(
+            user = User.objects.get(username=data.get('user'))
+            History.objects.create(
                 user=user,
                 pWin=pWin,
                 p1Score=p1Score,
-                p2Score=p2Score
+                p2Score=p2Score,
+                game_type=game_type,
+                result=result
             )
-            return JsonResponse({'status': 'success', 'id': history_entry.id})
-
+            return JsonResponse({"message": "Historique enregistré avec succès !"}, status=201)
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            return JsonResponse({"error": str(e)}, status=400)
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 def get_history(request):
-    if request.method == 'GET':
-        try:
-            history_entries = History.objects.all().values('user', 'pWin', 'p1Score', 'p2Score')
-            return JsonResponse(list(history_entries), safe=False, status=200)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    user = request.user
+    history = History.objects.filter(user=user)
 
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=405)
+    data = [
+        {
+            "game_type": history_entry.game_type,
+            "user": history_entry.user.username,
+            "pWin": history_entry.pWin,
+            "p1Score": history_entry.p1Score,
+            "p2Score": history_entry.p2Score,
+            "result": history_entry.result
+        }
+        for history_entry in history
+    ]
+
+    return JsonResponse(data, safe=False)

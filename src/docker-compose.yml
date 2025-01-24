@@ -25,6 +25,15 @@ services:
       - .env
     depends_on:
       - db
-
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/app
+    depends_on:
+      - web
+    entrypoint: ["/bin/sh", "/app/nginx_entry.sh"]
 volumes:
   postgres_data:
