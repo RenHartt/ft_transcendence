@@ -11,7 +11,6 @@ urlpatterns = [
     path('tictactoe/', views.tictactoe, name='tictactoe'),
     path('logout/', views.logout, name='logout'), 
     path('register/', views.register, name='register'),
-    path('404/', views.custom404, name='404'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('load/<str:page_name>/', views.load_page, name='load_page'),
     path('api/profile', views.profile, name='profile'),
@@ -27,5 +26,4 @@ urlpatterns = [
     path("api/user_stats/", views.user_stats, name="user-stats"),
     path('i18n/setlang/', set_language, name='set_language'), 
     path('test-lang/', views.test_language, name='test_language'),
-    path('test-csrf/', views.test_csrf, name='test_csrf'),
 ]

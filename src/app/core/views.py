@@ -109,11 +109,7 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'my_app/register.html', {'form': form})
 
-def custom404(request, exception):
-    return render(request, 'my_app/404.html', status=404)
 
-def test_csrf(request):
-    return JsonResponse({'csrf_token': request.COOKIES.get('csrftoken', 'Not Found')})
 
 
 def profile(request):
