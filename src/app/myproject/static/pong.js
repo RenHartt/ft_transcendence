@@ -135,11 +135,11 @@ function startPongGame() {
             }
             if (gameState.generalScore.player1 >= 3) {
                 alert("Le joueur1 gagne la partie !");
-                saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player1);
+                saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             } else if (gameState.generalScore.player2 >= 3) {
                 alert("Le joueur2 gagne la partie !");
-                saveGameHistory("Pong", "Player2", "Player1", gameState.generalScore.player1, gameState.generalScore.player2);
+                saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             }
             console.log(gameState.generalScore);

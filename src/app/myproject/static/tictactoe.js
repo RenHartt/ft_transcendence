@@ -60,7 +60,7 @@ function handleCellClick(e) {
 
 function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const user = document.getElementById('user-info').dataset.username; // Joueur connecté
+    const user = document.getElementById('user-info').dataset.username;
 
     let result = "Draw";
     if (p1Score > p2Score) result = "Win";
@@ -76,7 +76,7 @@ function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
         result: result
     };
 
-    console.log("🔍 Données envoyées :", data);
+    console.log("📤 Envoi des données à l'API :", data);
 
     fetch('/api/save-history/', {
         method: 'POST',
@@ -87,10 +87,24 @@ function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(result => console.log("✅ Réponse serveur :", result))
+    .then(result => {
+        console.log("✅ Réponse serveur :", result);
+        
+        // 🔥 Recharger les stats après l’enregistrement
+        fetch("/api/user_stats/", { cache: "no-cache" })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector("#pong-stats").innerHTML = `
+                    Joués : ${data.pong.played} | Gagnés : ${data.pong.won} | Perdus : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
+                `;
+
+                document.querySelector("#tic-tac-toe-stats").innerHTML = `
+                    Joués : ${data.tic_tac_toe.played} | Gagnés : ${data.tic_tac_toe.won} | Perdus : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
+                `;
+            });
+    })
     .catch(error => console.error("❌ Erreur lors de la sauvegarde :", error));
 }
-
 
 function checkWinner() {
 	const winningCombinations = [
