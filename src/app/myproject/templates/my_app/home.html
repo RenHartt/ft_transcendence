@@ -59,10 +59,8 @@
 				{{ request.user.username }}
 			</span>
 
-
 			<!-- Navigation Menu -->
 			<nav class="poulet">
-
 
 				<!-- Profile Dropdown -->
 				<div class="dropdown">
@@ -93,7 +91,6 @@
 					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Settings</a>
 					<div class="dropdown-content">
 						<a href="javascript:void(0)" onclick="showSettings()">Change language</a>
-						<a href="javascript:void(0)" onclick="showGameSettings()">Game Settings</a>
 						<a href="javascript:void(0)" id=logout>{% trans "Logout" %}</a>
 					</div>
 				</div>
@@ -226,6 +223,10 @@
 					{% trans "Two Players" %}
 				</button>
 
+				<button class="PongButton" id="fourPlayerButton" onclick="toggleFourPlayers()" style="display: none;">
+					{% trans "Four Players" %}
+				</button>
+
 				<button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Start" %}</button>
 
 				<button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
@@ -295,6 +296,7 @@
 		<script src="{{ CDN_URL }}/pong.js"></script>
 		<script src="{{ CDN_URL }}/history.js"></script>
 		<script src="{{ CDN_URL }}/settings.js"></script>
+		<script src="{{ CDN_URL }}/pongUtils.js"></script>
 		<script>
 			const csrf = "{{ csrf_token }}";
 			const staticurl = "{{ CDN_URL }}";
