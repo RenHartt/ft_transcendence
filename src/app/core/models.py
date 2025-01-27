@@ -83,7 +83,6 @@ class History(models.Model):
         related_name="histories",
         on_delete=models.CASCADE
     )
-    pWin = models.CharField(max_length=20)
     p1Score = models.IntegerField()
     p2Score = models.IntegerField()
     result = models.CharField(max_length=20, choices=[
@@ -97,4 +96,4 @@ class History(models.Model):
     ], default='Undefined')
 
     def __str__(self):
-        return f"{self.user.username} - {self.pWin} - {self.p1Score} - {self.p2Score}"
+        return f"{self.user.username} - {self.p1Score} - {self.p2Score}"

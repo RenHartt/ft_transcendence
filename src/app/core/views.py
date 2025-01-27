@@ -303,7 +303,6 @@ def save_history(request):
             data = json.loads(request.body)
 
             user = data.get('user')
-            pWin = data.get('pWin')
             p1Score = data.get('p1Score', 0)
             p2Score = data.get('p2Score', 0)
             game_type = data.get('game_type')
@@ -312,7 +311,6 @@ def save_history(request):
             user = User.objects.get(username=data.get('user'))
             History.objects.create(
                 user=user,
-                pWin=pWin,
                 p1Score=p1Score,
                 p2Score=p2Score,
                 game_type=game_type,
@@ -331,7 +329,6 @@ def get_history(request):
         {
             "game_type": history_entry.game_type,
             "user": history_entry.user.username,
-            "pWin": history_entry.pWin,
             "p1Score": history_entry.p1Score,
             "p2Score": history_entry.p2Score,
             "result": history_entry.result
@@ -341,5 +338,36 @@ def get_history(request):
 
     return JsonResponse(data, safe=False)
 
+@login_required
+@never_cache
+def user_stats(request):
+    """Calcule les statistiques des parties jouées par l'utilisateur."""
+    user = request.user
 
+    pong_played = History.objects.filter(user=user, game_type="Pong").count()
+    pong_won = History.objects.filter(user=user, game_type="Pong", result__iexact="Win").count()
+    pong_lost = History.objects.filter(user=user, game_type="Pong", result__iexact="Lose").count()
 
+    pong_winrate = round((pong_won / pong_played) * 100, 2) if pong_played > 0 else 0
+
+    pong_stats = {
+        "played": pong_played,
+        "won": pong_won,
+        "lost": pong_lost,
+        "winrate": pong_winrate
+    }
+
+    ttt_played = History.objects.filter(user=user, game_type="TicTacToe").count()
+    ttt_won = History.objects.filter(user=user, game_type="TicTacToe", result__iexact="Win").count()
+    ttt_lost = History.objects.filter(user=user, game_type="TicTacToe", result__iexact="Lose").count()
+
+    ttt_winrate = round((ttt_won / ttt_played) * 100, 2) if ttt_played > 0 else 0
+
+    tic_tac_toe_stats = {
+        "played": ttt_played,
+        "won": ttt_won,
+        "lost": ttt_lost,
+        "winrate": ttt_winrate
+    }
+
+    return JsonResponse({"pong": pong_stats, "tic_tac_toe": tic_tac_toe_stats})

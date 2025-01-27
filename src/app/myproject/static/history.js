@@ -39,7 +39,6 @@ function loadHistory() {
 			data.forEach(match => {
 				const gameType = match.game_type;
 				const user = match.user;
-				const pWin = match.pWin;
 				const p1Score = match.p1Score;
 				const p2Score = match.p2Score;
 				const result = match.result;

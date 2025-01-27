@@ -20,79 +20,77 @@ function createBoard() {
 }
 
 function handleCellClick(e) {
-	const index = e.target.dataset.index;
-	
-	if (cells[index] || !gameActive) return;
-	
-	cells[index] = currentPlayer;
-	
-	const img = document.createElement('img');
-	img.src = currentPlayer === 'LLVM' ? staticUrls.x : staticUrls.o;
-	img.alt = currentPlayer;
-	img.style.width = '100%';
-	img.style.height = '100%';
-	e.target.appendChild(img);
-	
-	e.target.classList.add('taken'); 
-	
-	if (checkWinner()) {
-		winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
-		gameActive = false;
-		let p1Score = 'LLVM' === currentPlayer ? 1 : 0;
-		let p2Score = 'GNU' === currentPlayer ? 1 : 0;
+    const index = e.target.dataset.index;
+    if (cells[index] || !gameActive) return;
 
-		saveGameHistory(currentPlayer, 'TicTacToe', p1Score, p2Score);
-		return;
-	}
+    cells[index] = currentPlayer;
 
-	if (cells.every(cell => cell)) {
-		winnerDisplay.textContent = "It's a draw!";
-		gameActive = false;
-		saveGameHistory('Draw', 'TicTacToe', 0, 0);
-		return;
-	}
+    const img = document.createElement('img');
+    img.src = currentPlayer === 'LLVM' ? staticUrls.x : staticUrls.o;
+    img.alt = currentPlayer;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    e.target.appendChild(img);
 
-	currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
+    e.target.classList.add('taken');
+
+    if (checkWinner()) {
+        winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
+        gameActive = false;
+        
+        const user = document.getElementById('user-info').dataset.username; // Récupérer l'utilisateur connecté
+        let p1 = "LLVM";
+        let p2 = "GNU";
+        let p1Score = currentPlayer === "LLVM" ? 1 : 0;
+        let p2Score = currentPlayer === "GNU" ? 1 : 0;
+
+        saveGameHistory("TicTacToe", p1, p2, p1Score, p2Score);
+        return;
+    }
+
+    if (cells.every(cell => cell)) {
+        winnerDisplay.textContent = "It's a draw!";
+        gameActive = false;
+        saveGameHistory("TicTacToe", "LLVM", "GNU", 0, 0);
+        return;
+    }
+
+    currentPlayer = currentPlayer === 'LLVM' ? 'GNU' : 'LLVM';
 }
 
-function saveGameHistory(winner, gameType, p1Score, p2Score) {
-	const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Assuming you have CSRF setup
-	const user = document.getElementById('user-info').dataset.username;
-	let result = "Loss";
-	if (winner === 'Draw') result = 'Draw';
-	else if (winner === user) result = 'Win';
-	const data = {
-		user: user,
-		pWin: winner,
-		p1Score: winner = p1Score,
-		p2Score: winner = p2Score,
-		game_type: gameType,
-		result: result
-	};
+function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const user = document.getElementById('user-info').dataset.username; // Joueur connecté
 
-	fetch('/api/save-history/', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-CSRFToken': csrfToken
-		},
-		body: JSON.stringify(data)
-	})
-	.then(response => {
-		if (!response.ok) {
-			return response.json().then(error => {
-				throw new Error(`Request failed: ${error.message}`);
-			});
-		}
-		return response.json();
-	})
-	.then(result => {
-		console.log('Success:', result);
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
+    let result = "Draw";
+    if (p1Score > p2Score) result = "Win";
+    else if (p2Score > p1Score) result = "Lose";
+
+    const data = {
+        user: user,
+        p1: p1,
+        p2: p2,
+        p1Score: p1Score,
+        p2Score: p2Score,
+        game_type: gameType,
+        result: result
+    };
+
+    console.log("🔍 Données envoyées :", data);
+
+    fetch('/api/save-history/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => console.log("✅ Réponse serveur :", result))
+    .catch(error => console.error("❌ Erreur lors de la sauvegarde :", error));
 }
+
 
 function checkWinner() {
 	const winningCombinations = [

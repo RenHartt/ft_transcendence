@@ -498,3 +498,25 @@ function setupProfileEvents() {
 		cancelPasswordButton.addEventListener('click', showProfile);
 	}
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/api/user_stats/")
+        .then(response => response.json())
+        .then(data => {
+            console.log("Données reçues :", data);
+
+            if (data.error) {
+                console.error("Erreur: ", data.error);
+                return;
+            }
+
+            document.querySelector("#pong-stats").innerHTML = `
+                Joués : ${data.pong.played} | Gagnés : ${data.pong.won} | Perdus : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
+            `;
+
+            document.querySelector("#tic-tac-toe-stats").innerHTML = `
+                Joués : ${data.tic_tac_toe.played} | Gagnés : ${data.tic_tac_toe.won} | Perdus : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
+            `;
+        })
+        .catch(error => console.error("Erreur lors du chargement des stats :", error));
+});
