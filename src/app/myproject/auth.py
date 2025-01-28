@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from social_core.exceptions import AuthForbidden
 
 class FortyTwoOAuth2(BaseOAuth2):
-    """42 OAuth2 authentication backend"""
     name = '42'
     AUTHORIZATION_URL = 'https://api.intra.42.fr/oauth/authorize'
     ACCESS_TOKEN_URL = 'https://api.intra.42.fr/oauth/token'
@@ -25,7 +24,6 @@ class FortyTwoOAuth2(BaseOAuth2):
         }
 
     def user_data(self, access_token, *args, **kwargs):
-        """Fetch user data from the API"""
         response = self.get_json(
             'https://api.intra.42.fr/v2/me',
             headers={'Authorization': f'Bearer {access_token}'}

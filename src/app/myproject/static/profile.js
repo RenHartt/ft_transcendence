@@ -35,11 +35,11 @@ function showProfile() {
 }
 
 function hideProfile(act) {
-	const profileContainer		= document.getElementById('profile-container');
-	const profileEditForm		= document.getElementById('profile-edit-form');
-	const changePasswordForm	= document.getElementById('change-password-form');
-	const addFriendForm			= document.getElementById("friend-request-form");
-	const history				= document.getElementById('history-container');
+	const profileContainer	 = document.getElementById('profile-container');
+	const profileEditForm	 = document.getElementById('profile-edit-form');
+	const changePasswordForm = document.getElementById('change-password-form');
+	const addFriendForm		 = document.getElementById("friend-request-form");
+	const history			 = document.getElementById('history-container');
 
 	if (act != profileContainer)
 		profileContainer.classList.add('hidden');
@@ -167,7 +167,7 @@ function editProfile() {
         if (!profileContainer || !profileEditForm) return;
         
         if (password !== confirmPassword) {
-            alert("Les mots de passe ne correspondent pas.");
+            showPopup("Error", "Les mots de passe ne correspondent pas.", "error");
             return;
         }
         fetch('/api/update-profile', {
@@ -203,7 +203,6 @@ function editProfile() {
 
 	document.getElementById('cancelEditButton').addEventListener('click', () => {
 		profileEditForm.classList.add('hidden');
-		profileContainer.classList.remove('hidden');
 	});
 
 
@@ -232,12 +231,12 @@ function editProfile() {
 		const newPassword = document.getElementById('new-password').value;
 		const confirmPassword = document.getElementById('confirm-password').value;
 		if (!oldPassword || !newPassword || !confirmPassword) {
-			alert("Veuillez remplir tous les champs.");
+			showPopup("Error", "Veuillez remplir tous les champs.", "error");
 			return;
 		}
 		console.log("Old Password:", oldPassword, "New Password:", newPassword, "Confirm Password:", confirmPassword);
 		if (newPassword !== confirmPassword) {
-			alert("Les mots de passe ne correspondent pas.");
+			showPopup("Error", "Les mots de passe ne correspondent pas.", "error");
 			return;
 		}
 		fetch('/api/change-password', {
@@ -262,70 +261,75 @@ function editProfile() {
 				document.getElementById('profile-edit-form').classList.remove('hidden');
 			})
 			.catch(error => {
-				alert("Une erreur s'est produite lors du changement de mot de passe.");
+				showPopup("Error", "Une erreur s'est produite lors du changement de mot de passe.", "error");
 			});
 	});
 }
 
 function addFriend() {
-	const addFriendForm = document.getElementById('friend-request-form');  
-	if (!addFriendForm) return;
+    const addFriendForm = document.getElementById('friend-request-form');
+    if (!addFriendForm) return;
 
-	if (gameState.gameRunning)
-		stopGame();
-	if (gameActive)
-		hideTicTacToe();
-	hideProfile(addFriendForm);
-	hideSettings(addFriendForm);
+    if (gameState.gameRunning)
+        stopGame();
+    if (gameActive)
+        hideTicTacToe();
+    hideProfile(addFriendForm);
+    hideSettings(addFriendForm);
 
-	const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
-	const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
-	const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); 
-	const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
+    const sendFriendRequestButton = document.getElementById('sendFriendRequestButton');
+    const cancelFriendRequestButton = document.getElementById('cancelFriendRequestButton');
+    const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]'); 
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
 
-	if (!addFriendForm.classList.contains('hidden')) {
-		addFriendForm.classList.add('hidden');
-	} else
-		addFriendForm.classList.remove('hidden');
+    if (!addFriendForm.classList.contains('hidden')) {
+        addFriendForm.classList.add('hidden');
+    } else {
+        addFriendForm.classList.remove('hidden');
+    }
 
-	sendFriendRequestButton.addEventListener('click', () => {
-		const friendUsername = document.getElementById('friend-username')?.value;
-		if (!friendUsername) {
-			alert("Veuillez entrer un nom d'utilisateur.");
-			return;
-		}
+    addFriendForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        sendFriendRequest();
+    });
 
-		fetch('/api/send-friend-request/', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrfToken,
-			},
-			credentials: 'include',
-			body: JSON.stringify({ username: friendUsername }),
-		})
-		.then(response => {
-			if (!response.ok) {
-				return response.json().then(data => {
-					throw new Error(data.error || "Erreur lors de l'ajout de l'ami.");
-				});
-			}
-			return response.json();
-		})
-		.then(data => {
-			alert(data.message || "Ami ajouté avec succès.");
-			addFriendForm.classList.add('hidden');
-			profileContainer.classList.remove('hidden');
-		})
-		.catch(error => {
-			alert(error.message || "Une erreur s'est produite lors de la requête.");
-		});
-	});
+    sendFriendRequestButton.addEventListener('click', () => {
+        sendFriendRequest();
+    });
 
-	cancelFriendRequestButton.addEventListener('click', () => {
-		addFriendForm.classList.add('hidden');
-		profileContainer.classList.remove('hidden');
-	});
+    cancelFriendRequestButton.addEventListener('click', () => {
+        addFriendForm.classList.add('hidden');
+    });
+
+    function sendFriendRequest() {
+        const friendUsername = document.getElementById('friend-username')?.value;
+        if (!friendUsername) {
+            showPopup("Erreur", "Veuillez entrer un nom d'utilisateur.", "error");
+            return;
+        }
+
+        fetch('/api/send-friend-request/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            credentials: 'include',
+            body: JSON.stringify({ username: friendUsername }),
+        })
+        .then(response => response.json())  
+        .then(data => {
+            if (data.error) {
+                showPopup("Erreur", data.error, "error");
+            } else {
+                showPopup("Succès", "Demande d'ami envoyée avec succès.", "success");
+                addFriendForm.classList.add('hidden');
+            }
+        })
+        .catch(() => {
+            showPopup("Erreur", "Une erreur s'est produite lors de la requête.", "error");
+        });
+    }
 }
 
 function handleFriendRequest(requestId, accept) {
@@ -347,12 +351,11 @@ function handleFriendRequest(requestId, accept) {
 		return response.json();
 	})
 	.then(data => {
-		alert(data.message || 'Action successful');
+		showPopup("Success", 'Action successful', "success");
 		loadProfile();
 	})
 	.catch(error => {
-		console.error('Error handling friend request:', error);
-		alert('Failed to handle friend request');
+		showPopup("error", 'Failed to handle friend request', "error");
 	});
 }
 
@@ -371,7 +374,7 @@ function remove_friend(friendId) {
 		return response.json();
 	})
 	.then(data => {
-		alert(data.message || 'Friend removed');
+		showPopup("Success", 'Friend removed', "success");
 		loadProfile();
 	})
 	.catch(error => {
@@ -403,11 +406,6 @@ function savePassword() {
 	const newPassword = document.getElementById('new-password').value;
 	const confirmPassword = document.getElementById('confirm-password').value;
 
-	if (newPassword !== confirmPassword) {
-		alert("Les mots de passe ne correspondent pas.");
-		return;
-	}
-
 	fetch('/api/change-password', {
 		method: 'POST',
 		headers: {
@@ -416,21 +414,21 @@ function savePassword() {
 		},
 		body: JSON.stringify({
 			old_password: oldPassword,
-			new_password: newPassword
+			new_password: newPassword,
+			confirm_password: confirmPassword
 		}),
 	})
-	.then(response => {
-		if (!response.ok) {
-			throw new Error("Erreur lors du changement de mot de passe");
+	.then(response => response.json())
+	.then(data => {
+		if (data.error) {
+			showPopup("Erreur", data.error, "error");
+		} else {
+			showPopup("Succès", "Mot de passe mis à jour !", "success");
+			showProfile();
 		}
-		return response.json();
 	})
-	.then(() => {
-		alert("Mot de passe mis à jour !");
-		showProfile();
-	})
-	.catch(error => {
-		alert("Une erreur s'est produite lors du changement de mot de passe.");
+	.catch(() => {
+		showPopup("Erreur", "Une erreur s'est produite lors du changement de mot de passe.", "error");
 	});
 }
 

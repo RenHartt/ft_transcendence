@@ -296,6 +296,15 @@
 			{% endif %}
 		</section>
 
+			<!-- Popup Notification System -->
+			<div id="custom-popup" class="popup hidden">
+				<div class="popup-content">
+					<span id="popup-title"></span>
+					<p id="popup-message"></p>
+					<button id="popup-close">OK</button>
+				</div>
+			</div>
+
 		<script src="{{ CDN_URL }}/cookie-banner.js"></script>
 		<script src="{{ CDN_URL }}/dropdown.js"></script>
 		<script src="{{ CDN_URL }}/redirect.js"></script>
@@ -305,6 +314,8 @@
 		<script src="{{ CDN_URL }}/history.js"></script>
 		<script src="{{ CDN_URL }}/settings.js"></script>
 		<script src="{{ CDN_URL }}/pongUtils.js"></script>
+		<script src="{{ CDN_URL }}/cookie-banner.js"></script>
+		<script src="{{ CDN_URL }}/popup.js"></script>
 		<script>
 			const csrf = "{{ csrf_token }}";
 			const staticurl = "{{ CDN_URL }}";

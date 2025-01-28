@@ -109,9 +109,6 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'my_app/register.html', {'form': form})
 
-
-
-
 def profile(request):
     if request.method == 'GET':
         pending_requests = Friendship.objects.filter(
@@ -147,7 +144,6 @@ def test_language(request):
     return HttpResponse(f"Langue actuelle : {get_language()}")
 
 @login_required
-@csrf_exempt
 def update_profile(request):
     if request.method == 'POST':
         try:
@@ -166,16 +162,25 @@ def update_profile(request):
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
-@csrf_exempt
 def change_password(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             old_password = data.get('old_password')
             new_password = data.get('new_password')
+            confirm_password = data.get('confirm_password')
+
+            if not old_password or not new_password or not confirm_password:
+                return JsonResponse({'error': 'Tous les champs sont requis.'}, status=200)
 
             if not request.user.check_password(old_password):
-                return JsonResponse({'error': 'Mot de passe actuel incorrect.'}, status=400)
+                return JsonResponse({'error': 'Mot de passe actuel incorrect.'}, status=200)
+
+            if new_password != confirm_password:
+                return JsonResponse({'error': 'Les nouveaux mots de passe ne correspondent pas.'}, status=200)
+
+            if len(new_password) < 8:
+                return JsonResponse({'error': 'Le mot de passe doit contenir au moins 8 caractères.'}, status=200)
 
             request.user.set_password(new_password)
             request.user.save()
@@ -183,11 +188,15 @@ def change_password(request):
             update_session_auth_hash(request, request.user)
 
             return JsonResponse({'message': 'Mot de passe changé avec succès.'}, status=200)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-@csrf_exempt 
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Données JSON invalides.'}, status=200)
+
+        except Exception as e:
+            return JsonResponse({'error': f'Une erreur inattendue est survenue : {str(e)}'}, status=200)
+
+    return JsonResponse({'error': 'Méthode de requête invalide.'}, status=405)
+
 @login_required 
 def save_profile(request):
     if request.method == 'POST':
@@ -214,15 +223,18 @@ def send_friend_request(request):
             else:
                 username = request.POST.get('username')
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON data'}, status=200)
 
         if not username:
-            return JsonResponse({'error': 'Username is required'}, status=400)
+            return JsonResponse({'error': 'Username is required'}, status=200)
 
-        receiver = get_object_or_404(User, username=username)
+        try:
+            receiver = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return JsonResponse({'error': "Cet utilisateur n'existe pas."}, status=200)
 
         if receiver == request.user:
-            return JsonResponse({'error': 'You cannot send a friend request to yourself'}, status=400)
+            return JsonResponse({'error': "Vous ne pouvez pas vous ajouter en ami."}, status=200)
 
         friendship, created = Friendship.objects.get_or_create(
             requester=request.user,
@@ -230,9 +242,9 @@ def send_friend_request(request):
         )
 
         if created:
-            return JsonResponse({'message': 'Friend request sent successfully.'}, status=200)
+            return JsonResponse({'message': "Demande d'ami envoyée avec succès."}, status=200)
         else:
-            return JsonResponse({'message': 'Friend request already exists.'}, status=400)
+            return JsonResponse({'error': "Une demande d'ami existe déjà."}, status=200)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
@@ -316,7 +328,6 @@ def save_history(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 
-
 def get_history(request):
     user = request.user
     history = History.objects.filter(user=user)
@@ -337,7 +348,6 @@ def get_history(request):
 @login_required
 @never_cache
 def user_stats(request):
-    """Calcule les statistiques des parties jouées par l'utilisateur."""
     user = request.user
 
     pong_played = History.objects.filter(user=user, game_type="Pong").count()
