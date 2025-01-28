@@ -164,7 +164,7 @@ function editProfile() {
         const password = document.getElementById('edit-password');
         const confirmPassword = document.getElementById('edit-confirm-password');
         
-        if (!profileContainer || !profileEditForm) return;
+        if (!profileEditForm) return;
         
         if (password !== confirmPassword) {
             showPopup("Error", "Les mots de passe ne correspondent pas.", "error");
@@ -204,7 +204,6 @@ function editProfile() {
 	document.getElementById('cancelEditButton').addEventListener('click', () => {
 		profileEditForm.classList.add('hidden');
 	});
-
 
 	document.getElementById('cancelPasswordButton').addEventListener('click', () => {
 		const changePasswordForm = document.getElementById('change-password-form');

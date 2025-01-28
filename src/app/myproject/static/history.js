@@ -45,11 +45,10 @@ function loadHistory() {
 
 				let oppenant = "Opponent";
 				let str = '';
-				console.log(gameType);
 				if (gameType === 'TicTacToe')
 					str = `${gameType}: LLVM vs. GNU - ${result} (${p1Score} - ${p2Score})`;
 				else if (gameType === 'Pong')
-					str = `${gameType}: ${user} vs. ${oppenant} - ${result} - ${p1Score} - ${p2Score}`;
+					str = `${gameType}: ${user} vs. ${oppenant} - ${result} - (${p1Score} - ${p2Score})`;
 				const li = document.createElement('li');
 				li.innerText = str;
 				historyList.appendChild(li);

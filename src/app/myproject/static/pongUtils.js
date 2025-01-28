@@ -4,12 +4,10 @@ function toggleFourPlayers() {
     multiplayer = true;
 }
 
-
 function toggleTwoPlayers() {
 	window.twoPlayers = !window.twoPlayers;
     window.fourPlayers = false;
 }
-
 
 function toggleGameSettings() {
     const settingsContainer = document.getElementById("pong-settings-popup");
@@ -224,4 +222,3 @@ function stopGame() {
 
     document.querySelector("#pong-container").innerHTML = '';
 }
-

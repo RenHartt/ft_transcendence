@@ -76,8 +76,6 @@ function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
         result: result
     };
 
-    console.log("📤 Envoi des données à l'API :", data);
-
     fetch('/api/save-history/', {
         method: 'POST',
         headers: {
@@ -88,9 +86,6 @@ function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
     })
     .then(response => response.json())
     .then(result => {
-        console.log("✅ Réponse serveur :", result);
-        
-        // 🔥 Recharger les stats après l’enregistrement
         fetch("/api/user_stats/", { cache: "no-cache" })
             .then(response => response.json())
             .then(data => {

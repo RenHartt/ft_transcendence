@@ -118,7 +118,6 @@ function startPongGame() {
                 saveGameHistory("Pong", "TeamLeft", "TeamRight", teamLeft, teamRight);
                 resetGame();
             }
-            console.log(gameState.generalScore);
         }
         else if (window.twoPlayers) {
             if (pongScore) {
@@ -142,7 +141,6 @@ function startPongGame() {
                 saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             }
-            console.log(gameState.generalScore);
         }
         else {
             if (pongScore) {
@@ -166,7 +164,6 @@ function startPongGame() {
                 saveGameHistory("Pong", "Player2", "IA", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             }
-            console.log(gameState.generalScore);
         }
     }
 
