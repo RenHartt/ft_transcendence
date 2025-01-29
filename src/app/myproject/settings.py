@@ -14,7 +14,7 @@ LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-CDN_URL = 'http://localhost:8000/static'
+CDN_URL = 'https://localhost:8443/static'
 
 LANGUAGES = [
     ('en', _('English')),
@@ -143,8 +143,9 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 
 SOCIAL_AUTH_42_KEY = 'u-s4t2ud-996544e675137d321c58aadcc8e6d5dcdff78712fc296361f5c306709ebe4b70'
-SOCIAL_AUTH_42_SECRET = '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'
-SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
+SOCIAL_AUTH_42_SECRET = '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'
+# SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
+SOCIAL_AUTH_42_REDIRECT_URI = 'https://localhost:8443/oauth/complete/42/'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', 
@@ -158,3 +159,12 @@ LOCALE_PATHS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Active la prise en compte des headers de Nginx
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Force Django à utiliser HTTPS pour ses redirections
+CSRF_TRUSTED_ORIGINS = ['https://localhost:8443', 'https://ft_attribute.com']
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

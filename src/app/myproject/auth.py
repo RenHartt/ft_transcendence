@@ -34,7 +34,7 @@ class FortyTwoOAuth2(BaseOAuth2):
         def middleware(request):
             try:
                 return get_response(request)
-            except AuthForbidden:
+            except (AuthForbidden, AuthCanceled, AuthFailed):
                 return redirect('login')
         return middleware
         
