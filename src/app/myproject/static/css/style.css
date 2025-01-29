@@ -182,15 +182,12 @@ p {
     cursor: pointer;
 }
 
-
 #stopGameButton {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
 }
-
-
 
 #pong-settings-popup {
     position: fixed;
@@ -205,7 +202,6 @@ p {
     width: 220px;
     text-align: center;
 }
-
 
 #pong-settings-popup.hidden {
     display: none;

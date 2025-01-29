@@ -263,7 +263,7 @@
 				<button onclick="hideGameSettings()">{% trans "Close" %}</button>
 			</div>
 
-			<script>
+			{% comment %} <script>
 				function toggleGameSettings() {
 					const settingsContainer = document.getElementById("pong-settings-popup");
 					settingsContainer.classList.toggle("hidden");
@@ -272,7 +272,7 @@
 				function hideGameSettings() {
 					document.getElementById("pong-settings-popup").classList.add("hidden");
 				}
-			</script>
+			</script> {% endcomment %}
 
 
 			<div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
@@ -281,7 +281,7 @@
 				<div class="board" id="board"></div>
 				<div class="winner" id="winner"></div>
 				<button id="close-btn" onclick="hideTicTacToe()">{% trans "Close" %}</button>
-				<button id="replay-btn" onclick="replayGame()">Rejouer</button>
+				<button id="replay-btn" onclick="replayGameTicTacToe()">{% trans "Replay" %}</button>
 			</div>
 
             <div class="bootstrap-iso">
