@@ -38,7 +38,6 @@ function handleCellClick(e) {
         winnerDisplay.textContent = `Player ${currentPlayer} wins!`;
         gameActive = false;
         
-        const user = document.getElementById('user-info').dataset.username; // Récupérer l'utilisateur connecté
         let p1 = "LLVM";
         let p2 = "GNU";
         let p1Score = currentPlayer === "LLVM" ? 1 : 0;
@@ -119,8 +118,16 @@ function checkWinner() {
 	});
 }
 
-function replayGame() {
-	createBoard(staticUrls);
+function replayGameTicTacToe() {
+	const board = document.getElementById('board');
+	const winner = document.getElementById('winner');
+	const replayBtn = document.getElementById('replay-btn');
+
+	if (board && winner && replayBtn) {
+		board.innerHTML = '';
+		winner.innerHTML = '';
+		createBoard(staticUrls);
+	}
 }
 
 function showTicTacToe() {

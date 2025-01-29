@@ -157,7 +157,7 @@ function startPongGame() {
             }
             if (gameState.generalScore.player1 >= 3) {
                 showPopup("Bravo", "Le joueur a gagné la partie !", "success");
-                saveGameHistory("Pong", "Player1", "IA", gameState.generalScore.player1, gameState.generalScore.player1);
+                saveGameHistory("Pong", "Player1", "IA", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             } else if (gameState.generalScore.player2 >= 3) {
                 showPopup("Bravo", "L'IA a gagné la partie !", "success");
