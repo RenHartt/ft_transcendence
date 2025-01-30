@@ -39,7 +39,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=True)  
     last_name = models.CharField(max_length=30, blank=True)  
     pp_link = models.TextField(blank=True, null=True, default=default_pp)
-    pp_link = models.URLField(blank=True, default=default_pp)  
     name = models.CharField(max_length=30, blank=True, default='')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
