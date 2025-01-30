@@ -105,19 +105,6 @@ function stopGame() {
 	if (pongScore) pongScore.style.display = "none";
 }
 
-function replayGame() {
-	const board = document.getElementById('board');
-	const winner = document.getElementById('winner');
-	const replayBtn = document.getElementById('replay-btn');
-
-	if (board && winner && replayBtn) {
-		board.innerHTML = '';
-		winner.innerHTML = '';
-		replayBtn.style.display = 'none';
-		createBoard(staticUrls);
-	}
-}
-
 function showPong() {
 	const pongWrapper = document.getElementById('pong-wrapper');
 	const pongContainer = document.getElementById('pong-container');
@@ -139,7 +126,7 @@ function showPong() {
         pongWrapper.style.display = "none";
         return;
     }
-    gameState.startGame = false; 
+    gameState.startGame = false;
     startPongGame();
     pongWrapper.style.display = "block";
     stopGameButton.style.display = "block";

@@ -137,132 +137,103 @@ function loadProfile() {
 }
 
 function editProfile() {
-    if (gameState.gameRunning)
-        stopGame(); 
-    if (gameActive)
-        hideTicTacToe();
-	
-	const profileEditForm = document.getElementById('profile-edit-form');
-	if (!profileEditForm) return;
+    if (gameState.gameRunning) stopGame();
+    if (gameActive) hideTicTacToe();
 
-	if (gameState.gameRunning)
-		stopGame();
-	if (gameActive)
-		hideTicTacToe();
+    const profileEditForm = document.getElementById('profile-edit-form');
+    const profileContainer = document.getElementById('profile-container');
+    if (!profileEditForm) return;
+
 	hideProfile(profileEditForm);
-	hideSettings(profileEditForm);
+	hideSettings(profileEditForm); 
+    profileEditForm.classList.toggle('hidden');
 
-	if (!profileEditForm.classList.contains('hidden'))
-		profileEditForm.classList.add('hidden');
-	else
-		profileEditForm.classList.remove('hidden');
+    setupProfileEditEvents();
+}
 
-    document.getElementById('saveProfileButton').addEventListener('click', () => {
-        const email = document.getElementById('edit-email').value;
-        const firstName = document.getElementById('edit-first-name').value;
-        const lastName = document.getElementById('edit-last-name').value;
-        const password = document.getElementById('edit-password');
-        const confirmPassword = document.getElementById('edit-confirm-password');
-        
-        if (!profileEditForm) return;
-        
-        if (password !== confirmPassword) {
-            showPopup("Error", "Les mots de passe ne correspondent pas.", "error");
-            return;
-        }
-        fetch('/api/update-profile', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrf,
-            },
-            body: JSON.stringify({
-                email: email,
-                first_name: firstName,
-                last_name: lastName,
-                password: password,
-            }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors de la mise à jour du profil');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.querySelector('#profile-container p:nth-child(3)').textContent = `Email: ${data.email}`;
-                document.querySelector('#profile-container p:nth-child(4)').textContent = `First Name: ${data.first_name}`;
-                document.querySelector('#profile-container p:nth-child(5)').textContent = `Last Name: ${data.last_name}`;
-                profileEditForm.classList.add('hidden');
-                profileContainer.classList.remove('hidden');
-            })
-            .catch(error => {
-                alert("Une erreur s'est produite lors de la mise à jour du profil.");
-            });
+function setupProfileEditEvents() {
+    const saveButton = document.getElementById('saveProfileButton');
+    const cancelButton = document.getElementById('cancelEditButton');
+
+    if (saveButton && !saveButton.dataset.listener) {
+        saveButton.dataset.listener = true;
+        saveButton.addEventListener('click', updateProfile);
+    }
+
+    if (cancelButton && !cancelButton.dataset.listener) {
+        cancelButton.dataset.listener = true;
+        cancelButton.addEventListener('click', () => {
+            document.getElementById('profile-edit-form').classList.add('hidden');
+            document.getElementById('profile-container').classList.remove('hidden');
+        });
+    }
+}
+
+function updateProfile() {
+    const email = document.getElementById('edit-email').value;
+    const firstName = document.getElementById('edit-first-name').value;
+    const lastName = document.getElementById('edit-last-name').value;
+
+    fetch('/api/update-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrf,
+        },
+        body: JSON.stringify({ email, first_name: firstName, last_name: lastName}),
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Erreur lors de la mise à jour du profil');
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('profile-email').textContent = data.email;
+        document.getElementById('profile-first-name').textContent = data.first_name;
+        document.getElementById('profile-last-name').textContent = data.last_name;
+
+        document.getElementById('profile-edit-form').classList.add('hidden');
+        document.getElementById('profile-container').classList.remove('hidden');
+		showPopup("Success", "Profile mis a jour.", "success");
+    })
+    .catch(error => {
+        showPopup("Error", "Une erreur s'est produite lors de la mise à jour du profil.", "error");
     });
+}
 
-	document.getElementById('cancelEditButton').addEventListener('click', () => {
-		profileEditForm.classList.add('hidden');
-	});
+function setupPasswordChangeEvents() {
+    const savePasswordButton = document.getElementById('savePasswordButton');
+    if (savePasswordButton && !savePasswordButton.dataset.listener) {
+        savePasswordButton.dataset.listener = true;
+        savePasswordButton.addEventListener('click', changePassword);
+    }
+}
 
-	document.getElementById('cancelPasswordButton').addEventListener('click', () => {
-		const changePasswordForm = document.getElementById('change-password-form');
-		const profileEditForm = document.getElementById('profile-edit-form');
-		if (!changePasswordForm || !profileEditForm) {
-			return;
-		}
-		changePasswordForm.classList.add('hidden');
-		profileEditForm.classList.remove('hidden');
-	});
+function changePassword() {
+    const oldPassword = document.getElementById('old-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
 
-	document.getElementById('cancelEditButton').addEventListener('click', () => {
-		const profileEditForm = document.getElementById('profile-edit-form');
-		const profileContainer = document.getElementById('profile-container');
-		if (!profileEditForm || !profileContainer) {
-			return;
+    fetch('/api/change-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrf,
+        },
+        body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erreur lors du changement de mot de passe");
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('change-password-form').classList.add('hidden');
+        document.getElementById('profile-edit-form').classList.remove('hidden');
+		if (data.error) {
+			showPopup("Erreur", data.error, "error");
+		} else if (data.message){
+        	showPopup("Success", data.message, "success");
 		}
-		profileEditForm.classList.add('hidden');
-		profileContainer.classList.remove('hidden');
-	});
-
-	document.getElementById('savePasswordButton').addEventListener('click', () => {
-		const oldPassword = document.getElementById('old-password').value;
-		const newPassword = document.getElementById('new-password').value;
-		const confirmPassword = document.getElementById('confirm-password').value;
-		if (!oldPassword || !newPassword || !confirmPassword) {
-			showPopup("Error", "Veuillez remplir tous les champs.", "error");
-			return;
-		}
-		console.log("Old Password:", oldPassword, "New Password:", newPassword, "Confirm Password:", confirmPassword);
-		if (newPassword !== confirmPassword) {
-			showPopup("Error", "Les mots de passe ne correspondent pas.", "error");
-			return;
-		}
-		fetch('/api/change-password', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRFToken': csrf,
-			},
-			body: JSON.stringify({
-				old_password: oldPassword,
-				new_password: newPassword,
-			}),
-		})
-			.then(response => {
-				if (!response.ok) {
-					throw new Error("Erreur lors du changement de mot de passe");
-				}
-				return response.json();
-			})
-			.then(data => {
-				document.getElementById('change-password-form').classList.add('hidden');
-				document.getElementById('profile-edit-form').classList.remove('hidden');
-			})
-			.catch(error => {
-				showPopup("Error", "Une erreur s'est produite lors du changement de mot de passe.", "error");
-			});
-	});
+	})
 }
 
 function addFriend() {
@@ -302,10 +273,6 @@ function addFriend() {
 
     function sendFriendRequest() {
         const friendUsername = document.getElementById('friend-username')?.value;
-        if (!friendUsername) {
-            showPopup("Erreur", "Veuillez entrer un nom d'utilisateur.", "error");
-            return;
-        }
 
         fetch('/api/send-friend-request/', {
             method: 'POST',
@@ -325,9 +292,6 @@ function addFriend() {
                 addFriendForm.classList.add('hidden');
             }
         })
-        .catch(() => {
-            showPopup("Erreur", "Une erreur s'est produite lors de la requête.", "error");
-        });
     }
 }
 
@@ -376,9 +340,6 @@ function remove_friend(friendId) {
 		showPopup("Success", 'Friend removed', "success");
 		loadProfile();
 	})
-	.catch(error => {
-		alert('Failed to remove friend');
-	});
 }
 
 function showChangePassword() {
@@ -422,13 +383,10 @@ function savePassword() {
 		if (data.error) {
 			showPopup("Erreur", data.error, "error");
 		} else {
-			showPopup("Succès", "Mot de passe mis à jour !", "success");
+			showPopup("Succès", data.message, "success");
 			showProfile();
 		}
 	})
-	.catch(() => {
-		showPopup("Erreur", "Une erreur s'est produite lors du changement de mot de passe.", "error");
-	});
 }
 
 function saveProfile() {
@@ -470,6 +428,7 @@ function setupProfileEvents() {
 		stopGame(); 
 	if (gameActive)
 		hideTicTacToe();
+
 	const saveProfileButton = document.getElementById('saveProfileButton');
 	const cancelEditButton = document.getElementById('cancelEditButton');
 	const savePasswordButton = document.getElementById('savePasswordButton');
@@ -500,10 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/api/user_stats/")
         .then(response => response.json())
         .then(data => {
-            console.log("Données reçues :", data);
-
             if (data.error) {
-                console.error("Erreur: ", data.error);
                 return;
             }
 
