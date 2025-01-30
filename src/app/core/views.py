@@ -10,14 +10,11 @@ from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
-import logging
-from django.views.decorators.csrf import csrf_exempt
+import logging, json, re
 from django.contrib.auth import update_session_auth_hash
-import json
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Friendship
-from .models import History
+from .models import Friendship, History
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db import models
@@ -25,6 +22,8 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.core.cache import cache
 from django.utils.translation import get_language
+from django.core.exceptions import ValidationError
+
 
 User = get_user_model()
 logger = logging.getLogger('core')
@@ -159,9 +158,6 @@ def update_profile(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
-
-import re
-from django.core.exceptions import ValidationError
 
 def validate_password_strength(password):
     if len(password) < 8:
