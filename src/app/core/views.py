@@ -140,7 +140,6 @@ def profile(request):
         return HttpResponse(status=405)
 
 def test_language(request):
-    logger.info(f"Langue actuelle : {get_language()}")
     return HttpResponse(f"Langue actuelle : {get_language()}")
 
 @login_required
