@@ -59,6 +59,7 @@
 				{{ request.user.username }}
 			</span>
 
+
 			<!-- Navigation Menu -->
 			<nav class="poulet">
 
@@ -97,7 +98,6 @@
 				<button class="logout-button menu" id="logout">{% trans "Logout" %}</button>
 
 
-
 			</nav>
 
 
@@ -107,6 +107,7 @@
 					<option value="Tic Tac Toe">{% trans "Tic Tac Toe" %}</option>
 				</select>
 			</nav>
+
 
 
 			<!-- Histoty div -->
@@ -125,11 +126,10 @@
 
 
 
-
 			<!-- Profile Section -->
 			<div id="profile-container" class="profile-container hidden">
 				<h2>Profile</h2>
-				<img src="{{ user.pp_link }}" alt="Profile Picture" 
+				<img id="profile-picture" src="{{ user.pp_link }}" alt="Profile Picture" 
 											  style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
 				<p>Username: <span id="profile-username">{{ user.username }}</span></p>
 				<p>Email: <span id="profile-email">{{ user.email }}</span></p>
@@ -142,8 +142,6 @@
 				<h3>Pending Friend Requests</h3>
 				<ul id="friend-requests-list"></ul>
 			</div>      
-
-
 
 
 
@@ -262,18 +260,6 @@
 
 				<button onclick="hideGameSettings()">{% trans "Close" %}</button>
 			</div>
-
-			{% comment %} <script>
-				function toggleGameSettings() {
-					const settingsContainer = document.getElementById("pong-settings-popup");
-					settingsContainer.classList.toggle("hidden");
-				}
-
-				function hideGameSettings() {
-					document.getElementById("pong-settings-popup").classList.add("hidden");
-				}
-			</script> {% endcomment %}
-
 
 			<div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
 			<div id="tic-tac-toe-modal">
