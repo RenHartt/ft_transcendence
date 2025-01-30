@@ -74,6 +74,7 @@ function loadProfile() {
         document.getElementById('profile-email').textContent = data.email || 'N/A';
         document.getElementById('profile-first-name').textContent = data.first_name || 'N/A';
         document.getElementById('profile-last-name').textContent = data.last_name || 'N/A';
+        document.getElementById('profile-picture').textContent = data.pp_link || 'N/A';
 
 		const friendsList = document.getElementById('friends-list');
 		friendsList.innerHTML = '';
@@ -169,10 +170,38 @@ function setupProfileEditEvents() {
     }
 }
 
-function updateProfile() {
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = () => reject("Error reading file");
+    reader.readAsDataURL(file);
+  });
+}
+
+
+async function updateProfile() {
     const email = document.getElementById('edit-email').value;
     const firstName = document.getElementById('edit-first-name').value;
     const lastName = document.getElementById('edit-last-name').value;
+    
+    const imageInput = document.getElementById('edit-image');
+    let imageBase64 = null;
+
+    if (imageInput.files && imageInput.files[0]) {
+        imageBase64 = await readFileAsDataURL(imageInput.files[0]);
+    }
+
+    const bodyData = {
+        email,
+        first_name: firstName,
+        last_name: lastName,
+    };
+
+    if (imageBase64) {
+        bodyData.image = imageBase64;
+    }
+	console.log(bodyData)
 
     fetch('/api/update-profile', {
         method: 'POST',
@@ -180,20 +209,22 @@ function updateProfile() {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrf,
         },
-        body: JSON.stringify({ email, first_name: firstName, last_name: lastName}),
+        body: JSON.stringify(bodyData),
     })
     .then(response => {
         if (!response.ok) throw new Error('Erreur lors de la mise à jour du profil');
         return response.json();
     })
     .then(data => {
+		console.log(data);
         document.getElementById('profile-email').textContent = data.email;
         document.getElementById('profile-first-name').textContent = data.first_name;
         document.getElementById('profile-last-name').textContent = data.last_name;
+        document.getElementById('profile-picture').source = data.pp_link;
 
         document.getElementById('profile-edit-form').classList.add('hidden');
         document.getElementById('profile-container').classList.remove('hidden');
-		showPopup("Success", "Profile mis a jour.", "success");
+        showPopup("Success", "Profile mis à jour.", "success");
     })
     .catch(error => {
         showPopup("Error", "Une erreur s'est produite lors de la mise à jour du profil.", "error");

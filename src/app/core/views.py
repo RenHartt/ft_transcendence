@@ -146,14 +146,21 @@ def update_profile(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+
             request.user.email = data.get('email', request.user.email)
             request.user.first_name = data.get('first_name', request.user.first_name)
             request.user.last_name = data.get('last_name', request.user.last_name)
+
+            image_base64 = data.get('image')
+            if image_base64:
+                request.user.pp_link = image_base64
+
             request.user.save()
             return JsonResponse({
                 'email': request.user.email,
                 'first_name': request.user.first_name,
                 'last_name': request.user.last_name,
+                'pp_link': request.user.pp_link,
             })
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
