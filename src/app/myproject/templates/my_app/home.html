@@ -21,10 +21,10 @@
 			<form method="post" action="?page=login">
 				<button type="submit">{% trans "Change language" %}</button>
 				<label for="username">Username:</label>
-				<input type="text" id="username" name="username" required><br><br>
+				<input type="text" id="username" name="username" required maxlength="30"><br><br>
 
 				<label for="password">{% trans "Password:" %}</label>
-				<input type="password" id="password" name="password" required><br><br>
+				<input type="password" id="password" name="password" required maxlength="30"><br><br>
 				{% if error %}
 				<p class="error">{{ error }}</p>
 				{% endif %}
@@ -95,8 +95,6 @@
 						<a href="javascript:void(0)" id=logout>{% trans "Logout" %}</a>
 					</div>
 				</div>
-				<button class="logout-button menu" id="logout">{% trans "Logout" %}</button>
-
 
 			</nav>
 
@@ -124,6 +122,7 @@
 				<ul id="history-list"></ul>
 			</div>
 
+			
 
 
 			<!-- Profile Section -->
@@ -151,16 +150,16 @@
 				<form id="editProfileForm" class="editProfileForm">
 					{% csrf_token %}
 					<label for="edit-first-name">{% trans "First Name:" %}</label>
-					<input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required><br><br>
+					<input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required maxlength="30"><br><br>
 
 					<label for="edit-last-name">{% trans "Last Name:" %}</label>
-					<input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required><br><br>
+					<input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required maxlength="30"><br><br>
 
 					<label for="edit-email">{% trans "Email:" %}</label>
-					<input type="email" id="edit-email" name="email" value="{{ user.email }}" required><br><br>
+					<input type="email" id="edit-email" name="email" value="{{ user.email }}" required maxlength="30"><br><br>
 
 					<label for="edit-image">{% trans "Image:" %}</label>
-					<input type="file" id="edit-image" name="image" accept="image/*" required><br><br>
+					<input type="file" id="edit-image" name="image" accept="image/*" required maxlength="30"><br><br>
 
 					<button type="button" id="saveProfileButton">{% trans "Save Changes" %}</button>
 					<button type="button" id="cancelEditButton">{% trans "Cancel" %}</button>
@@ -174,13 +173,13 @@
 				<h2>{% trans "Change Password" %}</h2>
 				<form id="changePasswordForm">
 					<label for="old-password">{% trans "Old Password:" %}</label>
-					<input type="password" id="old-password" name="old_password" required><br><br>
+					<input type="password" id="old-password" name="old_password" required maxlength="30"><br><br>
 
 					<label for="new-password">{% trans "New Password:" %}</label>
-					<input type="password" id="new-password" name="new_password" required><br><br>
+					<input type="password" id="new-password" name="new_password" required maxlength="30"><br><br>
 
 					<label for="confirm-password">{% trans "Confirm Password:" %}</label>
-					<input type="password" id="confirm-password" name="confirm_password" required><br><br>
+					<input type="password" id="confirm-password" name="confirm_password" required maxlength="30"><br><br>
 
 					<button type="button" id="savePasswordButton">{% trans "Save Changes" %}</button>
 					<button type="button" id="cancelPasswordButton">{% trans "Cancel" %}</button>
@@ -211,7 +210,7 @@
 				<h2>Add Friend</h2>
 				<form id="addFriendForm">
 					<label for="friend-username">{% trans "Username:" %}</label>
-					<input type="text" id="friend-username" name="username" required><br><br>
+					<input type="text" id="friend-username" name="username" required maxlength="30"><br><br>
 
 					<button type="button" id="sendFriendRequestButton">{% trans "Send Request" %}</button>
 					<button type="button" id="cancelFriendRequestButton">{% trans "Cancel" %}</button>
@@ -260,6 +259,7 @@
 
 				<button onclick="hideGameSettings()">{% trans "Close" %}</button>
 			</div>
+
 
 			<div id="overlay" class="hidden" onclick="hideTicTacToe()"></div>
 			<div id="tic-tac-toe-modal">

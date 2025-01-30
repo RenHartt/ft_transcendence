@@ -140,7 +140,6 @@ def profile(request):
         return HttpResponse(status=405)
 
 def test_language(request):
-    logger.info(f"Langue actuelle : {get_language()}")
     return HttpResponse(f"Langue actuelle : {get_language()}")
 
 @login_required
@@ -168,6 +167,27 @@ def update_profile(request):
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+import re
+from django.core.exceptions import ValidationError
+
+def validate_password_strength(password):
+    if len(password) < 8:
+        raise ValidationError("Le mot de passe doit contenir au moins 8 caractères.")
+
+    if not re.search(r'[A-Z]', password):
+        raise ValidationError("Le mot de passe doit contenir au moins une lettre majuscule.")
+
+    if not re.search(r'[a-z]', password):
+        raise ValidationError("Le mot de passe doit contenir au moins une lettre minuscule.")
+
+    if not re.search(r'\d', password):
+        raise ValidationError("Le mot de passe doit contenir au moins un chiffre.")
+
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        raise ValidationError("Le mot de passe doit contenir au moins un caractère spécial.")
+
+    return True
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -186,8 +206,10 @@ def change_password(request):
             if new_password != confirm_password:
                 return JsonResponse({'error': 'Les nouveaux mots de passe ne correspondent pas.'}, status=200)
 
-            if len(new_password) < 8:
-                return JsonResponse({'error': 'Le mot de passe doit contenir au moins 8 caractères.'}, status=200)
+            try:
+                validate_password_strength(new_password)
+            except ValidationError as e:
+                return JsonResponse({'error': str(e)}, status=200)
 
             request.user.set_password(new_password)
             request.user.save()

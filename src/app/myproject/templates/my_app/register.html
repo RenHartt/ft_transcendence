@@ -17,20 +17,20 @@
 
         <div class="menu-formreg">
             <label for="{{ form.username.id_for_label }}" class="label">Username</label>
-            <input type="text" id="username" class="input" name="username" placeholder="Username" autocomplete="off" required>
+            <input type="text" id="username" class="input" name="username" placeholder="Username" autocomplete="off" required maxlength="30">
         </div>
 
         <div class="menu-form">
             <label for="{{ form.password1.id_for_label }}" class="label">Password</label>
             <div class="password-container">
-                <input type="password" id="password" class="input" name="password1" placeholder="Password" autocomplete="new-password" required>
+                <input type="password" id="password" class="input" name="password1" placeholder="Password" autocomplete="new-password" required maxlength="30">
                 <span class="tooltip-icon" data-tooltip="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.">?</span>
             </div>
         </div>
 
         <div class="menu-formreg">
             <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
-            <input type="password" id="confirm-password" class="input" name="password2" placeholder="Confirm Password" required>
+            <input type="password" id="confirm-password" class="input" name="password2" placeholder="Confirm Password" required maxlength="30">
         </div>
 
         <div class="login-buttons">
