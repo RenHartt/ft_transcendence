@@ -80,6 +80,7 @@ def tictactoe(request):
     return render(request, 'my_app/tictactoe.html')
 
 def login(request):
+    logger.debug("coucou")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

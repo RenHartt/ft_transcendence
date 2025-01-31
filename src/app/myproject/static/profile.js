@@ -200,7 +200,6 @@ async function updateProfile() {
 	if (imageBase64) {
 		bodyData.image = imageBase64;
 	}
-	console.log(bodyData)
 
 	fetch('/api/update-profile', {
 		method: 'POST',

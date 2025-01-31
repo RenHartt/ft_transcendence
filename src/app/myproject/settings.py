@@ -9,7 +9,7 @@ logger = logging.getLogger('myproject')
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
-DEBUG = False
+DEBUG = True
 LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
@@ -150,7 +150,7 @@ SOCIAL_AUTH_42_REDIRECT_URI = 'https://localhost:8443/oauth/complete/42/'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', 
     'allauth.account.auth_backends.AuthenticationBackend', 
-    'myproject.auth.FortyTwoOAuth2', 
+    'myproject.auth.FortyTwoOAuth2',
 ]
 
 AUTH_USER_MODEL = 'core.User'
@@ -160,11 +160,9 @@ LOCALE_PATHS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Active la prise en compte des headers de Nginx
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Force Django à utiliser HTTPS pour ses redirections
 CSRF_TRUSTED_ORIGINS = ['https://localhost:8443', 'https://ft_attribute.com']
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
