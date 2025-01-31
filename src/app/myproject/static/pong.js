@@ -214,6 +214,7 @@ function startPongGame() {
                 ballY <= playerY + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = paddleWidth + 1;
                 playerHit = true;
                 aiFrozen = false;
             }
@@ -223,6 +224,7 @@ function startPongGame() {
                 ballY <= aiY + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = canvas.width - paddleWidth - ballSize - 1;
                 aiFrozen = true;
                 playerHit = false;
             }
@@ -233,6 +235,7 @@ function startPongGame() {
                 ballY <= player1Y + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = paddleWidth + 1;
             }
             if (
                 ballX <= paddleWidth &&
@@ -240,6 +243,7 @@ function startPongGame() {
                 ballY <= player2Y + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = canvas.width - paddleWidth - ballSize - 1;
             }
             if (
                 ballX >= canvas.width - paddleWidth - ballSize &&
@@ -247,6 +251,7 @@ function startPongGame() {
                 ballY <= player3Y + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = paddleWidth + 1;
             }
             if (
                 ballX >= canvas.width - paddleWidth - ballSize &&
@@ -254,6 +259,7 @@ function startPongGame() {
                 ballY <= player4Y + paddleHeight
             ) {
                 gameState.BallSpeedX *= -1;
+                ballX = canvas.width - paddleWidth - ballSize - 1;
             }
         }
 
