@@ -7,16 +7,17 @@ window.onload = () => {
             return;
 
         input.addEventListener('input', () => {
-            if (input.value.trim() !== '') 
+            if (input.value && input.value.trim() !== '') 
                 label.style.opacity = "1";
             else 
                 label.style.opacity = "0";
         });
-
+        
         input.addEventListener('blur', () => {
-            if (input.value.trim() === '') 
+            if (!input.value || input.value.trim() === '') 
                 label.style.opacity = "0";
         });
+        
     });
 };
 
