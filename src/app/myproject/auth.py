@@ -1,6 +1,7 @@
 from social_core.backends.oauth import BaseOAuth2
 from django.shortcuts import redirect
 from social_core.exceptions import AuthForbidden
+from core.models import User
 
 class FortyTwoOAuth2(BaseOAuth2):
     name = '42'
@@ -14,7 +15,8 @@ class FortyTwoOAuth2(BaseOAuth2):
     ]
 
     def get_user_details(self, response):
-        """Return user details from 42 account"""
+        if User.objects.filter(username=response.get('login')).exists():
+            return {}
         return {
             'username': response.get('login'),
             'email': response.get('email'),

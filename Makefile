@@ -44,7 +44,7 @@ rebuild:
 	@$(MAKE) clean
 	@$(MAKE) up
 
-logs:
+log:
 	@echo "📋 Showing logs..."
 	@$(DOCKER_COMPOSE) -f src/docker-compose.yml logs -f
 

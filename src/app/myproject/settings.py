@@ -9,7 +9,7 @@ logger = logging.getLogger('myproject')
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-))m0tjq+d(9#5+x(%!&^d=p^9k-svgm^xbe-hwl6)t#j^cyrm-'
 
-DEBUG = True
+DEBUG = False
 LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
