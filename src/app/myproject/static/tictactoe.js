@@ -89,11 +89,11 @@ function saveGameHistory(gameType, p1, p2, p1Score, p2Score) {
             .then(response => response.json())
             .then(data => {
                 document.querySelector("#pong-stats").innerHTML = `
-                    Joués : ${data.pong.played} | Gagnés : ${data.pong.won} | Perdus : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
+                    Played : ${data.pong.played} | Win : ${data.pong.won} | Loses : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
                 `;
 
                 document.querySelector("#tic-tac-toe-stats").innerHTML = `
-                    Joués : ${data.tic_tac_toe.played} | Gagnés : ${data.tic_tac_toe.won} | Perdus : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
+                    Played : ${data.tic_tac_toe.played} | Win : ${data.tic_tac_toe.won} | Loses : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
                 `;
             });
     })

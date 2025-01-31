@@ -210,7 +210,7 @@ async function updateProfile() {
 		body: JSON.stringify(bodyData),
 	})
 		.then(response => {
-			if (!response.ok) throw new Error('Erreur lors de la mise à jour du profil');
+			if (!response.ok) throw new Error('Error while updating profile');
 			return response.json();
 		})
 		.then(data => {
@@ -222,10 +222,10 @@ async function updateProfile() {
 
 			document.getElementById('profile-edit-form').classList.add('hidden');
 			document.getElementById('profile-container').classList.remove('hidden');
-			showPopup("Success", "Profile mis à jour.", "success");
+			showPopup("Success", "Profile updated.", "success");
 		})
 		.catch(error => {
-			showPopup("Error", "Une erreur s'est produite lors de la mise à jour du profil.", "error");
+			showPopup("Error", "Error while updating profile", "error");
 		});
 }
 
@@ -251,7 +251,7 @@ function changePassword() {
 		body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
 	})
 		.then(response => {
-			if (!response.ok) throw new Error("Erreur lors du changement de mot de passe");
+			if (!response.ok) throw new Error("Error while updating password");
 			return response.json();
 		})
 		.then(data => {
@@ -317,7 +317,7 @@ function addFriend() {
 				if (data.error) {
 					showPopup("Erreur", data.error, "error");
 				} else {
-					showPopup("Succès", "Demande d'ami envoyée avec succès.", "success");
+					showPopup("Succès", "Friend request successfully sent.", "success");
 					addFriendForm.classList.add('hidden');
 				}
 			})
@@ -437,7 +437,7 @@ function saveProfile() {
 	})
 		.then(response => {
 			if (!response.ok) {
-				throw new Error('Erreur lors de la mise à jour du profil');
+				throw new Error('Error while updating profile');
 			}
 			return response.json();
 		})
@@ -448,7 +448,7 @@ function saveProfile() {
 			showProfile();
 		})
 		.catch(error => {
-			alert("Une erreur s'est produite lors de la mise à jour du profil.");
+			alert('Error while updating profile');
 		});
 }
 
@@ -493,12 +493,12 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 
 			document.querySelector("#pong-stats").innerHTML = `
-                Joués : ${data.pong.played} | Gagnés : ${data.pong.won} | Perdus : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
+                Played : ${data.pong.played} | Win : ${data.pong.won} | Loses : ${data.pong.lost} | Winrate : ${data.pong.winrate}%
             `;
 
 			document.querySelector("#tic-tac-toe-stats").innerHTML = `
-                Joués : ${data.tic_tac_toe.played} | Gagnés : ${data.tic_tac_toe.won} | Perdus : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
+                Played : ${data.tic_tac_toe.played} | Win : ${data.tic_tac_toe.won} | Loses : ${data.tic_tac_toe.lost} | Winrate : ${data.tic_tac_toe.winrate}%
             `;
 		})
-		.catch(error => console.error("Erreur lors du chargement des stats :", error));
+		.catch(error => console.error("Error while loading stats :", error));
 });
