@@ -4,11 +4,11 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>{% trans "Tic-Tac-Toe"%}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Tic-Tac-Toe</h1>
+    <h1>{% trans "Tic-Tac-Toe"%}</h1>
     <div class="board" id="board"></div>
     <div class="winner" id="winner"></div>
     <script src="{% static 'tictactoe.js' %}"></script>

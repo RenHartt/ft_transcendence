@@ -13,18 +13,18 @@
     <body>
     {% csrf_token %}
     <header class="HeadLog">
-        <h1 class="title">Login</h1>
+    <h1 class="title">{% trans "Login"%}</h1>
     </header>
     <form method="POST" class="jesaispas" action="/?page=login">
         {% csrf_token %}
         <div class="menu-form">
-            <label for="username" class="label">Username</label>
+            <label for="username" class="label">{% trans "Username"%}</label>
             <input type="text" id="username" class="input" name="username" 
                     placeholder="Username" autocomplete="off" autofill="off" 
                     aria-autocomplete="none" required maxlength="30"><br><br>
         </div>
         <div class="menu-form">
-            <label for="password" class="label">Password</label>
+            <label for="password" class="label">{% trans "Password"%}</label>
             <input type="password" id="password" class="input" name="password"
                      placeholder="Password" autocomplete="new-password" autofill="off"
                      aria-autocomplete="none" required maxlength="30"><br><br>
@@ -39,9 +39,9 @@
                     padding: 10px;
                 }
                 </style>
-            <button type="submit" class="login">Log In</button>
+            <button type="submit" class="login">{% trans "Log In"%}</button>
             or
-            <a class="login" href="{% url 'register' %}">Sign Up</a>
+            <a class="login" href="{% url 'register' %}">{% trans "Sign Up"%}</a>
         </div>
         <a href="{% url 'social:begin' '42' %}" class="oauth-btn">
             <img src="{{ CDN_URL }}/images/42.png" alt="42 Logo">

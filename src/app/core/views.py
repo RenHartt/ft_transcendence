@@ -104,7 +104,7 @@ def register(request):
             form.save()
             return redirect('/?page=login')
         else:
-            logger.warning(f'❌ Formulaire invalide: {form.errors}')
+            logger.warning(f'❌ Invalid form: {form.errors}')
     else:
         form = CustomUserCreationForm()
     return render(request, 'my_app/register.html', {'form': form})
@@ -169,19 +169,19 @@ def update_profile(request):
 
 def validate_password_strength(password):
     if len(password) < 8:
-        raise ValidationError("Le mot de passe doit contenir au moins 8 caractères.")
+        raise ValidationError("The password must be at least 8 characters long.")
 
     if not re.search(r'[A-Z]', password):
-        raise ValidationError("Le mot de passe doit contenir au moins une lettre majuscule.")
+        raise ValidationError("The password must contain at least one uppercase letter.")
 
     if not re.search(r'[a-z]', password):
-        raise ValidationError("Le mot de passe doit contenir au moins une lettre minuscule.")
+        raise ValidationError("The password must contain at least one lowercase letter.")
 
     if not re.search(r'\d', password):
-        raise ValidationError("Le mot de passe doit contenir au moins un chiffre.")
+        raise ValidationError("The password must contain at least one digit.")
 
     if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-        raise ValidationError("Le mot de passe doit contenir au moins un caractère spécial.")
+        raise ValidationError("The password must contain at least one special character.")
 
     return True
 
@@ -195,13 +195,13 @@ def change_password(request):
             confirm_password = data.get('confirm_password')
 
             if not old_password or not new_password or not confirm_password:
-                return JsonResponse({'error': 'Tous les champs sont requis.'}, status=200)
+                return JsonResponse({'error': 'All input are requiered.'}, status=200)
 
             if not request.user.check_password(old_password):
-                return JsonResponse({'error': 'Mot de passe actuel incorrect.'}, status=200)
+                return JsonResponse({'error': 'Incorrect current password.'}, status=200)
 
             if new_password != confirm_password:
-                return JsonResponse({'error': 'Les nouveaux mots de passe ne correspondent pas.'}, status=200)
+                return JsonResponse({'error': 'Password missmatch.'}, status=200)
 
             try:
                 validate_password_strength(new_password)
@@ -213,15 +213,15 @@ def change_password(request):
 
             update_session_auth_hash(request, request.user)
 
-            return JsonResponse({'message': 'Mot de passe changé avec succès.'}, status=200)
+            return JsonResponse({'message': 'Password changed successfully.'}, status=200)
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Données JSON invalides.'}, status=200)
+            return JsonResponse({'error': 'Invalid json.'}, status=200)
 
         except Exception as e:
-            return JsonResponse({'error': f'Une erreur inattendue est survenue : {str(e)}'}, status=200)
+            return JsonResponse({'error': f'Uknown error : {str(e)}'}, status=200)
 
-    return JsonResponse({'error': 'Méthode de requête invalide.'}, status=405)
+    return JsonResponse({'error': 'Invalid request.'}, status=405)
 
 @login_required 
 def save_profile(request):
@@ -235,7 +235,7 @@ def save_profile(request):
         user.email = email
         user.save()
 
-        return JsonResponse({'message': 'Profil mis à jour avec succès !'})
+        return JsonResponse({'message': 'Profil successfully updated !'})
 
     return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
 
@@ -257,10 +257,10 @@ def send_friend_request(request):
         try:
             receiver = User.objects.get(username=username)
         except User.DoesNotExist:
-            return JsonResponse({'error': "Cet utilisateur n'existe pas."}, status=200)
+            return JsonResponse({'error': "Unknown user."}, status=200)
 
         if receiver == request.user:
-            return JsonResponse({'error': "Vous ne pouvez pas vous ajouter en ami."}, status=200)
+            return JsonResponse({'error': "You can't add this friend."}, status=200)
 
         friendship, created = Friendship.objects.get_or_create(
             requester=request.user,
@@ -268,9 +268,9 @@ def send_friend_request(request):
         )
 
         if created:
-            return JsonResponse({'message': "Demande d'ami envoyée avec succès."}, status=200)
+            return JsonResponse({'message': "Friend request sent."}, status=200)
         else:
-            return JsonResponse({'error': "Une demande d'ami existe déjà."}, status=200)
+            return JsonResponse({'error': "Friend request already exist."}, status=200)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
@@ -317,11 +317,11 @@ def handleFriendRequest(request, request_id):
 @login_required
 def remove_friend(request, friend_id):
     if request.method == 'POST':
-        logger.info(f"Suppression de l'ami {friend_id}")
+        logger.info(f"Supress friens {friend_id}")
         friendship = get_object_or_404(Friendship, id=friend_id, is_accepted=True)
         friendship.delete()
-        return JsonResponse({'message': 'Ami supprimé avec succès.'}, status=200)
-    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+        return JsonResponse({'message': 'Successfuly suppressed friend.'}, status=200)
+    return JsonResponse({'error': 'Forbidden'}, status=405)
 
 @receiver(user_logged_in)
 def on_user_logged_in(sender, request, user, **kwargs):
@@ -350,7 +350,7 @@ def save_history(request):
                 game_type=game_type,
                 result=result
             )
-            return JsonResponse({"message": "Historique enregistré avec succès !"}, status=201)
+            return JsonResponse({"message": "History saved !"}, status=201)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 

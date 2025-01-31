@@ -20,7 +20,7 @@
 			</header>
 			<form method="post" action="?page=login">
 				<button type="submit">{% trans "Change language" %}</button>
-				<label for="username">Username:</label>
+				<label for="username">{% trans "Username"%}:</label>
 				<input type="text" id="username" name="username" required maxlength="30"><br><br>
 
 				<label for="password">{% trans "Password:" %}</label>
@@ -28,7 +28,7 @@
 				{% if error %}
 				<p class="error">{{ error }}</p>
 				{% endif %}
-				<button type="submit">Log In</button>
+				<button type="submit">{% trans "Log In"%}</button>
 			</form>
 
 			<p>Or</p>
@@ -37,7 +37,7 @@
 				Log In with 42
 			</a>
 
-			<p><a href="{% url 'register' %}" class="register">Sign Up</a></p>
+			<p><a href="{% url 'register' %}" class="register">{% trans "Sign Up"%}</a></p>
 		</section>
 
 
@@ -67,11 +67,11 @@
 				<div class="dropdown">
 					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Profile</a>
 					<div class="dropdown-content">
-						<a href="javascript:void(0)" onclick="showProfile()">View Profile</a>
-						<a href="javascript:void(0)" onclick="editProfile()">Edit Profile</a>
-						<a href="javascript:void(0)" onclick="showChangePassword()">Change Password</a>
-						<a href="javascript:void(0)" onclick="addFriend()">Add Friend</a>
-						<a href="javascript:void(0)" onclick="showHistory()">History</a>
+						<a href="javascript:void(0)" onclick="showProfile()">{% trans "View Profile"%}</a>
+						<a href="javascript:void(0)" onclick="editProfile()">{% trans "Edit Profile"%}</a>
+						<a href="javascript:void(0)" onclick="showChangePassword()">{% trans "Change Password"%}</a>
+						<a href="javascript:void(0)" onclick="addFriend()">{% trans "Add Friend"%}</a>
+						<a href="javascript:void(0)" onclick="showHistory()">{%trans "History"%}</a>
 					</div>
 				</div>
 
@@ -81,7 +81,7 @@
 					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Games</a>
 					<div class="dropdown-content">
 						<a href="javascript:void(0)"  onclick="showTicTacToe()">{% trans "Tic Tac Toe" %}</a>            
-						<a href="javascript:void(0)"  onclick="showPong()">Pong</a>
+						<a href="javascript:void(0)"  onclick="showPong()">{% trans "Pong"%}</a>
 					</div>
 				</div>
 
@@ -91,7 +91,7 @@
 				<div class="dropdown">
 					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Settings</a>
 					<div class="dropdown-content">
-						<a href="javascript:void(0)" onclick="showSettings()">Change language</a>
+						<a href="javascript:void(0)" onclick="showSettings()">{% trans "Change language"%}</a>
 						<a href="javascript:void(0)" id=logout>{% trans "Logout" %}</a>
 					</div>
 				</div>
@@ -101,7 +101,7 @@
 
 			<nav class="burger hidden">
 				<select name="games" id="games" class="menu">
-					<option value="games" selected disabled>Games</option>
+					<option value="games" selected disabled>{% trans "Games"%}</option>
 					<option value="Tic Tac Toe">{% trans "Tic Tac Toe" %}</option>
 				</select>
 			</nav>
@@ -110,15 +110,15 @@
 
 			<!-- Histoty div -->
 			<div id="history-container" class="hidden editProfileForm">
-				<h2>Stats</h2>
+				<h2>{% trans "Stats"%}</h2>
 
-				<h3>Pong :</h3>
+				<h3>{% trans "Pong"%} :</h3>
 				<p id="pong-stats"></p>  <!-- Winrate sera ajouté ici -->
 
-				<h3>Tic Tac Toe :</h3>
+				<h3>{% trans "Tic Tac Toe"%} :</h3>
 				<p id="tic-tac-toe-stats"></p>  <!-- Winrate sera ajouté ici -->
 
-				<h2>Historique des Parties</h2>
+				<h2>{% trans "Game history"%}</h2>
 				<ul id="history-list"></ul>
 			</div>
 
@@ -130,15 +130,15 @@
 				<h2>Profile</h2>
 				<img id="profile-picture" src="{{ user.pp_link }}" alt="Profile Picture" 
 											  style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
-				<p>Username: <span id="profile-username">{{ user.username }}</span></p>
-				<p>Email: <span id="profile-email">{{ user.email }}</span></p>
-				<p>First Name: <span id="profile-first-name">{{ user.first_name }}</span></p>
-				<p>Last Name: <span id="profile-last-name">{{ user.last_name }}</span></p>
+				<p>{% trans "Username"%}: <span id="profile-username">{{ user.username }}</span></p>
+				<p>{% trans "Email"%}: <span id="profile-email">{{ user.email }}</span></p>
+				<p>{% trans "First Name"%}: <span id="profile-first-name">{{ user.first_name }}</span></p>
+				<p>{% trans "Last Name"%}: <span id="profile-last-name">{{ user.last_name }}</span></p>
 
-				<h3>Friends</h3>
+				<h3>{% trans "Friends"%}</h3>
 				<ul id="friends-list"></ul>
 
-				<h3>Pending Friend Requests</h3>
+				<h3>{% trans "Pending Friend Requests"%}</h3>
 				<ul id="friend-requests-list"></ul>
 			</div>      
 
@@ -146,7 +146,7 @@
 
 			<!-- Edit Profile Section -->
 			<div id="profile-edit-form" class="editProfileForm hidden">
-				<h2>Edit Profile</h2>
+				<h2>{% trans "Edit Profile"%}</h2>
 				<form id="editProfileForm" class="editProfileForm">
 					{% csrf_token %}
 					<label for="edit-first-name">{% trans "First Name:" %}</label>
@@ -207,7 +207,7 @@
 
 			<!-- Friend request form -->
 			<div id="friend-request-form" class="editProfileForm hidden">
-				<h2>Add Friend</h2>
+				<h2>{% trans "Add Friend"%}</h2>
 				<form id="addFriendForm">
 					<label for="friend-username">{% trans "Username:" %}</label>
 					<input type="text" id="friend-username" name="username" required maxlength="30"><br><br>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,19 +11,19 @@
 </head>
 <body>
     <header class="HeadLog">
-        <h1 class="title">Sign Up</h1>
+        <h1 class="title">{% trans "Sign Up"%}</h1>
     </header>
 
     <form method="POST" class="jesaispas" action="/?page=register">
         {% csrf_token %}
 
         <div class="menu-formreg">
-            <label for="{{ form.username.id_for_label }}" class="label">Username</label>
+            <label for="{{ form.username.id_for_label }}" class="label">{% trans "Username"%}</label>
             <input type="text" id="username" class="input" name="username" placeholder="Username" autocomplete="off" required maxlength="30">
         </div>
 
         <div class="menu-form">
-            <label for="{{ form.password1.id_for_label }}" class="label">Password</label>
+            <label for="{{ form.password1.id_for_label }}" class="label">{% trans "Password"%}</label>
             <div class="password-container">
                 <input type="password" id="password" class="input" name="password1" placeholder="Password" autocomplete="new-password" required maxlength="30">
                 <span class="tooltip-icon" data-tooltip="Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.">?</span>
@@ -30,14 +31,14 @@
         </div>
 
         <div class="menu-formreg">
-            <label for="{{ form.password2.id_for_label }}" class="label">Confirm Password</label>
+            <label for="{{ form.password2.id_for_label }}" class="label">{% trans "Password"%}</label>
             <input type="password" id="confirm-password" class="input" name="password2" placeholder="Confirm Password" required maxlength="30">
         </div>
 
         <div class="login-buttons">
-            <button type="submit" class="login">Register</button>
-            or
-            <button type="button" class="login" onclick="window.location.href='/?page=login'">Log In</button>
+            <button type="submit" class="login">{% trans "Register"%}</button>
+            {% trans "or"%}
+            <button type="button" class="login" onclick="window.location.href='/?page=login'">{% trans "Sign In"%}</button>
         </div>
     </form>
 
