@@ -5,6 +5,7 @@ from . import views
 import logging
 
 logger = logging.getLogger('myproject')
+handler404 = 'my_app.views.custom_404'
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -26,4 +27,6 @@ urlpatterns = [
     path("api/user_stats/", views.user_stats, name="user-stats"),
     path('i18n/setlang/', set_language, name='set_language'), 
     path('test-lang/', views.test_language, name='test_language'),
+    path("custom_404/", views.custom_404, name="custom_404"),
+    path("custom_500/", views.custom_500, name="custom_500"),
 ]

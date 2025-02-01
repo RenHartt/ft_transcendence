@@ -56,8 +56,10 @@ def index(request):
         return render(request, 'my_app/register.html', {'form': form})  
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
-    else:
-        return render(request, 'my_app/404.html')   
+    
+    # Redirection explicite vers une erreur 404
+    return HttpResponseNotFound(render(request, 'my_app/404.html'))
+
 
 @never_cache
 def load_page(request, page_name):
@@ -68,8 +70,10 @@ def load_page(request, page_name):
             return redirect('login')
         else:
             return redirect('home')
-    else:
-        return render(request, 'my_app/404.html')
+    
+    # Redirection explicite vers une erreur 404
+    return HttpResponseNotFound(render(request, 'my_app/404.html'))
+
 
 @login_required
 @never_cache
@@ -403,3 +407,10 @@ def user_stats(request):
     }
 
     return JsonResponse({"pong": pong_stats, "tic_tac_toe": tic_tac_toe_stats})
+
+def custom_404(request, exception=None):
+    return render(request, "my_app/404.html", status=404)
+
+
+def custom_500(request, exception=None):
+    return render(request, "my_app/404.html", status=500)
