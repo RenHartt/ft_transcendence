@@ -27,7 +27,7 @@ function startTournament() {
         localStorage.setItem('tournamentPlayers', JSON.stringify(players));
         console.log("Go");
         toggleTwoPlayers();
-        togglePongOverlay();  // Utilisation de la nouvelle fonction
+        togglePongOverlay(); 
     }
 }
 
@@ -57,12 +57,25 @@ function togglePongOverlay() {
 
 function showPongTournament() {
     console.log("Bouton Tournoi cliqué !");
-    
+    const pongWrapper = document.getElementById('pong-wrapper');
+    const historyContainer = document.getElementById('history-container');
+    const profileContainer = document.getElementById('profile-container');
+    const changePasswordContainer = document.getElementById('change-password-form');
     const tournamentSection = document.getElementById("tournament-section");
+    const addFriendForm = document.getElementById('friend-request-form');
+	const profileEditForm = document.getElementById('profile-edit-form');
+
     
     if (tournamentSection) {
         tournamentSection.classList.remove("hidden");
     }
+    stopGame();
+    pongWrapper.style.display = "none";
+    historyContainer.classList.add("hidden");
+    profileContainer.classList.add("hidden");
+    changePasswordContainer.classList.add("hidden");
+    addFriendForm.classList.add("hidden");
+    profileEditForm.classList.add("hidden");
 }
 
 function saveGameHistory(winner) {
@@ -70,7 +83,7 @@ function saveGameHistory(winner) {
     
     const match = {
         players: [...players],
-        winner: winner || "Inconnu",
+        winner: winner || "Unkown",
         timestamp: new Date().toLocaleString()
     };
 
@@ -99,11 +112,32 @@ function declareWinner(winnerName) {
     }
     
     saveGameHistory(winnerName);
-    console.log(`Gagnant du tournoi : ${winnerName}`);
+    console.log(`Tournament winner : ${winnerName}`);
 }
 
 function endTournament(winnerName) {
     declareWinner(winnerName);
     players = []; 
     updatePlayerList();
+}
+
+function resetTournament() {
+    players = [];
+    updatePlayerList();
+
+    localStorage.removeItem('tournamentPlayers');
+
+    localStorage.removeItem('gameHistory');
+    updateGameHistoryUI();
+
+    stopGame();
+    const tournamentSection = document.getElementById('tournament-section');
+    if (tournamentSection) {
+        tournamentSection.classList.remove("hidden");
+    }
+
+    const pongWrapper = document.getElementById('pong-wrapper');
+    if (pongWrapper) {
+        pongWrapper.style.display = "none";
+    }
 }

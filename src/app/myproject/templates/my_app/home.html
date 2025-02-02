@@ -271,17 +271,18 @@
 				<button id="replay-btn" onclick="replayGameTicTacToe()">{% trans "Replay" %}</button>
 			</div>
 
-			<div id="tournament-section" class="pages hidden">
-				<h2>Mode Tournoi</h2>
-				<label for="player-name">Ajouter un joueur :</label>
+			<div id="tournament-section" class="editProfileForm hidden">
+				<h2>{% trans "Tournament"%}</h2>
+				<label for="player-name">{% trans "Ajouter joueur "%}:</label>
 				<input type="text" id="player-name" placeholder="Entrez un pseudo">
-				<button id ="add-button" onclick="addPlayer()">Ajouter</button>
 				
 				<ul id="player-list"></ul>
-				<h2>Historique des Parties</h2>
+				<h2>{% trans 	"Tournament History"%}</h2>
 				<ul id="game-history"></ul>
-
-				<button id="start-tournament" onclick="startTournament()" disabled>Commencer le tournoi</button>
+				
+			<button id ="add-button" onclick="addPlayer()">{% trans "Add"%}</button>
+				<button id="start-tournament" onclick="startTournament()" disabled>Start</button>
+				<button id="end-tournament" onclick="resetTournament()" disabled>Stop</button>
 			</div>
 			
 

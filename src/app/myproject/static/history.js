@@ -1,5 +1,6 @@
 function showHistory() {
 	const history = document.getElementById('history-container');
+	const tournamentSection = document.getElementById('tournament-section');
 	if (!history) return;
 
 	if (gameState.gameRunning)
@@ -15,6 +16,7 @@ function showHistory() {
 		history.classList.remove('hidden');
 		loadHistory();
 	}
+	tournamentSection.classList.add("hidden");
 }
 
 var templates = {};

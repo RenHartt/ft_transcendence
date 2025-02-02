@@ -133,6 +133,8 @@ function replayGameTicTacToe() {
 function showTicTacToe() {
 	const overlay = document.getElementById('overlay');
 	const modal = document.getElementById('tic-tac-toe-modal');
+    const tournamentSection = document.getElementById('tournament-section');
+
 	if (!overlay || !modal) return;
 
     createBoard(staticUrls);
@@ -145,6 +147,7 @@ function showTicTacToe() {
 	overlay.classList.add('active');
 	modal.classList.add('active');
 	createBoard(staticUrls);
+    tournamentSection.classList.add("hidden");
 }
 
 function hideTicTacToe() {

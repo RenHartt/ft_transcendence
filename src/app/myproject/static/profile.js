@@ -1,6 +1,8 @@
 
 function showProfile() {
 	const profileContainer = document.getElementById('profile-container');
+	const tournamentSection = document.getElementById('tournament-section');
+
 	if (!profileContainer) return;
 
 	if (gameState.gameRunning)
@@ -30,7 +32,7 @@ function showProfile() {
 			<button class="decline-btn" data-request-id="">Decline</button>
 		`;
 	}
-
+	tournamentSection.classList.add("hidden");
 	loadProfile();
 }
 
@@ -40,6 +42,7 @@ function hideProfile(act) {
 	const changePasswordForm = document.getElementById('change-password-form');
 	const addFriendForm = document.getElementById("friend-request-form");
 	const history = document.getElementById('history-container');
+
 
 	if (act != profileContainer)
 		profileContainer.classList.add('hidden');
@@ -142,12 +145,13 @@ function editProfile() {
 	if (gameActive) hideTicTacToe();
 
 	const profileEditForm = document.getElementById('profile-edit-form');
-	const profileContainer = document.getElementById('profile-container');
+	const tournamentSection = document.getElementById('tournament-section');
 	if (!profileEditForm) return;
 
 	hideProfile(profileEditForm);
 	hideSettings(profileEditForm);
 	profileEditForm.classList.toggle('hidden');
+	tournamentSection.classList.add("hidden");
 
 	setupProfileEditEvents();
 }
@@ -267,6 +271,7 @@ function changePassword() {
 
 function addFriend() {
 	const addFriendForm = document.getElementById('friend-request-form');
+	const tournamentSection = document.getElementById('tournament-section');
 	if (!addFriendForm) return;
 
 	if (gameState.gameRunning)
@@ -286,7 +291,7 @@ function addFriend() {
 	} else {
 		addFriendForm.classList.remove('hidden');
 	}
-
+	tournamentSection.classList.add("hidden");
 	addFriendForm.addEventListener('submit', (event) => {
 		event.preventDefault();
 		sendFriendRequest();
@@ -373,6 +378,7 @@ function remove_friend(friendId) {
 
 function showChangePassword() {
 	const changePasswordForm = document.getElementById('change-password-form');
+	const tournamentSection = document.getElementById('tournament-section');
 	if (!changePasswordForm) return;
 
 	if (gameState.gameRunning)
@@ -381,7 +387,7 @@ function showChangePassword() {
 		hideTicTacToe();
 	hideProfile(changePasswordForm);
 	hideSettings(changePasswordForm);
-
+	tournamentSection.classList.add("hidden");
 	if (!changePasswordForm.classList.contains('hidden'))
 		changePasswordForm.classList.add('hidden');
 	else {
