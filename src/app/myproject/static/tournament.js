@@ -64,6 +64,7 @@ function showPongTournament() {
     const tournamentSection = document.getElementById("tournament-section");
     const addFriendForm = document.getElementById('friend-request-form');
 	const profileEditForm = document.getElementById('profile-edit-form');
+	const settingsContainer = document.getElementById('settings-container');
 
     
     if (tournamentSection) {
@@ -76,6 +77,7 @@ function showPongTournament() {
     changePasswordContainer.classList.add("hidden");
     addFriendForm.classList.add("hidden");
     profileEditForm.classList.add("hidden");
+    settingsContainer.classList.add("hidden");
 }
 
 function saveGameHistory(winner) {
