@@ -1,5 +1,5 @@
 let players = [];
-
+let tournament = false;
 function addPlayer() {
     const input = document.getElementById('player-name');
     const playerName = input.value.trim();
@@ -51,6 +51,7 @@ function togglePongOverlay() {
     stopGameButton.style.display = "block";
     pongScore.style.display = "block";
     tournamentSection.classList.add("hidden");
+    tournament = true;
     startPongGame();
 }
 
@@ -84,8 +85,8 @@ function saveGameHistory(winner) {
     let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
     
     const match = {
-        players: [...players],
-        winner: winner || "Unkown",
+        players: [...players],  
+        winner: winner || "Unknown", 
         timestamp: new Date().toLocaleString()
     };
 
@@ -93,6 +94,7 @@ function saveGameHistory(winner) {
     localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
     updateGameHistoryUI();
 }
+
 
 function updateGameHistoryUI() {
     const historyContainer = document.getElementById('game-history');
@@ -102,7 +104,7 @@ function updateGameHistoryUI() {
     
     gameHistory.forEach((match, index) => {
         const li = document.createElement('li');
-        li.textContent = `Match ${index + 1} | Joueurs: ${match.players.join(", ")} | Gagnant: ${match.winner} | ${match.timestamp}`;
+        li.textContent = `Match ${index + 1} | Joueurs: ${match.players.join(", ")} | Gagnant: ${match.winner}`;
         historyContainer.appendChild(li);
     });
 }
@@ -114,14 +116,21 @@ function declareWinner(winnerName) {
     }
     
     saveGameHistory(winnerName);
-    console.log(`Tournament winner : ${winnerName}`);
+    console.log(`Tournament winner: ${winnerName}`);
 }
 
+
 function endTournament(winnerName) {
+    if (!winnerName) {
+        console.warn("Aucun gagnant défini !");
+        return;
+    }
+    
     declareWinner(winnerName);
     players = []; 
     updatePlayerList();
 }
+
 
 function resetTournament() {
     players = [];
