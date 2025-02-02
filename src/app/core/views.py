@@ -1,21 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CustomUserCreationForm
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, get_user_model
 from django.views.decorators.cache import never_cache
 from django.contrib import messages
 from django.utils.translation import gettext as _
-from django.http import JsonResponse
-from django.http import HttpResponse
-from django.contrib.auth import get_user_model
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound
 import logging, json, re
 from django.contrib.auth import update_session_auth_hash
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Friendship, History
-from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.db import models
 from django.contrib.auth.signals import user_logged_in, user_logged_out
@@ -23,7 +17,6 @@ from django.dispatch import receiver
 from django.core.cache import cache
 from django.utils.translation import get_language
 from django.core.exceptions import ValidationError
-
 
 User = get_user_model()
 logger = logging.getLogger('core')
@@ -57,7 +50,6 @@ def index(request):
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
     
-    # Redirection explicite vers une erreur 404
     return HttpResponseNotFound(render(request, 'my_app/404.html'))
 
 
@@ -71,7 +63,6 @@ def load_page(request, page_name):
         else:
             return redirect('home')
     
-    # Redirection explicite vers une erreur 404
     return HttpResponseNotFound(render(request, 'my_app/404.html'))
 
 
