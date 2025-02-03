@@ -78,7 +78,7 @@
 
 				<!-- Games Dropdown -->
 				<div class="dropdown">
-					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Games</a>
+					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">{% trans "Games"%}</a>
 					<div class="dropdown-content">
 						<a href="javascript:void(0)"  onclick="showTicTacToe()">{% trans "Tic Tac Toe" %}</a>            
 						<a href="javascript:void(0)"  onclick="showPong()">{% trans "Pong"%}</a>
@@ -90,7 +90,7 @@
 
 				<!-- Settings Dropdown -->
 				<div class="dropdown">
-					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Settings</a>
+					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">{% trans "Settings"%}</a>
 					<div class="dropdown-content">
 						<a href="javascript:void(0)" onclick="showSettings()">{% trans "Change language"%}</a>
 						<a href="javascript:void(0)" id=logout>{% trans "Logout" %}</a>
@@ -131,10 +131,10 @@
 				<h2>Profile</h2>
 				<img id="profile-picture" src="{{ user.pp_link }}" alt="Profile Picture" 
 											  style="width: 100px; height: 100px; border-radius: 50%; display: block; margin: auto;">
-				<p>{% trans "Username"%}: <span id="profile-username">{{ user.username }}</span></p>
-				<p>{% trans "Email"%}: <span id="profile-email">{{ user.email }}</span></p>
-				<p>{% trans "First Name"%}: <span id="profile-first-name">{{ user.first_name }}</span></p>
-				<p>{% trans "Last Name"%}: <span id="profile-last-name">{{ user.last_name }}</span></p>
+				<p>{% trans "Username" %}: <span id="profile-username">{{ user.username }}</span></p>
+				<p>{% trans "Email" %}: <span id="profile-email">{{ user.email }}</span></p>
+				<p>{% trans "First Name" %}: <span id="profile-first-name">{{ user.first_name }}</span></p>
+				<p>{% trans "Last Name" %}: <span id="profile-last-name">{{ user.last_name }}</span></p>
 
 				<h3>{% trans "Friends"%}</h3>
 				<ul id="friends-list"></ul>
@@ -150,13 +150,13 @@
 				<h2>{% trans "Edit Profile"%}</h2>
 				<form id="editProfileForm" class="editProfileForm">
 					{% csrf_token %}
-					<label for="edit-first-name">{% trans "First Name:" %}</label>
+					<label for="edit-first-name">{% trans "First Name" %}:</label>
 					<input type="text" id="edit-first-name" name="first_name" value="{{ user.first_name }}" required maxlength="30"><br><br>
 
-					<label for="edit-last-name">{% trans "Last Name:" %}</label>
+					<label for="edit-last-name">{% trans "Last Name" %}:</label>
 					<input type="text" id="edit-last-name" name="last_name" value="{{ user.last_name }}" required maxlength="30"><br><br>
 
-					<label for="edit-email">{% trans "Email:" %}</label>
+					<label for="edit-email">{% trans "Email" %}:</label>
 					<input type="email" id="edit-email" name="email" value="{{ user.email }}" required maxlength="30"><br><br>
 
 					<label for="edit-image">{% trans "Image:" %}</label>
@@ -274,15 +274,15 @@
 			<div id="tournament-section" class="editProfileForm hidden">
 				<h2>{% trans "Tournament"%}</h2>
 				<label for="player-name">{% trans "Ajouter joueur "%}:</label>
-				<input type="text" id="player-name" placeholder="Entrez un pseudo">
+				<input type="text" id="player-name" placeholder="Pseudo">
 				
 				<ul id="player-list"></ul>
 				<h2>{% trans 	"Tournament History"%}</h2>
 				<ul id="game-history"></ul>
 				
 			<button id ="add-button" onclick="addPlayer()">{% trans "Add"%}</button>
-				<button id="start-tournament" onclick="startTournament()" disabled>Start</button>
-				<button id="end-tournament" onclick="resetTournament()" disabled>Stop</button>
+				<button id="start-tournament" onclick="startTournament()" disabled>{% trans "Start"%}</button>
+				<button id="end-tournament" onclick="resetTournament()" disabled>{% trans "Stop"%}</button>
 			</div>
 			
 
@@ -309,7 +309,6 @@
 
 		<script src="{{ CDN_URL }}/cookie-banner.js"></script>
 		<script src="{{ CDN_URL }}/dropdown.js"></script>
-		<script src="{{ CDN_URL }}/redirect.js"></script>
 		<script src="{{ CDN_URL }}/profile.js"></script>
 		<script src="{{ CDN_URL }}/tictactoe.js"></script>
 		<script src="{{ CDN_URL }}/pong.js"></script>
@@ -319,6 +318,7 @@
 		<script src="{{ CDN_URL }}/cookie-banner.js"></script>
 		<script src="{{ CDN_URL }}/popup.js"></script>
 		<script src="{{ CDN_URL }}/tournament.js"></script>
+		<script src="{{ CDN_URL }}/redirect.js"></script>
 		<script>
 			const csrf = "{{ csrf_token }}";
 			const staticurl = "{{ CDN_URL }}";

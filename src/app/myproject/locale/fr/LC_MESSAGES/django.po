@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-02 17:14+0000\n"
+"POT-Creation-Date: 2025-02-03 11:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,7 +67,7 @@ msgstr "S'inscrire"
 #, fuzzy
 #| msgid "Edit Profile"
 msgid "View Profile"
-msgstr "Editer le profile"
+msgstr "Profile"
 
 #: myproject/templates/my_app/home.html:71
 #: myproject/templates/my_app/home.html:150
@@ -88,6 +88,11 @@ msgstr "Ajouter un ami"
 msgid "History"
 msgstr "Historique"
 
+#: myproject/templates/my_app/home.html:81
+#: myproject/templates/my_app/home.html:105
+msgid "Games"
+msgstr "Jeux"
+
 #: myproject/templates/my_app/home.html:83
 #: myproject/templates/my_app/home.html:106
 #: myproject/templates/my_app/home.html:119
@@ -104,13 +109,14 @@ msgstr ""
 msgid "Tournament"
 msgstr "Tournois"
 
+#: myproject/templates/my_app/home.html:93
+#: myproject/templates/my_app/home.html:194
+msgid "Settings"
+msgstr "Paramètres"
+
 #: myproject/templates/my_app/home.html:96
 msgid "Logout"
 msgstr "Déconnexion"
-
-#: myproject/templates/my_app/home.html:105
-msgid "Games"
-msgstr "Jeux"
 
 #: myproject/templates/my_app/home.html:114
 msgid "Stats"
@@ -121,22 +127,25 @@ msgid "Game history"
 msgstr ""
 
 #: myproject/templates/my_app/home.html:135
+#: myproject/templates/my_app/home.html:159
 #, fuzzy
 #| msgid "Email:"
 msgid "Email"
 msgstr "Email :"
 
 #: myproject/templates/my_app/home.html:136
+#: myproject/templates/my_app/home.html:153
 #, fuzzy
-#| msgid "First Name:"
+#| msgid "First Name"
 msgid "First Name"
-msgstr "Prénom :"
+msgstr "Prénom"
 
 #: myproject/templates/my_app/home.html:137
+#: myproject/templates/my_app/home.html:156
 #, fuzzy
-#| msgid "Last Name:"
+#| msgid "Last Name"
 msgid "Last Name"
-msgstr "Nom de famille :"
+msgstr "Nom de famille"
 
 #: myproject/templates/my_app/home.html:139
 msgid "Friends"
@@ -147,18 +156,6 @@ msgstr "Amis"
 #| msgid "Friend Requests"
 msgid "Pending Friend Requests"
 msgstr "Demandes d'amis"
-
-#: myproject/templates/my_app/home.html:153
-msgid "First Name:"
-msgstr "Prénom :"
-
-#: myproject/templates/my_app/home.html:156
-msgid "Last Name:"
-msgstr "Nom de famille :"
-
-#: myproject/templates/my_app/home.html:159
-msgid "Email:"
-msgstr "Email :"
 
 #: myproject/templates/my_app/home.html:162
 msgid "Image:"
@@ -187,10 +184,6 @@ msgstr "Nouveau mot de passe :"
 msgid "Confirm Password:"
 msgstr "Confirmer le mot de passe :"
 
-#: myproject/templates/my_app/home.html:194
-msgid "Settings"
-msgstr "Paramètres"
-
 #: myproject/templates/my_app/home.html:197
 msgid "Select Language:"
 msgstr "Sélectionner la langue"
@@ -214,8 +207,9 @@ msgid "Four Players"
 msgstr "Deux joueurs"
 
 #: myproject/templates/my_app/home.html:236
+#: myproject/templates/my_app/home.html:284
 msgid "Start"
-msgstr ""
+msgstr "Demarrer"
 
 #: myproject/templates/my_app/home.html:239
 msgid "Stop Game"
@@ -269,6 +263,12 @@ msgstr "Historique du tournoi"
 msgid "Add"
 msgstr "Ajouter"
 
+#: myproject/templates/my_app/home.html:285
+#, fuzzy
+#| msgid "Stop Game"
+msgid "Stop"
+msgstr "Arreter le jeu"
+
 #: myproject/templates/my_app/home.html:291
 #: myproject/templates/my_app/login.html:53
 msgid "2024 Page de cramptes. Tous droits non-réservés."
@@ -307,6 +307,15 @@ msgstr "ou"
 #| msgid "Sign Up"
 msgid "Sign In"
 msgstr "S'inscrire"
+
+#~ msgid "First Name:"
+#~ msgstr "Prénom :"
+
+#~ msgid "Last Name:"
+#~ msgstr "Nom de famille :"
+
+#~ msgid "Email:"
+#~ msgstr "Email :"
 
 #~ msgid "You must be logged in to access this page."
 #~ msgstr "Vous devez être connecté pour accéder à cette page."

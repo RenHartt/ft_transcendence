@@ -16,6 +16,7 @@ function showSettings() {
 	else
 		settingsContainer.classList.remove('hidden');
 	tournamentSection.classList.add("hidden");
+	updateURL('settings')
 }
 
 function showGameSettings() {

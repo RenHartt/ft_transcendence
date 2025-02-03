@@ -17,6 +17,7 @@ function showHistory() {
 		loadHistory();
 	}
 	tournamentSection.classList.add("hidden");
+	updateURL('history')
 }
 
 var templates = {};

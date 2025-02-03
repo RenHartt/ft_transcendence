@@ -19,6 +19,7 @@ function updatePlayerList() {
         li.textContent = player;
         list.appendChild(li);
     });
+    
     document.getElementById('start-tournament').disabled = players.length < 2;
 }
 
@@ -79,6 +80,7 @@ function showPongTournament() {
     addFriendForm.classList.add("hidden");
     profileEditForm.classList.add("hidden");
     settingsContainer.classList.add("hidden");
+	updateURL('pong-tournament')
 }
 
 function saveGameHistory(winner) {
@@ -119,6 +121,11 @@ function declareWinner(winnerName) {
     console.log(`Tournament winner: ${winnerName}`);
 }
 
+function clearLocalStorage() {
+    localStorage.removeItem('tournamentPlayers');
+    localStorage.removeItem('gameHistory');
+    updateGameHistoryUI();
+}
 
 function endTournament(winnerName) {
     if (!winnerName) {
@@ -134,8 +141,9 @@ function endTournament(winnerName) {
 
 function resetTournament() {
     players = [];
-    updatePlayerList();
-
+    // updatePlayerList();
+    clearLocalStorage();
+    console.log("Tournoi réinitialisé !");
     localStorage.removeItem('tournamentPlayers');
 
     localStorage.removeItem('gameHistory');

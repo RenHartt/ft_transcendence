@@ -1,5 +1,6 @@
 
 function showProfile() {
+	console.log('aaa')
 	const profileContainer = document.getElementById('profile-container');
 	const tournamentSection = document.getElementById('tournament-section');
 
@@ -34,6 +35,7 @@ function showProfile() {
 	}
 	tournamentSection.classList.add("hidden");
 	loadProfile();
+	updateURL('profile')
 }
 
 function hideProfile(act) {
@@ -154,6 +156,7 @@ function editProfile() {
 	tournamentSection.classList.add("hidden");
 
 	setupProfileEditEvents();
+	updateURL('edit-profile')
 }
 
 function setupProfileEditEvents() {
@@ -327,6 +330,7 @@ function addFriend() {
 				}
 			})
 	}
+	updateURL('add-friend')
 }
 
 function handleFriendRequest(requestId, accept) {
@@ -394,6 +398,7 @@ function showChangePassword() {
 		changePasswordForm.classList.remove('hidden');
 		setupProfileEvents();
 	}
+	updateURL('change-password')
 }
 
 function savePassword() {
