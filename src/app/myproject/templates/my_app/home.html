@@ -234,7 +234,7 @@
 				</button>
 
 				<button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Start" %}</button>
-
+				<button id="next-game" class="hidden" onclick="startNextMatch()">next game</button>
 				<button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
 					{% trans "Stop Game" %}
 				</button>
@@ -277,10 +277,8 @@
 				<input type="text" id="player-name" placeholder="Entrez un pseudo">
 				
 				<ul id="player-list"></ul>
-				<h2>{% trans 	"Tournament History"%}</h2>
-				<ul id="game-history"></ul>
 				
-			<button id ="add-button" onclick="addPlayer()">{% trans "Add"%}</button>
+				<button id ="add-button" onclick="addPlayer()">{% trans "Add"%}</button>
 				<button id="start-tournament" onclick="startTournament()" disabled>Start</button>
 				<button id="end-tournament" onclick="resetTournament()" disabled>Stop</button>
 			</div>
