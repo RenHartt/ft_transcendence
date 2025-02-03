@@ -133,6 +133,7 @@ function showPong() {
     pongScore.style.display = "block";
     twoPlayerButton.style.display = "block";
     fourPlayerButton.style.display = "block";
+	updateURL('pong')
 }
 
 function startGame() {

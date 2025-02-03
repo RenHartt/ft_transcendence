@@ -13,6 +13,7 @@ function showSettings() {
 		settingsContainer.classList.add('hidden');
 	else
 		settingsContainer.classList.remove('hidden');
+	updateURL('settings')
 }
 
 function showGameSettings() {

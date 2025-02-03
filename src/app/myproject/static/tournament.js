@@ -37,4 +37,5 @@ function showPongTournament() {
     if (tournamentSection) {
         tournamentSection.classList.remove("hidden");
     }
+	updateURL('pong-tournament')
 }

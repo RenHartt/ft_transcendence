@@ -145,6 +145,7 @@ function showTicTacToe() {
 	overlay.classList.add('active');
 	modal.classList.add('active');
 	createBoard(staticUrls);
+	updateURL('tictactoe')
 }
 
 function hideTicTacToe() {

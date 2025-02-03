@@ -15,6 +15,7 @@ function showHistory() {
 		history.classList.remove('hidden');
 		loadHistory();
 	}
+	updateURL('history')
 }
 
 var templates = {};
