@@ -1,13 +1,19 @@
 let players = [];
+let matches = []
+let currentMatchIndex = 0;
 let tournament = false;
+const MAX_PLAYERS = 4;
+
 function addPlayer() {
     const input = document.getElementById('player-name');
     const playerName = input.value.trim();
     
-    if (playerName && !players.includes(playerName)) {
+    if (playerName && !players.includes(playerName) && players.length < MAX_PLAYERS) {
         players.push(playerName);
         updatePlayerList();
         input.value = '';
+    } else if (players.length >= MAX_PLAYERS) {
+        showPopup("Error", "4 players max", "error");
     }
 }
 
@@ -22,15 +28,100 @@ function updatePlayerList() {
     document.getElementById('start-tournament').disabled = players.length < 2;
 }
 
+function generateRoundRobin() {
+    matches = [];
+    const totalPlayers = players.length;
+    
+    for (let i = 0; i < totalPlayers - 1; i++) {
+        for (let j = i + 1; j < totalPlayers; j++) {
+            matches.push([players[i], players[j]]);
+        }
+    }
+
+    matches.sort(() => Math.random() - 0.5);
+
+    localStorage.setItem('tournamentMatches', JSON.stringify(matches));
+    localStorage.setItem('currentMatchIndex', JSON.stringify(0));
+}
+
 function startTournament() {
     if (players.length >= 2) {
         localStorage.setItem('tournamentPlayers', JSON.stringify(players));
-        console.log("Go");
-        toggleTwoPlayers();
-        togglePongOverlay(); 
+
+        generateRoundRobin();
+
+        console.log("Tournoi démarré !");
+        startNextMatch();
     }
 }
 
+function startNextMatch() {
+    let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
+    let currentIndex = JSON.parse(localStorage.getItem('currentMatchIndex')) || 0;
+
+    if (currentIndex < storedMatches.length) {
+        const [player1, player2] = storedMatches[currentIndex];
+
+        console.log(`🔵 Match ${currentIndex + 1}: ${player1} vs ${player2}`);
+        console.log("➡️ Attente de la déclaration du gagnant...");
+
+        if (!tournament) {
+            toggleTwoPlayers();
+            togglePongOverlay();
+        }
+    } else {
+        console.log("🏆 Tournoi terminé !");
+        tournament = false;
+        togglePongOverlay();
+        determineWinner();
+    }
+}
+
+function declareWinner(winnerName) {
+    let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
+    let currentIndex = JSON.parse(localStorage.getItem('currentMatchIndex')) || 0;
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+
+    if (!players.includes(winnerName)) {
+        console.warn("⚠️ Erreur: Le gagnant n'est pas un joueur du tournoi !");
+        return;
+    }
+
+    const [player1, player2] = storedMatches[currentIndex];
+
+    const match = {
+        players: [player1, player2],
+        winner: winnerName,
+        timestamp: new Date().toLocaleString()
+    };
+
+    gameHistory.push(match);
+    localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+
+    console.log(`✅ Match ${currentIndex + 1} terminé. Gagnant: ${winnerName}`);
+
+    currentIndex++;
+    localStorage.setItem('currentMatchIndex', JSON.stringify(currentIndex));
+
+    startNextMatch();
+}
+
+function determineWinner() {
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    let scores = {};
+
+    players.forEach(player => scores[player] = 0);
+
+    gameHistory.forEach(match => {
+        if (match.winner in scores) {
+            scores[match.winner]++;
+        }
+    });
+
+    let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+    console.log(`🏆 Vainqueur du tournoi: ${winner} avec ${scores[winner]} victoires !`);
+}
 
 function togglePongOverlay() {
     const pongWrapper = document.getElementById('pong-wrapper');
@@ -55,9 +146,7 @@ function togglePongOverlay() {
     startPongGame();
 }
 
-
 function showPongTournament() {
-    console.log("Bouton Tournoi cliqué !");
     const pongWrapper = document.getElementById('pong-wrapper');
     const historyContainer = document.getElementById('history-container');
     const profileContainer = document.getElementById('profile-container');
@@ -85,7 +174,7 @@ function saveGameHistory(winner) {
     let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
     
     const match = {
-        players: [...players],  
+        players: [...players],
         winner: winner || "Unknown", 
         timestamp: new Date().toLocaleString()
     };
@@ -94,7 +183,6 @@ function saveGameHistory(winner) {
     localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
     updateGameHistoryUI();
 }
-
 
 function updateGameHistoryUI() {
     const historyContainer = document.getElementById('game-history');
@@ -125,12 +213,11 @@ function endTournament(winnerName) {
         console.warn("Aucun gagnant défini !");
         return;
     }
-    
+
     declareWinner(winnerName);
     players = []; 
     updatePlayerList();
 }
-
 
 function resetTournament() {
     players = [];

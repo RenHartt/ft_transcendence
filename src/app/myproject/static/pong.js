@@ -1,15 +1,15 @@
-window.twoPlayers = false;
-window.fourPlayers = false;
-window.upPressed = false;
-window.downPressed = false;
-window.wPressed = false;
-window.iPressed = false;
-window.uPressed = false;
-window.sPressed = false;
-window.rPressed = false;
-window.tPressed = false;    
+window.twoPlayers    = false;
+window.fourPlayers   = false;
+window.upPressed     = false;
+window.downPressed   = false;
+window.wPressed      = false;
+window.iPressed      = false;
+window.uPressed      = false;
+window.sPressed      = false;
+window.tPressed      = false;
+window.rPressed      = false;
+let multiplayer      = false;
 let animationFrameId = null;
-let multiplayer = false;
 
 const gameState = {
 	BallSpeedX: 4,
@@ -22,8 +22,8 @@ const gameState = {
         player2: 0,
         player3: 0,
         player4: 0
-      },        
-      start: false
+    },
+    start: false
 };
 
 function startPongGame() {
