@@ -1,5 +1,5 @@
 let players = [];
-
+let tournament = false;
 function addPlayer() {
     const input = document.getElementById('player-name');
     const playerName = input.value.trim();
@@ -19,6 +19,7 @@ function updatePlayerList() {
         li.textContent = player;
         list.appendChild(li);
     });
+    
     document.getElementById('start-tournament').disabled = players.length < 2;
 }
 
@@ -26,16 +27,136 @@ function startTournament() {
     if (players.length >= 2) {
         localStorage.setItem('tournamentPlayers', JSON.stringify(players));
         console.log("Go");
+        toggleTwoPlayers();
+        togglePongOverlay(); 
     }
 }
 
+
+function togglePongOverlay() {
+    const pongWrapper = document.getElementById('pong-wrapper');
+    const pongContainer = document.getElementById('pong-container');
+    const pongScore = document.getElementById('pong-score');
+    const tournamentSection = document.getElementById('tournament-section');
+
+    if (!pongWrapper || !pongContainer || !pongScore) return;
+
+    if (pongWrapper.style.display === "block") {
+        stopGame();                   
+        pongContainer.innerHTML = '';  
+        pongWrapper.style.display = "none";
+        return;
+    }
+    
+    pongWrapper.style.display = "block";
+    stopGameButton.style.display = "block";
+    pongScore.style.display = "block";
+    tournamentSection.classList.add("hidden");
+    tournament = true;
+    startPongGame();
+}
+
+
 function showPongTournament() {
     console.log("Bouton Tournoi cliqué !");
-    
+    const pongWrapper = document.getElementById('pong-wrapper');
+    const historyContainer = document.getElementById('history-container');
+    const profileContainer = document.getElementById('profile-container');
+    const changePasswordContainer = document.getElementById('change-password-form');
     const tournamentSection = document.getElementById("tournament-section");
+    const addFriendForm = document.getElementById('friend-request-form');
+	const profileEditForm = document.getElementById('profile-edit-form');
+	const settingsContainer = document.getElementById('settings-container');
+
     
     if (tournamentSection) {
         tournamentSection.classList.remove("hidden");
     }
+    stopGame();
+    pongWrapper.style.display = "none";
+    historyContainer.classList.add("hidden");
+    profileContainer.classList.add("hidden");
+    changePasswordContainer.classList.add("hidden");
+    addFriendForm.classList.add("hidden");
+    profileEditForm.classList.add("hidden");
+    settingsContainer.classList.add("hidden");
 	updateURL('pong-tournament')
+}
+
+function saveGameHistory(winner) {
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    
+    const match = {
+        players: [...players],  
+        winner: winner || "Unknown", 
+        timestamp: new Date().toLocaleString()
+    };
+
+    gameHistory.push(match);
+    localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+    updateGameHistoryUI();
+}
+
+
+function updateGameHistoryUI() {
+    const historyContainer = document.getElementById('game-history');
+    historyContainer.innerHTML = ''; 
+
+    let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    
+    gameHistory.forEach((match, index) => {
+        const li = document.createElement('li');
+        li.textContent = `Match ${index + 1} | Joueurs: ${match.players.join(", ")} | Gagnant: ${match.winner}`;
+        historyContainer.appendChild(li);
+    });
+}
+
+function declareWinner(winnerName) {
+    if (!players.includes(winnerName)) {
+        console.warn("Le gagnant n'est pas un joueur du tournoi !");
+        return;
+    }
+    
+    saveGameHistory(winnerName);
+    console.log(`Tournament winner: ${winnerName}`);
+}
+
+function clearLocalStorage() {
+    localStorage.removeItem('tournamentPlayers');
+    localStorage.removeItem('gameHistory');
+    updateGameHistoryUI();
+}
+
+function endTournament(winnerName) {
+    if (!winnerName) {
+        console.warn("Aucun gagnant défini !");
+        return;
+    }
+    
+    declareWinner(winnerName);
+    players = []; 
+    updatePlayerList();
+}
+
+
+function resetTournament() {
+    players = [];
+    // updatePlayerList();
+    clearLocalStorage();
+    console.log("Tournoi réinitialisé !");
+    localStorage.removeItem('tournamentPlayers');
+
+    localStorage.removeItem('gameHistory');
+    updateGameHistoryUI();
+
+    stopGame();
+    const tournamentSection = document.getElementById('tournament-section');
+    if (tournamentSection) {
+        tournamentSection.classList.remove("hidden");
+    }
+
+    const pongWrapper = document.getElementById('pong-wrapper');
+    if (pongWrapper) {
+        pongWrapper.style.display = "none";
+    }
 }

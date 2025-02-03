@@ -1,5 +1,7 @@
 function showSettings() {
 	const settingsContainer = document.getElementById('settings-container');
+	const tournamentSection = document.getElementById('tournament-section');
+
 	if (!settingsContainer) return;
 
 	if (gameState.gameRunning)
@@ -13,6 +15,7 @@ function showSettings() {
 		settingsContainer.classList.add('hidden');
 	else
 		settingsContainer.classList.remove('hidden');
+	tournamentSection.classList.add("hidden");
 	updateURL('settings')
 }
 

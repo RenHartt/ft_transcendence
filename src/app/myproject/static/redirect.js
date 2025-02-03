@@ -26,7 +26,6 @@ function showPageFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   let page = urlParams.get('page') || 'home'
 
-  console.log('Requested page:', page);
   page = page.replace(/^\/+|\/+$/g, '');
 
 
@@ -44,7 +43,6 @@ function showPageFromURL() {
   // Execute the function associated with the page, if any
   const func = functionMap.get(page);
   if (typeof func === 'function') {
-    console.log('Executing function:', func);
     func();
   } else {
     console.warn(`No function mapped for page "${page}".`);

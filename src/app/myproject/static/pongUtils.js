@@ -106,6 +106,7 @@ function stopGame() {
 }
 
 function showPong() {
+    const tournamentSection = document.getElementById('tournament-section');
 	const pongWrapper = document.getElementById('pong-wrapper');
 	const pongContainer = document.getElementById('pong-container');
 	const stopGameButton = document.getElementById('stopGameButton');
@@ -133,6 +134,7 @@ function showPong() {
     pongScore.style.display = "block";
     twoPlayerButton.style.display = "block";
     fourPlayerButton.style.display = "block";
+    tournamentSection.classList.add("hidden");
 	updateURL('pong')
 }
 
