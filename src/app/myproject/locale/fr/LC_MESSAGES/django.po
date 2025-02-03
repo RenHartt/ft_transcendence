@@ -209,8 +209,6 @@ msgid "Two Players"
 msgstr "Deux joueurs"
 
 #: myproject/templates/my_app/home.html:233
-#, fuzzy
-#| msgid "Two Players"
 msgid "Four Players"
 msgstr "Quatres joueurs"
 
@@ -224,8 +222,6 @@ msgstr "Arreter le jeu"
 
 #: myproject/templates/my_app/home.html:243
 #: myproject/templates/my_app/home.html:250
-#, fuzzy
-#| msgid "Settings"
 msgid "Game Settings"
 msgstr "Paramètres"
 
@@ -274,8 +270,6 @@ msgid "2024 Page de cramptes. Tous droits non-réservés."
 msgstr "2024 Page de cramptes. Tous droits non-réservés."
 
 #: myproject/templates/my_app/home.html:296
-#, fuzzy
-#| msgid "You must be logged in to access this page."
 msgid "You need to be logged to access this."
 msgstr "Vous devez être connecté pour accéder à cette page."
 
@@ -286,8 +280,6 @@ msgstr "Se connecter"
 #: myproject/templates/my_app/login.html:27
 #: myproject/templates/my_app/register.html:26
 #: myproject/templates/my_app/register.html:34
-#, fuzzy
-#| msgid "Password:"
 msgid "Password"
 msgstr "Mot de passe :"
 
@@ -300,12 +292,5 @@ msgid "or"
 msgstr "ou"
 
 #: myproject/templates/my_app/register.html:41
-#, fuzzy
-#| msgid "Sign Up"
 msgid "Sign In"
 msgstr "S'inscrire"
-
-#, fuzzy
-#~| msgid "Two Players"
-#~ msgid "Ajouter joueur "
-#~ msgstr "Deux joueurs"
