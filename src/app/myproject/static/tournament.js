@@ -210,14 +210,12 @@ function startTournament() {
     if (players.length >= 2) {
         localStorage.setItem('tournamentPlayers', JSON.stringify(players));
 
-        generateRoundRobin();  // ✅ Génération des matchs
+        generateRoundRobin();
 
-        console.log("🏆 Tournoi démarré !");
-        tournament = true; // ✅ Indiquer que le tournoi est en cours
-        startNextMatch(); // ✅ Démarrer le premier match
+        console.log("Tournoi démarré !");
+        startNextMatch();
     }
 }
-
 
 function startNextMatch() {
     let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
