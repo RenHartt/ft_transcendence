@@ -318,8 +318,8 @@
             console.log("➡️ Attente de la déclaration du gagnant...");
             togglePongOverlay();
         } else {
-            console.log("🏆 Tournoi terminé !");
-            determineWinner();
+            console.warn("❌ Problème : aucun match trouvé.");
+            return;
         }
     
         matchInProgress = false;
@@ -375,24 +375,7 @@
             startNextMatch();
         }, 1000);
     }
-    
-    function determineWinner() {
-        let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-        let scores = {};
-    
-        players.forEach(player => scores[player] = 0);
-    
-        gameHistory.forEach(match => {
-            if (match.winner in scores) {
-                scores[match.winner]++;
-            }
-        });
-    
-        let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    
-        console.log(`🏆 Vainqueur du tournoi: ${winner} avec ${scores[winner]} victoires !`);
-        showPopupTour("🏆 Tournoi terminé", `Le vainqueur est ${winner} !`, "success");
-    }
+
     
 
     function togglePongOverlay() {
