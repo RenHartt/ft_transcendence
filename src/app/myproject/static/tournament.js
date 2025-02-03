@@ -62,9 +62,6 @@ function startNextMatch() {
     if (currentIndex < storedMatches.length) {
         const [player1, player2] = storedMatches[currentIndex];
 
-        console.log(`🔵 Match ${currentIndex + 1}: ${player1} vs ${player2}`);
-        console.log("➡️ Attente de la déclaration du gagnant...");
-
         if (!tournament) {
             toggleTwoPlayers();
             togglePongOverlay();
@@ -83,7 +80,6 @@ function declareWinner(winnerName) {
     let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
 
     if (!players.includes(winnerName)) {
-        console.warn("⚠️ Erreur: Le gagnant n'est pas un joueur du tournoi !");
         return;
     }
 
@@ -97,8 +93,6 @@ function declareWinner(winnerName) {
 
     gameHistory.push(match);
     localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
-
-    console.log(`✅ Match ${currentIndex + 1} terminé. Gagnant: ${winnerName}`);
 
     currentIndex++;
     localStorage.setItem('currentMatchIndex', JSON.stringify(currentIndex));
@@ -156,7 +150,6 @@ function showPongTournament() {
 	const profileEditForm = document.getElementById('profile-edit-form');
 	const settingsContainer = document.getElementById('settings-container');
 
-    
     if (tournamentSection) {
         tournamentSection.classList.remove("hidden");
     }
@@ -199,18 +192,15 @@ function updateGameHistoryUI() {
 
 function declareWinner(winnerName) {
     if (!players.includes(winnerName)) {
-        console.warn("Le gagnant n'est pas un joueur du tournoi !");
         return;
     }
     
     saveGameHistory(winnerName);
-    console.log(`Tournament winner: ${winnerName}`);
 }
 
 
 function endTournament(winnerName) {
     if (!winnerName) {
-        console.warn("Aucun gagnant défini !");
         return;
     }
 
