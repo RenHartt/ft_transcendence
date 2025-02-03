@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-02 17:14+0000\n"
+"POT-Creation-Date: 2025-02-03 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,15 +19,15 @@ msgstr ""
 
 #: myproject/settings.py:20
 msgid "English"
-msgstr ""
+msgstr "Anglais"
 
 #: myproject/settings.py:21
 msgid "Français"
-msgstr ""
+msgstr "Français"
 
 #: myproject/settings.py:22
 msgid "Español"
-msgstr ""
+msgstr "Espagnol"
 
 #: myproject/templates/my_app/home.html:9
 msgid "Home Page"
@@ -53,6 +53,7 @@ msgid "Password:"
 msgstr "Mot de passe :"
 
 #: myproject/templates/my_app/home.html:31
+#: myproject/templates/my_app/home.html:297
 #: myproject/templates/my_app/login.html:42
 msgid "Log In"
 msgstr "Se connecter"
@@ -66,7 +67,7 @@ msgstr "S'inscrire"
 #: myproject/templates/my_app/home.html:70
 #, fuzzy
 #| msgid "Edit Profile"
-msgid "View Profile"
+msgid "Profile"
 msgstr "Editer le profile"
 
 #: myproject/templates/my_app/home.html:71
@@ -97,7 +98,7 @@ msgstr "Morpion"
 #: myproject/templates/my_app/home.html:84
 #: myproject/templates/my_app/home.html:116
 msgid "Pong"
-msgstr ""
+msgstr "Pong"
 
 #: myproject/templates/my_app/home.html:85
 #: myproject/templates/my_app/home.html:275
@@ -114,11 +115,11 @@ msgstr "Jeux"
 
 #: myproject/templates/my_app/home.html:114
 msgid "Stats"
-msgstr ""
+msgstr "Statistiques"
 
 #: myproject/templates/my_app/home.html:122
 msgid "Game history"
-msgstr ""
+msgstr "Historique de partie"
 
 #: myproject/templates/my_app/home.html:135
 #, fuzzy
@@ -162,7 +163,7 @@ msgstr "Email :"
 
 #: myproject/templates/my_app/home.html:162
 msgid "Image:"
-msgstr ""
+msgstr "Image :"
 
 #: myproject/templates/my_app/home.html:165
 #: myproject/templates/my_app/home.html:185
@@ -211,11 +212,11 @@ msgstr "Deux joueurs"
 #, fuzzy
 #| msgid "Two Players"
 msgid "Four Players"
-msgstr "Deux joueurs"
+msgstr "Quatres joueurs"
 
 #: myproject/templates/my_app/home.html:236
-msgid "Start"
-msgstr ""
+msgid "Play"
+msgstr "Jouer"
 
 #: myproject/templates/my_app/home.html:239
 msgid "Stop Game"
@@ -256,10 +257,8 @@ msgid "Replay"
 msgstr "Rejouer"
 
 #: myproject/templates/my_app/home.html:276
-#, fuzzy
-#| msgid "Two Players"
-msgid "Ajouter joueur "
-msgstr "Deux joueurs"
+msgid "Add player"
+msgstr "Ajouter un"
 
 #: myproject/templates/my_app/home.html:280
 msgid "Tournament History"
@@ -275,16 +274,14 @@ msgid "2024 Page de cramptes. Tous droits non-réservés."
 msgstr "2024 Page de cramptes. Tous droits non-réservés."
 
 #: myproject/templates/my_app/home.html:296
-msgid "Vous devez être connecté pour accéder à cette page."
-msgstr ""
-
-#: myproject/templates/my_app/home.html:297
-msgid "Se connecter"
-msgstr ""
+#, fuzzy
+#| msgid "You must be logged in to access this page."
+msgid "You need to be logged to access this."
+msgstr "Vous devez être connecté pour accéder à cette page."
 
 #: myproject/templates/my_app/login.html:16
 msgid "Login"
-msgstr ""
+msgstr "Se connecter"
 
 #: myproject/templates/my_app/login.html:27
 #: myproject/templates/my_app/register.html:26
@@ -296,7 +293,7 @@ msgstr "Mot de passe :"
 
 #: myproject/templates/my_app/register.html:39
 msgid "Register"
-msgstr ""
+msgstr "Inscription"
 
 #: myproject/templates/my_app/register.html:40
 msgid "or"
@@ -308,5 +305,7 @@ msgstr "ou"
 msgid "Sign In"
 msgstr "S'inscrire"
 
-#~ msgid "You must be logged in to access this page."
-#~ msgstr "Vous devez être connecté pour accéder à cette page."
+#, fuzzy
+#~| msgid "Two Players"
+#~ msgid "Ajouter joueur "
+#~ msgstr "Deux joueurs"

@@ -13,7 +13,7 @@ function startPongGameTournanment() {
     let ctx = canvas.getContext("2d");
     pongContainer.innerHTML = "";
     pongContainer.appendChild(canvas);
-    gameState.generalScore = {}; // ✅ Initialise l'objet des scores
+    gameState.generalScore = {};
 
     let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
     let currentIndex = JSON.parse(localStorage.getItem('currentMatchIndex')) || 0;
@@ -21,7 +21,6 @@ function startPongGameTournanment() {
     if (currentIndex < storedMatches.length) {
         const [player1, player2] = storedMatches[currentIndex];
 
-        // ✅ Assurez-vous que chaque joueur a un score initialisé
         gameState.generalScore[player1] = gameState.generalScore[player1] || 0;
         gameState.generalScore[player2] = gameState.generalScore[player2] || 0;
 
@@ -110,10 +109,10 @@ function startPongGameTournanment() {
         
         if (currentIndex >= storedMatches.length) return;
     
-        const [player1, player2] = storedMatches[currentIndex]; // Récupération des joueurs du match actuel
+        const [player1, player2] = storedMatches[currentIndex];
     
         if (pongScore) {
-            pongScore.textContent = `Score: ${player1}=${gameState.scoreP1} - ${player2}=${gameState.scoreP2}`;
+            pongScore.textContent = `Score: ${player1}=${gameState.generalScore[player1]} - ${player2}=${gameState.generalScore[player2]}`;
         }
     
         if (gameState.scoreP1 >= 5) {
@@ -127,16 +126,15 @@ function startPongGameTournanment() {
         }
     
         if (gameState.generalScore[player1] >= 3) {
-            showPopup("Bravo", `${player1} gagne la partie !`, "success");
-            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            // showPopup("Bravo", `${player1} gagne la partie !`, "success");
+            // saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
             resetGame();
         } else if (gameState.generalScore[player2] >= 3) {
-            showPopup("Bravo", `${player2} gagne la partie !`, "success");
-            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            // showPopup("Bravo", `${player2} gagne la partie !`, "success");
+            // saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
             resetGame();
         }
     }
-    
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -149,8 +147,8 @@ function startPongGameTournanment() {
         ctx.fill();
         ctx.closePath();
         
-        ctx.fillStyle = "white";
-        ctx.font = "16px Arial";  // Définit une police lisible
+        ctx.fillStyle = "black";
+        ctx.font = "16px Arial";
         ctx.fillText(`P1: ${gameState.scoreP1}`, 50, 20);
         ctx.fillText(`P2: ${gameState.scoreP2}`, canvas.width - 70, 20);
     }
@@ -212,7 +210,6 @@ function startTournament() {
 
         generateRoundRobin();
 
-        console.log("Tournoi démarré !");
         startNextMatch();
     }
 }
@@ -276,7 +273,7 @@ function determineWinner() {
 
     let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
 
-    console.log(`🏆 Vainqueur du tournoi: ${winner} avec ${scores[winner]} victoires !`);
+    showPopup()
 }
 
 function togglePongOverlay() {
@@ -347,7 +344,7 @@ function updateGameHistoryUI() {
     
     gameHistory.forEach((match, index) => {
         const li = document.createElement('li');
-        li.textContent = `Match ${index + 1} | Joueurs: ${match.players.join(", ")} | Gagnant: ${match.winner}`;
+        li.textContent = `Match ${index + 1} | Player: ${match.players.join(", ")} | Winner: ${match.winner}`;
         historyContainer.appendChild(li);
     });
 }

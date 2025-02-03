@@ -67,7 +67,7 @@
 				<div class="dropdown">
 					<a href="javascript:void(0)" class="menu profile-dropdown" onclick="toggleDropdown(this)">Profile</a>
 					<div class="dropdown-content">
-						<a href="javascript:void(0)" onclick="showProfile()">{% trans "View Profile"%}</a>
+						<a href="javascript:void(0)" onclick="showProfile()">{% trans "Profile"%}</a>
 						<a href="javascript:void(0)" onclick="editProfile()">{% trans "Edit Profile"%}</a>
 						<a href="javascript:void(0)" onclick="showChangePassword()">{% trans "Change Password"%}</a>
 						<a href="javascript:void(0)" onclick="addFriend()">{% trans "Add Friend"%}</a>
@@ -200,7 +200,7 @@
 						<option value="fr" {% if LANGUAGE_CODE == "fr" %}selected{% endif %}>Français</option>
 						<option value="es" {% if LANGUAGE_CODE == "es" %}selected{% endif %}>Español</option>
 					</select>
-					<button type="submit" onclick="showPopup('Success', 'Langage updated', 'success')">{% trans "Change language" %}</button>
+					<button type="submit">{% trans "Change language" %}</button>
 				</form>
 			</div>
 
@@ -233,7 +233,7 @@
 					{% trans "Four Players" %}
 				</button>
 
-				<button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Start" %}</button>
+				<button id="startGameButton" class="startGameButton" onclick="startGame()">{% trans "Play" %}</button>
 
 				<button class="PongButton" id="stopGameButton" onclick="stopGame()" style="display: none;">
 					{% trans "Stop Game" %}
@@ -272,15 +272,15 @@
 			</div>
 
 			<div id="tournament-section" class="editProfileForm hidden">
-				<h2>{% trans "Tournament"%}</h2>
-				<label for="player-name">{% trans "Ajouter joueur "%}:</label>
+				<h2>{% trans "Tournament" %}</h2>
+				<label for="player-name">{% trans "Add player" %}:</label>
 				<input type="text" id="player-name" placeholder="Entrez un pseudo">
 				
 				<ul id="player-list"></ul>
 				<h2>{% trans "Tournament History"%}</h2>
 				<ul id="game-history"></ul>
 				
-			<button id ="add-button" onclick="addPlayer()">{% trans "Add"%}</button>
+			<button id ="add-button" onclick="addPlayer()">{% trans "Add" %}</button>
 				<button id="start-tournament" onclick="startTournament()" disabled>Start</button>
 				<button id="end-tournament" onclick="resetTournament()" disabled>Stop</button>
 			</div>
@@ -293,8 +293,8 @@
               </div>
 
 			{% else %}
-			<p>{% trans "Vous devez être connecté pour accéder à cette page." %}</p>
-			<a href="?page=login">{% trans "Se connecter" %}</a>
+			<p>{% trans "You need to be logged to access this." %}</p>
+			<a href="?page=login">{% trans "Log In" %}</a>
 			{% endif %}
 		</section>
 

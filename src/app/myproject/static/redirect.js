@@ -10,7 +10,7 @@ function showPageFromURL() {
     if (activeSection) {
         activeSection.classList.remove('hidden');
     } else {
-        console.warn(`La section "${page}" n'existe pas.`);
+        console.warn(`The section "${page}" do not exist.`);
     }
 }
 

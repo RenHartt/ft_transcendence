@@ -416,9 +416,9 @@ function savePassword() {
 		.then(response => response.json())
 		.then(data => {
 			if (data.error) {
-				showPopup("Erreur", data.error, "error");
+				showPopup("Error", data.error, "error");
 			} else {
-				showPopup("Succès", data.message, "success");
+				showPopup("Success", data.message, "success");
 				showProfile();
 			}
 		})

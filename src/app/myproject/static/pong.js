@@ -110,11 +110,11 @@ function startPongGame() {
             let teamLeft = gameState.generalScore.player1 + gameState.generalScore.player2;
             let teamRight = gameState.generalScore.player3 + gameState.generalScore.player4;
             if (teamLeft >= 3) {
-                showPopup("Bravo", "L'équipe de gauche (P1/P2) gagne la partie !", "success");
+                showPopup("Bravo", "Left team (P1/P2) won game !", "success");
                 saveGameHistory("Pong", "TeamLeft", "TeamRight", teamLeft, teamRight);
                 resetGame();
             } else if (teamRight >= 3) {
-                showPopup("Bravo", "L'équipe de droite (P3/P4) gagne la partie !", "success");
+                showPopup("Bravo", "Right team (P3/P4) won game !", "success");
                 saveGameHistory("Pong", "TeamLeft", "TeamRight", teamLeft, teamRight);
                 resetGame();
             }
@@ -133,11 +133,11 @@ function startPongGame() {
                 scoreP2 = 0;
             }
             if (gameState.generalScore.player1 >= 3) {
-                showPopup("Bravo", "Le joueur1 gagne la partie !", "success");
+                showPopup("Bravo", "Player1 won the game !", "success");
                 saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             } else if (gameState.generalScore.player2 >= 3) {
-                showPopup("Bravo", "Le joueur2 gagne la partie !", "success");
+                showPopup("Bravo", "Player2 won the game !", "success");
                 saveGameHistory("Pong", "Player1", "Player2", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             }
@@ -156,11 +156,11 @@ function startPongGame() {
                 scoreP2 = 0;
             }
             if (gameState.generalScore.player1 >= 3) {
-                showPopup("Bravo", "Le joueur a gagné la partie !", "success");
+                showPopup("Bravo", "The player won the game !", "success");
                 saveGameHistory("Pong", "Player1", "IA", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             } else if (gameState.generalScore.player2 >= 3) {
-                showPopup("Bravo", "L'IA a gagné la partie !", "success");
+                showPopup("Bravo", "The IA won the game !", "success");
                 saveGameHistory("Pong", "Player2", "IA", gameState.generalScore.player1, gameState.generalScore.player2);
                 resetGame();
             }
