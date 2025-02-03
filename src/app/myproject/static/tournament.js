@@ -4,6 +4,168 @@ let currentMatchIndex = 0;
 let tournament = false;
 const MAX_PLAYERS = 4;
 
+
+function startPongGameTournanment() {
+    let canvas = document.createElement("canvas");
+    let pongContainer = document.getElementById("pong-container");
+    canvas.width = 500;
+    canvas.height = 300;
+    let ctx = canvas.getContext("2d");
+    pongContainer.innerHTML = "";
+    pongContainer.appendChild(canvas);
+    gameState.generalScore = {}; // ✅ Initialise l'objet des scores
+
+    let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
+    let currentIndex = JSON.parse(localStorage.getItem('currentMatchIndex')) || 0;
+
+    if (currentIndex < storedMatches.length) {
+        const [player1, player2] = storedMatches[currentIndex];
+
+        // ✅ Assurez-vous que chaque joueur a un score initialisé
+        gameState.generalScore[player1] = gameState.generalScore[player1] || 0;
+        gameState.generalScore[player2] = gameState.generalScore[player2] || 0;
+
+        gameState.scoreP1 = 0;
+        gameState.scoreP2 = 0;
+    }
+
+    gameState.gameRunning = true;
+
+    const paddleWidth = 8;
+    const paddleHeight = 60;
+    const paddleSpeed = 6;
+    const ballSize = 14;
+    
+    let playerY = canvas.height / 2 - paddleHeight / 2;
+    let aiY = playerY;
+    let ballX = canvas.width / 2;
+    let ballY = canvas.height / 2;
+    
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") window.upPressed = true;
+        if (e.key === "ArrowDown") window.downPressed = true;
+        if (e.key === "w") window.wPressed = true;
+        if (e.key === "s") window.sPressed = true;
+    });
+    document.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowUp") window.upPressed = false;
+        if (e.key === "ArrowDown") window.downPressed = false;
+        if (e.key === "w") window.wPressed = false;
+        if (e.key === "s") window.sPressed = false;
+    });
+    
+    function resetBall() {
+        ballX = canvas.width / 2;
+        ballY = canvas.height / 2;
+    }
+
+    function update() {
+        if (!gameState.gameRunning) return;
+        
+        if (window.wPressed && playerY > 0) playerY -= paddleSpeed;
+        if (window.sPressed && playerY < canvas.height - paddleHeight) playerY += paddleSpeed;
+        if (window.upPressed && aiY > 0) aiY -= paddleSpeed;
+        if (window.downPressed && aiY < canvas.height - paddleHeight) aiY += paddleSpeed;
+
+        ballX += gameState.BallSpeedX;
+        ballY += gameState.BallSpeedY;
+
+        if (ballY <= 0 || ballY >= canvas.height - ballSize) {
+            gameState.BallSpeedY *= -1;
+        }
+        
+        if (
+            ballX <= paddleWidth &&
+            ballY >= playerY &&
+            ballY <= playerY + paddleHeight
+        ) {
+            gameState.BallSpeedX *= -1;
+            ballX = paddleWidth + 1;
+        }
+        if (
+            ballX >= canvas.width - paddleWidth - ballSize &&
+            ballY >= aiY &&
+            ballY <= aiY + paddleHeight
+        ) {
+            gameState.BallSpeedX *= -1;
+            ballX = canvas.width - paddleWidth - ballSize - 1;
+        }
+
+        if (ballX <= 0) {
+            gameState.scoreP2++;
+            resetBall();
+        }
+        if (ballX >= canvas.width) {
+            gameState.scoreP1++;
+            resetBall();
+        }
+    }
+
+    function updateScore() {
+        const pongScore = document.getElementById("pong-score");
+        if (!gameState.gameRunning) return;
+    
+        let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
+        let currentIndex = JSON.parse(localStorage.getItem('currentMatchIndex')) || 0;
+        
+        if (currentIndex >= storedMatches.length) return;
+    
+        const [player1, player2] = storedMatches[currentIndex]; // Récupération des joueurs du match actuel
+    
+        if (pongScore) {
+            pongScore.textContent = `Score: ${player1}=${gameState.scoreP1} - ${player2}=${gameState.scoreP2}`;
+        }
+    
+        if (gameState.scoreP1 >= 5) {
+            gameState.generalScore[player1] = (gameState.generalScore[player1] || 0) + 1;
+            gameState.scoreP1 = 0;
+            gameState.scoreP2 = 0;
+        } else if (gameState.scoreP2 >= 5) {
+            gameState.generalScore[player2] = (gameState.generalScore[player2] || 0) + 1;
+            gameState.scoreP1 = 0;
+            gameState.scoreP2 = 0;
+        }
+    
+        if (gameState.generalScore[player1] >= 3) {
+            showPopup("Bravo", `${player1} gagne la partie !`, "success");
+            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            resetGame();
+        } else if (gameState.generalScore[player2] >= 3) {
+            showPopup("Bravo", `${player2} gagne la partie !`, "success");
+            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            resetGame();
+        }
+    }
+    
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = gameState.basecolor;
+
+        ctx.fillRect(0, playerY, paddleWidth, paddleHeight);
+        ctx.fillRect(canvas.width - paddleWidth, aiY, paddleWidth, paddleHeight);
+        ctx.beginPath();
+        ctx.arc(ballX + ballSize / 2, ballY + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+        
+        ctx.fillStyle = "white";
+        ctx.font = "16px Arial";  // Définit une police lisible
+        ctx.fillText(`P1: ${gameState.scoreP1}`, 50, 20);
+        ctx.fillText(`P2: ${gameState.scoreP2}`, canvas.width - 70, 20);
+    }
+
+    function gameLoop() {
+        if (!gameState.gameRunning) return;
+        update();
+        draw();
+        updateScore();
+        requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+}
+
 function addPlayer() {
     const input = document.getElementById('player-name');
     const playerName = input.value.trim();
@@ -48,12 +210,14 @@ function startTournament() {
     if (players.length >= 2) {
         localStorage.setItem('tournamentPlayers', JSON.stringify(players));
 
-        generateRoundRobin();
+        generateRoundRobin();  // ✅ Génération des matchs
 
-        console.log("Tournoi démarré !");
-        startNextMatch();
+        console.log("🏆 Tournoi démarré !");
+        tournament = true; // ✅ Indiquer que le tournoi est en cours
+        startNextMatch(); // ✅ Démarrer le premier match
     }
 }
+
 
 function startNextMatch() {
     let storedMatches = JSON.parse(localStorage.getItem('tournamentMatches')) || [];
@@ -137,7 +301,7 @@ function togglePongOverlay() {
     pongScore.style.display = "block";
     tournamentSection.classList.add("hidden");
     tournament = true;
-    startPongGame();
+    startPongGameTournanment();
 }
 
 function showPongTournament() {
