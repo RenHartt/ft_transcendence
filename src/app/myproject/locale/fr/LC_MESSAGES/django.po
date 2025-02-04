@@ -7,11 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2025-02-04 17:22+0100\n"
-=======
-"POT-Creation-Date: 2025-02-03 11:47+0000\n"
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
+"POT-Creation-Date: 2025-02-04 19:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: myproject/settings.py:21
+#: myproject/settings.py:27
 msgid "English"
 msgstr "Anglais"
 
-#: myproject/settings.py:22
+#: myproject/settings.py:28
 msgid "Français"
 msgstr "Français"
 
-#: myproject/settings.py:23
+#: myproject/settings.py:29
 msgid "Español"
 msgstr "Espagnol"
 
@@ -57,7 +53,7 @@ msgid "Password:"
 msgstr "Mot de passe"
 
 #: myproject/templates/my_app/home.html:31
-#: myproject/templates/my_app/home.html:295
+#: myproject/templates/my_app/home.html:296
 #: myproject/templates/my_app/login.html:42
 msgid "Log In"
 msgstr "Se connecter"
@@ -69,13 +65,7 @@ msgid "Sign Up"
 msgstr "S'inscrire"
 
 #: myproject/templates/my_app/home.html:70
-<<<<<<< HEAD
 msgid "Profile"
-=======
-#, fuzzy
-#| msgid "Edit Profile"
-msgid "View Profile"
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
 msgstr "Profile"
 
 #: myproject/templates/my_app/home.html:71
@@ -136,32 +126,17 @@ msgid "Game history"
 msgstr "Historique de partie"
 
 #: myproject/templates/my_app/home.html:135
-<<<<<<< HEAD
-=======
 #: myproject/templates/my_app/home.html:159
-#, fuzzy
-#| msgid "Email:"
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
 msgid "Email"
 msgstr "Email"
 
 #: myproject/templates/my_app/home.html:136
-<<<<<<< HEAD
-=======
 #: myproject/templates/my_app/home.html:153
-#, fuzzy
-#| msgid "First Name"
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
 msgid "First Name"
 msgstr "Prénom"
 
 #: myproject/templates/my_app/home.html:137
-<<<<<<< HEAD
-=======
 #: myproject/templates/my_app/home.html:156
-#, fuzzy
-#| msgid "Last Name"
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
 msgid "Last Name"
 msgstr "Nom de famille"
 
@@ -173,27 +148,6 @@ msgstr "Amis"
 msgid "Pending Friend Requests"
 msgstr "Demandes d'amis en attente"
 
-<<<<<<< HEAD
-#: myproject/templates/my_app/home.html:153
-#, fuzzy
-#| msgid "First Name"
-msgid "First Name:"
-msgstr "Prénom"
-
-#: myproject/templates/my_app/home.html:156
-#, fuzzy
-#| msgid "Last Name"
-msgid "Last Name:"
-msgstr "Nom de famille"
-
-#: myproject/templates/my_app/home.html:159
-#, fuzzy
-#| msgid "Email"
-msgid "Email:"
-msgstr "Email"
-
-=======
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
 #: myproject/templates/my_app/home.html:162
 #, fuzzy
 #| msgid "Image"
@@ -254,7 +208,7 @@ msgid "Four Players"
 msgstr "Quatres joueurs"
 
 #: myproject/templates/my_app/home.html:236
-#: myproject/templates/my_app/home.html:284
+#: myproject/templates/my_app/home.html:282
 msgid "Start"
 msgstr "Demarrer"
 
@@ -308,22 +262,18 @@ msgstr "Ajouter un joueur"
 msgid "Add"
 msgstr "Ajouter"
 
-<<<<<<< HEAD
-#: myproject/templates/my_app/home.html:289
-=======
-#: myproject/templates/my_app/home.html:285
+#: myproject/templates/my_app/home.html:283
 #, fuzzy
 #| msgid "Stop Game"
 msgid "Stop"
 msgstr "Arreter le jeu"
 
-#: myproject/templates/my_app/home.html:291
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
+#: myproject/templates/my_app/home.html:290
 #: myproject/templates/my_app/login.html:53
 msgid "2024 Page de cramptes. Tous droits non-réservés."
 msgstr "2024 Page de cramptes. Tous droits non-réservés."
 
-#: myproject/templates/my_app/home.html:294
+#: myproject/templates/my_app/home.html:295
 msgid "You need to be logged to access this."
 msgstr "Vous devez être connecté pour accéder à cette page."
 
@@ -348,23 +298,3 @@ msgstr "ou"
 #: myproject/templates/my_app/register.html:41
 msgid "Sign In"
 msgstr "S'inscrire"
-
-<<<<<<< HEAD
-#~ msgid "Play"
-#~ msgstr "Jouer"
-
-#~ msgid "Tournament History"
-#~ msgstr "Historique du tournoi"
-=======
-#~ msgid "First Name:"
-#~ msgstr "Prénom :"
-
-#~ msgid "Last Name:"
-#~ msgstr "Nom de famille :"
-
-#~ msgid "Email:"
-#~ msgstr "Email :"
-
-#~ msgid "You must be logged in to access this page."
-#~ msgstr "Vous devez être connecté pour accéder à cette page."
->>>>>>> acde93fb5d2c09d80ae5182eb284d774f6a555bc
