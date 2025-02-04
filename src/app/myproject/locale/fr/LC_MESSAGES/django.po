@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-03 15:55+0000\n"
+"POT-Creation-Date: 2025-02-03 18:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,14 +43,14 @@ msgstr "Changer de langue"
 #: myproject/templates/my_app/home.html:134
 #: myproject/templates/my_app/login.html:21
 #: myproject/templates/my_app/register.html:21
-#, fuzzy
-#| msgid "Username:"
 msgid "Username"
-msgstr "Nom d'utilisateur :"
+msgstr "Nom d'utilisateur"
 
 #: myproject/templates/my_app/home.html:26
+#, fuzzy
+#| msgid "Password"
 msgid "Password:"
-msgstr "Mot de passe :"
+msgstr "Mot de passe"
 
 #: myproject/templates/my_app/home.html:31
 #: myproject/templates/my_app/home.html:297
@@ -65,10 +65,8 @@ msgid "Sign Up"
 msgstr "S'inscrire"
 
 #: myproject/templates/my_app/home.html:70
-#, fuzzy
-#| msgid "Edit Profile"
 msgid "Profile"
-msgstr "Editer le profile"
+msgstr "Profile"
 
 #: myproject/templates/my_app/home.html:71
 #: myproject/templates/my_app/home.html:150
@@ -122,48 +120,48 @@ msgid "Game history"
 msgstr "Historique de partie"
 
 #: myproject/templates/my_app/home.html:135
-#, fuzzy
-#| msgid "Email:"
 msgid "Email"
-msgstr "Email :"
+msgstr "Email"
 
 #: myproject/templates/my_app/home.html:136
-#, fuzzy
-#| msgid "First Name:"
 msgid "First Name"
-msgstr "Prénom :"
+msgstr "Prénom"
 
 #: myproject/templates/my_app/home.html:137
-#, fuzzy
-#| msgid "Last Name:"
 msgid "Last Name"
-msgstr "Nom de famille :"
+msgstr "Nom de famille"
 
 #: myproject/templates/my_app/home.html:139
 msgid "Friends"
 msgstr "Amis"
 
 #: myproject/templates/my_app/home.html:142
-#, fuzzy
-#| msgid "Friend Requests"
 msgid "Pending Friend Requests"
-msgstr "Demandes d'amis"
+msgstr "Demandes d'amis en attente"
 
 #: myproject/templates/my_app/home.html:153
+#, fuzzy
+#| msgid "First Name"
 msgid "First Name:"
-msgstr "Prénom :"
+msgstr "Prénom"
 
 #: myproject/templates/my_app/home.html:156
+#, fuzzy
+#| msgid "Last Name"
 msgid "Last Name:"
-msgstr "Nom de famille :"
+msgstr "Nom de famille"
 
 #: myproject/templates/my_app/home.html:159
+#, fuzzy
+#| msgid "Email"
 msgid "Email:"
-msgstr "Email :"
+msgstr "Email"
 
 #: myproject/templates/my_app/home.html:162
+#, fuzzy
+#| msgid "Image"
 msgid "Image:"
-msgstr "Image :"
+msgstr "Image"
 
 #: myproject/templates/my_app/home.html:165
 #: myproject/templates/my_app/home.html:185
@@ -177,28 +175,38 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #: myproject/templates/my_app/home.html:176
+#, fuzzy
+#| msgid "Old Password"
 msgid "Old Password:"
-msgstr "Ancien mot de passe :"
+msgstr "Ancien mot de passe"
 
 #: myproject/templates/my_app/home.html:179
+#, fuzzy
+#| msgid "New Password"
 msgid "New Password:"
-msgstr "Nouveau mot de passe :"
+msgstr "Nouveau mot de passe"
 
 #: myproject/templates/my_app/home.html:182
+#, fuzzy
+#| msgid "Confirm Password"
 msgid "Confirm Password:"
-msgstr "Confirmer le mot de passe :"
+msgstr "Confirmer le mot de passe"
 
 #: myproject/templates/my_app/home.html:194
 msgid "Settings"
 msgstr "Paramètres"
 
 #: myproject/templates/my_app/home.html:197
+#, fuzzy
+#| msgid "Select Language"
 msgid "Select Language:"
 msgstr "Sélectionner la langue"
 
 #: myproject/templates/my_app/home.html:213
+#, fuzzy
+#| msgid "Username"
 msgid "Username:"
-msgstr "Nom d'utilisateur :"
+msgstr "Nom d'utilisateur"
 
 #: myproject/templates/my_app/home.html:216
 msgid "Send Request"
@@ -226,16 +234,22 @@ msgid "Game Settings"
 msgstr "Paramètres"
 
 #: myproject/templates/my_app/home.html:252
+#, fuzzy
+#| msgid "Paddle Color"
 msgid "Paddle Color:"
-msgstr "Couleur de la raquette :"
+msgstr "Couleur de la raquette"
 
 #: myproject/templates/my_app/home.html:255
+#, fuzzy
+#| msgid "Ball Color"
 msgid "Ball Color:"
-msgstr "Couleur de la balle :"
+msgstr "Couleur de la balle"
 
 #: myproject/templates/my_app/home.html:258
+#, fuzzy
+#| msgid "Ball Speed"
 msgid "Ball Speed:"
-msgstr "Vitesse de la balle :"
+msgstr "Vitesse de la balle"
 
 #: myproject/templates/my_app/home.html:261
 #: myproject/templates/my_app/home.html:270
@@ -254,7 +268,7 @@ msgstr "Rejouer"
 
 #: myproject/templates/my_app/home.html:276
 msgid "Add player"
-msgstr "Ajouter un"
+msgstr "Ajouter un joueur"
 
 #: myproject/templates/my_app/home.html:280
 msgid "Tournament History"
@@ -281,7 +295,7 @@ msgstr "Se connecter"
 #: myproject/templates/my_app/register.html:26
 #: myproject/templates/my_app/register.html:34
 msgid "Password"
-msgstr "Mot de passe :"
+msgstr "Mot de passe"
 
 #: myproject/templates/my_app/register.html:39
 msgid "Register"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-03 17:55+0000\n"
+"POT-Creation-Date: 2025-02-03 18:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,10 @@ msgid "Username"
 msgstr "Nombre de usuario"
 
 #: myproject/templates/my_app/home.html:26
+#, fuzzy
+#| msgid "Password"
 msgid "Password:"
-msgstr "Contraseña:"
+msgstr "Contraseña"
 
 #: myproject/templates/my_app/home.html:31
 #: myproject/templates/my_app/home.html:297
@@ -138,20 +140,28 @@ msgid "Pending Friend Requests"
 msgstr "Solicitudes de amistad pendientes"
 
 #: myproject/templates/my_app/home.html:153
+#, fuzzy
+#| msgid "First Name"
 msgid "First Name:"
-msgstr "Nombre:"
+msgstr "Nombre"
 
 #: myproject/templates/my_app/home.html:156
+#, fuzzy
+#| msgid "Last Name"
 msgid "Last Name:"
-msgstr "Apellido:"
+msgstr "Apellido"
 
 #: myproject/templates/my_app/home.html:159
+#, fuzzy
+#| msgid "Email"
 msgid "Email:"
-msgstr "Correo electrónico:"
+msgstr "Correo electrónico"
 
 #: myproject/templates/my_app/home.html:162
+#, fuzzy
+#| msgid "Image"
 msgid "Image:"
-msgstr "Imagen:"
+msgstr "Imagen"
 
 #: myproject/templates/my_app/home.html:165
 #: myproject/templates/my_app/home.html:185
@@ -165,28 +175,38 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: myproject/templates/my_app/home.html:176
+#, fuzzy
+#| msgid "Old Password"
 msgid "Old Password:"
-msgstr "Contraseña antigua:"
+msgstr "Contraseña antigua"
 
 #: myproject/templates/my_app/home.html:179
+#, fuzzy
+#| msgid "New Password"
 msgid "New Password:"
-msgstr "Nueva contraseña:"
+msgstr "Nueva contraseña"
 
 #: myproject/templates/my_app/home.html:182
+#, fuzzy
+#| msgid "Confirm Password"
 msgid "Confirm Password:"
-msgstr "Confirmar contraseña:"
+msgstr "Confirmar contraseña"
 
 #: myproject/templates/my_app/home.html:194
 msgid "Settings"
 msgstr "Configuración"
 
 #: myproject/templates/my_app/home.html:197
+#, fuzzy
+#| msgid "Select Language"
 msgid "Select Language:"
-msgstr "Seleccionar idioma:"
+msgstr "Seleccionar idioma"
 
 #: myproject/templates/my_app/home.html:213
+#, fuzzy
+#| msgid "Username"
 msgid "Username:"
-msgstr "Nombre de usuario:"
+msgstr "Nombre de usuario"
 
 #: myproject/templates/my_app/home.html:216
 msgid "Send Request"
@@ -214,16 +234,22 @@ msgid "Game Settings"
 msgstr "Configuración del juego"
 
 #: myproject/templates/my_app/home.html:252
+#, fuzzy
+#| msgid "Paddle Color"
 msgid "Paddle Color:"
-msgstr "Color de la pala:"
+msgstr "Color de la pala"
 
 #: myproject/templates/my_app/home.html:255
+#, fuzzy
+#| msgid "Ball Color"
 msgid "Ball Color:"
-msgstr "Color de la pelota:"
+msgstr "Color de la pelota"
 
 #: myproject/templates/my_app/home.html:258
+#, fuzzy
+#| msgid "Ball Speed"
 msgid "Ball Speed:"
-msgstr "Velocidad de la pelota:"
+msgstr "Velocidad de la pelota"
 
 #: myproject/templates/my_app/home.html:261
 #: myproject/templates/my_app/home.html:270
@@ -234,25 +260,23 @@ msgstr "Cerrar"
 #: myproject/templates/my_app/tictactoe.html:7
 #: myproject/templates/my_app/tictactoe.html:11
 msgid "Tic-Tac-Toe"
-msgstr ""
+msgstr "Tres en línea"
 
 #: myproject/templates/my_app/home.html:271
 msgid "Replay"
-msgstr ""
+msgstr "Repetir"
 
 #: myproject/templates/my_app/home.html:276
 msgid "Add player"
-msgstr ""
+msgstr "Agregar jugador"
 
 #: myproject/templates/my_app/home.html:280
-#, fuzzy
-#| msgid "Tournament"
 msgid "Tournament History"
-msgstr "Torneo"
+msgstr "Historial del torneo"
 
 #: myproject/templates/my_app/home.html:283
 msgid "Add"
-msgstr ""
+msgstr "Agregar"
 
 #: myproject/templates/my_app/home.html:291
 #: myproject/templates/my_app/login.html:53
@@ -261,30 +285,26 @@ msgstr ""
 
 #: myproject/templates/my_app/home.html:296
 msgid "You need to be logged to access this."
-msgstr ""
+msgstr "Debes estar conectado para acceder a esto."
 
 #: myproject/templates/my_app/login.html:16
 msgid "Login"
-msgstr ""
+msgstr "Iniciar sesión"
 
 #: myproject/templates/my_app/login.html:27
 #: myproject/templates/my_app/register.html:26
 #: myproject/templates/my_app/register.html:34
-#, fuzzy
-#| msgid "Password:"
 msgid "Password"
-msgstr "Contraseña:"
+msgstr "Contraseña"
 
 #: myproject/templates/my_app/register.html:39
 msgid "Register"
-msgstr ""
+msgstr "Registrarse"
 
 #: myproject/templates/my_app/register.html:40
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: myproject/templates/my_app/register.html:41
-#, fuzzy
-#| msgid "Sign Up"
 msgid "Sign In"
-msgstr "Registrarse"
+msgstr "Iniciar sesión"

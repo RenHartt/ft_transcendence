@@ -4,7 +4,6 @@ let currentMatchIndex = 0;
 let tournament = false;
 const MAX_PLAYERS = 4;
 
-
 function startPongGameTournanment() {
     let canvas = document.createElement("canvas");
     let pongContainer = document.getElementById("pong-container");
@@ -127,11 +126,11 @@ function startPongGameTournanment() {
     
         if (gameState.generalScore[player1] >= 3) {
             // showPopup("Bravo", `${player1} gagne la partie !`, "success");
-            // saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
             resetGame();
         } else if (gameState.generalScore[player2] >= 3) {
             // showPopup("Bravo", `${player2} gagne la partie !`, "success");
-            // saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
+            saveGameHistory("Pong", player1, player2, gameState.generalScore[player1], gameState.generalScore[player2]);
             resetGame();
         }
     }
