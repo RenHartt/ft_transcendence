@@ -376,8 +376,6 @@
         }, 1000);
     }
 
-    
-
     function togglePongOverlay() {
         const pongWrapper = document.getElementById('pong-wrapper');
         const pongContainer = document.getElementById('pong-container');
@@ -409,6 +407,7 @@
     }
 
     function showPongTournament() {
+        const pongContainer = document.getElementById('pong-container');
         const pongWrapper = document.getElementById('pong-wrapper');
         const historyContainer = document.getElementById('history-container');
         const profileContainer = document.getElementById('profile-container');
@@ -419,23 +418,29 @@
         const settingsContainer = document.getElementById('settings-container');
         const fourPlayerButton = document.getElementById('fourPlayerButton');
         const twoPlayerButton = document.getElementById('twoPlayerButton');
+    
         document.addEventListener("keydown", (e) => {
             if (e.key === "Enter") addPlayer();
         });
-        
-        if (tournamentSection) {
-            tournamentSection.classList.remove("hidden");
+    
+        if (!tournamentSection) return;
+    
+        tournamentSection.classList.toggle("hidden");
+    
+        if (!tournamentSection.classList.contains("hidden")) {
+            if (pongWrapper) pongWrapper.style.display = "none";
+            if (pongContainer) pongContainer.innerHTML = ''; // Vide le contenu
+    
+            stopGameTournament();
+            historyContainer.classList.add("hidden");
+            profileContainer.classList.add("hidden");
+            changePasswordContainer.classList.add("hidden");
+            addFriendForm.classList.add("hidden");
+            profileEditForm.classList.add("hidden");
+            settingsContainer.classList.add("hidden");
+            twoPlayerButton.style.display = "none";
+            fourPlayerButton.style.display = "none";
         }
-        stopGameTournament();
-        pongWrapper.style.display = "none";
-        historyContainer.classList.add("hidden");
-        profileContainer.classList.add("hidden");
-        changePasswordContainer.classList.add("hidden");
-        addFriendForm.classList.add("hidden");
-        profileEditForm.classList.add("hidden");
-        settingsContainer.classList.add("hidden");
-        twoPlayerButton.style.display = "none";
-        fourPlayerButton.style.display = "none";
     }
 
     function saveGameHistory(winner) {
