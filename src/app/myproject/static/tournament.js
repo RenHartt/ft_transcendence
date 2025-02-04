@@ -208,11 +208,7 @@
             ctx.arc(ballX + ballSize / 2, ballY + ballSize / 2, ballSize / 2, 0, Math.PI * 2);
             ctx.fill();
             ctx.closePath();
-            
-            ctx.fillStyle = "black";
-            ctx.font = "16px Arial";  
-            ctx.fillText(`P1: ${gameState.scoreP1}`, 50, 20);
-            ctx.fillText(`P2: ${gameState.scoreP2}`, canvas.width - 70, 20);
+
         }
 
         function gameLoop() {
@@ -444,32 +440,7 @@
         }
     }
 
-    function saveGameHistory(winner) {
-        let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-        
-        const match = {
-            players: [...players],
-            winner: winner || "Unknown", 
-            timestamp: new Date().toLocaleString()
-        };
 
-        gameHistory.push(match);
-        localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
-        updateGameHistoryUI();
-    }
-
-    function updateGameHistoryUI() {
-        const historyContainer = document.getElementById('game-history');
-        historyContainer.innerHTML = ''; 
-
-        let gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-        
-        gameHistory.forEach((match, index) => {
-            const li = document.createElement('li');
-            li.textContent = `Match ${index + 1} | Joueurs: ${match.players.join(", ")} | Gagnant: ${match.winner}`;
-            historyContainer.appendChild(li);
-        });
-    }
 
     function declareWinner(winnerName) {
         if (!players.includes(winnerName)) {
