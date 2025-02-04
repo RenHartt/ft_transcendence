@@ -418,6 +418,7 @@
         const settingsContainer = document.getElementById('settings-container');
         const fourPlayerButton = document.getElementById('fourPlayerButton');
         const twoPlayerButton = document.getElementById('twoPlayerButton');
+        hideTicTacToe();
     
         document.addEventListener("keydown", (e) => {
             if (e.key === "Enter") addPlayer();
