@@ -548,4 +548,3 @@
             pongWrapper.style.display = "none";
         }
     }
-

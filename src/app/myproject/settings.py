@@ -4,27 +4,31 @@ import os
 from django.utils.translation import gettext_lazy as _
 import logging
 from django.utils.translation import get_language
+import os
 
 logger = logging.getLogger('myproject')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+ALLOWED_HOSTS = ['*']
 
 DEBUG = False
-LANGUAGE_CODE = 'en'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
 CDN_URL = 'https://localhost:8443/static'
 
+LANGUAGE_CODE = 'en'
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 31536000 
 LANGUAGES = [
     ('en', _('English')),
     ('fr', _('Français')),
     ('es', _('Español')),
 ]
-ALLOWED_HOSTS = ['*']
-LANGUAGE_COOKIE_NAME = 'django_language'
-LANGUAGE_COOKIE_AGE = 31536000 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -125,13 +129,13 @@ AUTH_PASSWORD_VALIDATORS = [
 TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
-
 USE_TZ = True
-
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'myproject/static']
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 SITE_ID = 1
 
 LOGIN_URL = '/login/'
@@ -143,9 +147,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 
-SOCIAL_AUTH_42_KEY = os.getenv('SOCIAL_AUTH_42_KEY')
-SOCIAL_AUTH_42_SECRET = os.getenv('SOCIAL_AUTH_42_SECRET')
-# SOCIAL_AUTH_42_REDIRECT_URI = 'http://localhost:8080/oauth/complete/42/'
+SOCIAL_AUTH_42_KEY = os.environ.get('SOCIAL_AUTH_42_KEY')
+SOCIAL_AUTH_42_SECRET = os.environ.get('SOCIAL_AUTH_42_SECRET')
 SOCIAL_AUTH_42_REDIRECT_URI = 'https://localhost:8443/oauth/complete/42/'
 
 AUTHENTICATION_BACKENDS = [
