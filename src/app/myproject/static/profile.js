@@ -154,8 +154,8 @@ function editProfile() {
 	profileEditForm.classList.toggle('hidden');
 	tournamentSection.classList.add("hidden");
 
-	setupProfileEditEvents();
 	updateURL('edit-profile')
+	setupProfileEditEvents();
 }
 
 function setupProfileEditEvents() {
@@ -170,8 +170,7 @@ function setupProfileEditEvents() {
 	if (cancelButton && !cancelButton.dataset.listener) {
 		cancelButton.dataset.listener = true;
 		cancelButton.addEventListener('click', () => {
-			document.getElementById('profile-edit-form').classList.add('hidden');
-			document.getElementById('profile-container').classList.remove('hidden');
+			showProfile();
 		});
 	}
 }
@@ -220,14 +219,12 @@ async function updateProfile() {
 			return response.json();
 		})
 		.then(data => {
-			console.log(data);
 			document.getElementById('profile-email').textContent = data.email;
 			document.getElementById('profile-first-name').textContent = data.first_name;
 			document.getElementById('profile-last-name').textContent = data.last_name;
 			document.getElementById('profile-picture').src = data.pp_link;
 
-			document.getElementById('profile-edit-form').classList.add('hidden');
-			document.getElementById('profile-container').classList.remove('hidden');
+			showProfile();
 			showPopup("Success", "Profile updated.", "success");
 		})
 		.catch(error => {

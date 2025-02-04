@@ -62,6 +62,8 @@ def index(request):
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
     elif page in AUTORISE_PAGE:
+        if not request.user.is_authenticated:
+            return redirect('/?page=login')  
         return render(request, 'my_app/home.html')
     return HttpResponseNotFound(render(request, 'my_app/404.html'))
 
