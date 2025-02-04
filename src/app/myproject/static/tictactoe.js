@@ -148,7 +148,7 @@ function showTicTacToe() {
 	modal.classList.add('active');
 	createBoard(staticUrls);
     tournamentSection.classList.add("hidden");
-	updateURL('tictactoe')
+	updateURL('tic-tac-toe')
 }
 
 function hideTicTacToe() {
