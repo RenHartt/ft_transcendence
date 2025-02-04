@@ -171,7 +171,7 @@
             let finalists = localStorage.getItem('finalists');
             finalists = finalists ? JSON.parse(finalists) : []; 
 
-            if (gameState.generalScore[player1] >= 1) {
+            if (gameState.generalScore[player1] >= 3) {
                 showPopup("Bravo", `${player1} gagne la partie !`, "success");
                 index++;
                 console.log("incr", index);
@@ -182,7 +182,7 @@
                 if (index == 3) {
                     showPopup("Bravo", `${player1} remporte le tournoi !`, "success", false);
                 }
-            } else if (gameState.generalScore[player2] >= 1) {
+            } else if (gameState.generalScore[player2] >= 3) {
                 showPopup("Bravo", `${player2} gagne la partie !`, "success");
                 index++;
                 console.log("incr", index);

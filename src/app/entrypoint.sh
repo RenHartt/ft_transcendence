@@ -4,6 +4,8 @@ while ! nc -z $DB_HOST $DB_PORT; do
   sleep 0.1
 done
 echo "PostgreSQL started"
+export PYTHONPATH=/app
+export DJANGO_SETTINGS_MODULE=myproject.settings
 
 echo "Applying database migrations..."
 while ! python manage.py migrate --noinput 2>&1; do
@@ -28,7 +30,6 @@ if not User.objects.filter(username=username).exists():
     print(f"Superuser '{username}' created successfully!")
 END
 echo "Superuser created"
-export DJANGO_SETTINGS_MODULE=myproject.settings
 django-admin makemessages -l fr
 django-admin compilemessages
 echo "Starting Django server..."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-03 18:34+0000\n"
+"POT-Creation-Date: 2025-02-04 17:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: myproject/settings.py:20
+#: myproject/settings.py:21
 msgid "English"
 msgstr "Anglais"
 
-#: myproject/settings.py:21
+#: myproject/settings.py:22
 msgid "Français"
 msgstr "Français"
 
-#: myproject/settings.py:22
+#: myproject/settings.py:23
 msgid "Español"
 msgstr "Espagnol"
 
@@ -53,7 +53,7 @@ msgid "Password:"
 msgstr "Mot de passe"
 
 #: myproject/templates/my_app/home.html:31
-#: myproject/templates/my_app/home.html:297
+#: myproject/templates/my_app/home.html:295
 #: myproject/templates/my_app/login.html:42
 msgid "Log In"
 msgstr "Se connecter"
@@ -221,8 +221,8 @@ msgid "Four Players"
 msgstr "Quatres joueurs"
 
 #: myproject/templates/my_app/home.html:236
-msgid "Play"
-msgstr "Jouer"
+msgid "Start"
+msgstr ""
 
 #: myproject/templates/my_app/home.html:239
 msgid "Stop Game"
@@ -270,20 +270,16 @@ msgstr "Rejouer"
 msgid "Add player"
 msgstr "Ajouter un joueur"
 
-#: myproject/templates/my_app/home.html:280
-msgid "Tournament History"
-msgstr "Historique du tournoi"
-
-#: myproject/templates/my_app/home.html:283
+#: myproject/templates/my_app/home.html:281
 msgid "Add"
 msgstr "Ajouter"
 
-#: myproject/templates/my_app/home.html:291
+#: myproject/templates/my_app/home.html:289
 #: myproject/templates/my_app/login.html:53
 msgid "2024 Page de cramptes. Tous droits non-réservés."
 msgstr "2024 Page de cramptes. Tous droits non-réservés."
 
-#: myproject/templates/my_app/home.html:296
+#: myproject/templates/my_app/home.html:294
 msgid "You need to be logged to access this."
 msgstr "Vous devez être connecté pour accéder à cette page."
 
@@ -308,3 +304,9 @@ msgstr "ou"
 #: myproject/templates/my_app/register.html:41
 msgid "Sign In"
 msgstr "S'inscrire"
+
+#~ msgid "Play"
+#~ msgstr "Jouer"
+
+#~ msgid "Tournament History"
+#~ msgstr "Historique du tournoi"
