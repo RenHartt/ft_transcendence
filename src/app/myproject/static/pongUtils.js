@@ -135,6 +135,7 @@ function showPong() {
     twoPlayerButton.style.display = "block";
     fourPlayerButton.style.display = "block";
     tournamentSection.classList.add("hidden");
+	updateURL('pong')
 }
 
 function startGame() {

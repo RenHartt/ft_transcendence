@@ -519,4 +519,3 @@
             pongWrapper.style.display = "none";
         }
     }
-
