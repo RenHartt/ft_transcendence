@@ -21,8 +21,20 @@ from django.core.exceptions import ValidationError
 User = get_user_model()
 logger = logging.getLogger('core')
 
+AUTORISE_PAGE = [
+    "profile",
+    "edit-profile",
+    "change-password",
+    "add-friend",
+    "history",
+    "tic-tac-toe",
+    "pong",
+    "pong-tournament",
+    "settings",
+]
+
 def index(request):
-    page = request.GET.get('page', 'home') 
+    page = request.GET.get('page', 'home').rstrip('/') 
 
     if page == 'login':
         if request.method == 'POST':
@@ -49,7 +61,8 @@ def index(request):
         return render(request, 'my_app/register.html', {'form': form})  
     elif page == 'tictactoe':
         return render(request, 'my_app/tictactoe.html')
-    
+    elif page in AUTORISE_PAGE:
+        return render(request, 'my_app/home.html')
     return HttpResponseNotFound(render(request, 'my_app/404.html'))
 
 

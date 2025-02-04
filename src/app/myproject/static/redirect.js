@@ -1,17 +1,14 @@
 const functionMap = new Map();
 
-function prout() { 
-	console.log("prout");
-}
-
 functionMap.set('profile', showProfile);
 functionMap.set('edit-profile', editProfile);
 functionMap.set('change-password', showChangePassword);
 functionMap.set('add-friend', addFriend);
 functionMap.set('history', showHistory);
-functionMap.set('tictactoe', showTicTacToe);
+functionMap.set('tic-tac-toe', showTicTacToe);
 functionMap.set('pong', showPong);
 functionMap.set('pong-tournament', showPongTournament);
+functionMap.set('settings', showSettings);
 
 // change the page url base on the page string and add it to the url history
 function updateURL(page) {
@@ -26,6 +23,7 @@ function showPageFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   let page = urlParams.get('page') || 'home'
 
+	//rm trailing / in url
   page = page.replace(/^\/+|\/+$/g, '');
 
 
@@ -49,10 +47,12 @@ function showPageFromURL() {
   }
 }
 
+// arrow overwrite in spa
 window.addEventListener('popstate', () => {
   showPageFromURL();
 });
 
+// done when the page is loaded and open the right menu in the spa
 document.addEventListener('DOMContentLoaded', () => {
     showPageFromURL(); 
 

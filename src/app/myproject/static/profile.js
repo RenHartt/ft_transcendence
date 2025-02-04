@@ -1,6 +1,5 @@
 
 function showProfile() {
-	console.log('aaa')
 	const profileContainer = document.getElementById('profile-container');
 	const tournamentSection = document.getElementById('tournament-section');
 
